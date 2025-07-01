@@ -1,0 +1,12 @@
+# Bỏ qua file thực thi, file tạm, file upload, v.v.
+*.exe
+*.log
+*.zip
+*.rar
+uploads/
+node_modules/
+vendor/
+.env
+tailwindcss.exe
+*.png
+*.jpg
