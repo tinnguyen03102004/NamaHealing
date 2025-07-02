@@ -17,6 +17,18 @@ $stmt = $db->prepare("SELECT session, created_at FROM sessions WHERE user_id=? O
 $stmt->execute([$uid]);
 $history = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+$has_history = count($history) > 0;
+
+// Kiểm tra giờ hiện tại có nằm trong khung giờ lớp sáng/chiều không
+function is_morning_time() {
+    $now = date('H:i');
+    return ($now >= '06:00' && $now <= '06:40');
+}
+function is_evening_time() {
+    $now = date('H:i');
+    return ($now >= '20:45' && $now <= '21:25');
+}
+
 require 'header.php';
 ?>
 
@@ -35,7 +47,9 @@ require 'header.php';
            class="w-full rounded-xl bg-gradient-to-tr from-[#b6f0de] to-[#9dcfc3] text-[#285F57] font-bold py-2 text-center mt-3 shadow-lg hover:scale-[1.03] hover:shadow-xl transition
                   focus:ring-2 focus:ring-mint-dark outline-none
                   disabled:opacity-50 disabled:pointer-events-none"
-           <?= $remain ? '' : 'disabled' ?>>
+           <?php
+               if (!$remain || (!$has_history && is_morning_time())) echo 'disabled';
+           ?>>
            Vào lớp sáng
         </a>
       </div>
@@ -45,7 +59,9 @@ require 'header.php';
            class="w-full rounded-xl bg-gradient-to-tr from-[#b6f0de] to-[#9dcfc3] text-[#285F57] font-bold py-2 text-center mt-3 shadow-lg hover:scale-[1.03] hover:shadow-xl transition
                   focus:ring-2 focus:ring-mint-dark outline-none
                   disabled:opacity-50 disabled:pointer-events-none"
-           <?= $remain ? '' : 'disabled' ?>>
+           <?php
+               if (!$remain || (!$has_history && is_evening_time())) echo 'disabled';
+           ?>>
            Vào lớp chiều
         </a>
       </div>
