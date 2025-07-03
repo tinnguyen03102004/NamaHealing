@@ -17,15 +17,17 @@ require 'config.php';
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
 
   <style>
-    body {
+    html, body {
       margin: 0;
       padding: 0;
       font-family: 'Montserrat', sans-serif;
+      overflow-x: hidden;   /* Ngăn scroll ngang */
+      box-sizing: border-box;
     }
     .hero {
       position: relative;
       min-height: 100vh;
-      width: 100%; /* Sửa lại dòng này */
+      width: 100%;
       background: url('https://images.unsplash.com/photo-1536514498073-50e69d39c6cf?q=80&w=2000&auto=format&fit=crop') center/cover no-repeat;
       display: flex;
       align-items: flex-start;
@@ -117,7 +119,7 @@ require 'config.php';
   </style>
 </head>
 
-<body>
+<body class="overflow-x-hidden">
   <!-- Thanh header trong suốt hoàn toàn -->
   <header class="h-16 w-full fixed top-0 left-0 z-10 flex items-center header-bar">
     <div class="max-w-7xl mx-auto px-6 w-full flex items-center justify-between">
@@ -151,12 +153,12 @@ require 'config.php';
 
   <!-- Modal: Giới thiệu Lớp học & Võ Trọng Nghĩa -->
   <div id="class-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 hidden">
-    <div class="bg-white rounded-2xl max-w-lg w-full p-0 relative shadow-2xl overflow-y-auto max-h-[92vh] flex flex-col items-center">
-      <button id="close-class-modal" class="absolute top-3 right-3 w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-xl font-bold">&times;</button>
+    <div class="bg-white rounded-2xl w-[96vw] max-w-lg p-4 sm:p-6 relative shadow-2xl overflow-y-auto max-h-[95vh] flex flex-col items-center">
+      <button id="close-class-modal" class="absolute top-2 right-2 w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-xl font-bold">&times;</button>
       <div class="w-full flex items-center justify-center pt-7">
         <img src="VTN.jpg" alt="Võ Trọng Nghĩa" class="rounded-xl shadow-lg object-cover w-full max-w-[340px] h-auto border border-green-100">
       </div>
-      <div class="w-full px-7 py-4 flex flex-col justify-center items-center">
+      <div class="w-full px-2 sm:px-7 py-4 flex flex-col justify-center items-center">
         <h2 class="text-2xl font-semibold text-green-800 mb-2 text-center">NamaHealing</h2>
         <div class="text-base leading-relaxed text-gray-800 space-y-3 text-justify">
           <p>
@@ -183,33 +185,39 @@ require 'config.php';
 
   <!-- Modal: Hướng dẫn đăng ký lớp học -->
   <div id="register-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 hidden">
-    <div class="bg-white rounded-2xl max-w-lg w-full p-6 relative shadow-2xl">
-      <button id="close-register-modal" class="absolute top-3 right-3 w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-xl font-bold">&times;</button>
+    <div class="bg-white rounded-2xl w-[96vw] max-w-lg p-4 sm:p-6 relative shadow-2xl overflow-y-auto max-h-[95vh]">
       
-      <!-- Cảnh báo nổi bật -->
-      <div class="mb-3 text-red-600 text-base font-semibold text-center uppercase tracking-wider">
-        * Lưu ý: Lớp thiền này CHỈ dành cho những người gặp vấn đề tâm lý (trầm cảm, lo âu, stress, mất ngủ...).<br>
-        Người bình thường / không có vấn đề tâm lý không được tham gia.
+      <!-- Cảnh báo nổi bật đầu modal -->
+      <div class="mb-3 px-2 py-2 bg-red-50 border border-red-300 rounded text-red-700 text-base font-semibold text-center tracking-wider leading-snug">
+        <span class="uppercase font-bold block">
+          * LƯU Ý: LỚP THIỀN NÀY CHỈ DÀNH CHO NGƯỜI GẶP CÁC VẤN ĐỀ TÂM LÝ (TRẦM CẢM, LO ÂU, STRESS, MẤT NGỦ...)
+        </span>
+        <span class="block mt-1 text-red-700">
+          NGƯỜI BÌNH THƯỜNG / KHÔNG CÓ VẤN ĐỀ TÂM LÝ <span class="underline font-bold">KHÔNG ĐƯỢC THAM GIA</span>.
+        </span>
       </div>
       
-      <div class="text-lg font-semibold mb-2 text-center">HƯỚNG DẪN ĐĂNG KÝ LỚP THIỀN ONLINE</div>
-      <ol class="list-decimal pl-6 text-base mb-4 space-y-2">
+      <!-- Nút đóng đặt dưới cảnh báo, không che nội dung -->
+      <button id="close-register-modal" class="absolute top-2 right-2 w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-xl font-bold z-10">&times;</button>
+      
+      <div class="text-lg font-semibold mb-2 text-center mt-1">HƯỚNG DẪN ĐĂNG KÝ LỚP THIỀN ONLINE</div>
+      <ol class="list-decimal pl-5 sm:pl-6 text-base mb-4 space-y-2">
         <li>
           <span class="font-medium">Thời gian & Hình thức:</span>  
           Học qua Zoom (bật mic & camera), linh hoạt:
-          <ul class="list-disc pl-6">
+          <ul class="list-disc pl-5 sm:pl-6">
             <li>Sáng: <b>6h00-6h40</b> (T3-T7)</li>
             <li>Tối: <b>20h45-21h30</b> (T2-CN)</li>
           </ul>
         </li>
         <li>
           <span class="font-medium">Học phí:</span>
-          <ul class="list-disc pl-6">
+          <ul class="list-disc pl-5 sm:pl-6">
             <li>Khóa 20 buổi: <span class="text-red-600 font-semibold">8.000.000đ</span></li>
             <li><span class="text-green-600 font-semibold">Ưu đãi chỉ 5.000.000đ</span> cho học viên khó khăn hiện đang sinh sống tại Việt Nam</li>
           </ul>
           Chuyển khoản:
-          <ul class="list-disc pl-6 mt-1">
+          <ul class="list-disc pl-5 sm:pl-6 mt-1">
             <li>Chủ TK: <b>Trần Thị Mai Ly</b></li>
             <li>STK: <b>0371000429939</b> (Vietcombank, CN Hồ Chí Minh)</li>
             <li>Nội dung: <i>dong hoc phi thien _ họ tên _ sdt</i></li>
@@ -221,7 +229,7 @@ require 'config.php';
       </ol>
       <div class="mb-3">
         <span class="block font-medium">Các bước đăng ký:</span>
-        <ul class="list-decimal pl-6 mt-1 space-y-1">
+        <ul class="list-decimal pl-5 sm:pl-6 mt-1 space-y-1">
           <li>Chuyển khoản học phí theo thông tin trên.</li>
           <li>Chụp ảnh màn hình biên lai chuyển khoản.</li>
           <li>
