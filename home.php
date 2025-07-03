@@ -141,9 +141,7 @@ require 'config.php';
         <nav class="main-nav" aria-label="Điều hướng chính">
           <ul>
             <li><a href="home.php">Home</a></li>
-            <!-- Lớp học mở modal giới thiệu -->
             <li><a href="#" id="open-class-modal">Lớp học</a></li>
-            <!-- Đăng ký vẫn mở modal hướng dẫn đăng ký -->
             <li><a href="#" id="open-register-modal">Đăng ký</a></li>
             <li><a href="https://zalo.me/0839269501" target="_blank" rel="noopener">Liên hệ</a></li>
           </ul>
@@ -153,53 +151,54 @@ require 'config.php';
 
   <!-- Modal: Giới thiệu Lớp học & Võ Trọng Nghĩa -->
   <div id="class-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 hidden">
-  <div class="bg-white rounded-2xl max-w-lg w-full p-0 relative shadow-2xl overflow-y-auto max-h-[92vh] flex flex-col items-center">
-    <button id="close-class-modal" class="absolute top-3 right-3 w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-xl font-bold">&times;</button>
-    <!-- Ảnh đại diện lớn ở trên -->
-    <div class="w-full flex items-center justify-center pt-7">
-      <img src="VTN.jpg" alt="Võ Trọng Nghĩa" class="rounded-xl shadow-lg object-cover w-full max-w-[340px] h-auto border border-green-100">
-    </div>
-    <!-- Nội dung giới thiệu dưới ảnh -->
-    <div class="w-full px-7 py-4 flex flex-col justify-center items-center">
-      <h2 class="text-2xl font-semibold text-green-800 mb-2 text-center">NamaHealing</h2>
-      <div class="text-base leading-relaxed text-gray-800 space-y-3 text-justify">
-        <p>
-          <b>Võ Trọng Nghĩa</b> là kiến trúc sư nổi tiếng thế giới về <span class="text-green-700 font-semibold">kiến trúc xanh</span> và <span class="text-yellow-900 font-semibold">kiến trúc tre</span> – các công trình của anh như "Nhà cho cây" (House for Trees), quán cà phê Gió và Nước, trường mẫu giáo Farming Kindergarten,... và nhiều công trình khác đã đạt những giải thưởng lớn, được quốc tế vinh danh. Tuy nhiên, ít ai biết rằng anh từng trải qua giai đoạn trầm cảm ẩn, dẫn đến quyết định tìm đến thiền như một phương pháp chữa lành.
-        </p>
-        <p>
-          Sinh ra tại Lệ Thủy, Quảng Bình — vùng đất từng là tọa độ chiến tranh — tuổi thơ của Võ Trọng Nghĩa gắn liền với nghèo khó và bạo lực học đường. Dù sau này đạt được nhiều thành tựu trong sự nghiệp, anh vẫn phải đối mặt với những tổn thương tâm lý sâu sắc. Việc thực hành thiền đã giúp anh vượt qua khổ đau, tìm lại sự cân bằng và trở thành một "người bình thường" như chính anh chia sẻ.
-        </p>
-        <p>
-          Bên cạnh vai trò kiến trúc sư, Võ Trọng Nghĩa còn từng là giáo sư thỉnh giảng tại Đại học Pennsylvania và Đại học Taipei, giảng dạy về thiền và sức khỏe tâm lý. Anh hiện đang tổ chức các lớp thiền NamaHealing nhằm hỗ trợ những người đang đối mặt với trầm cảm, rối loạn lo âu, mất ngủ và các vấn đề sức khỏe tâm thần khác.
-        </p>
-        <p class="italic text-green-700 font-medium">
-          Hành trình của Võ Trọng Nghĩa là minh chứng cho khả năng chữa lành của thiền định, không chỉ giúp cá nhân anh vượt qua khủng hoảng mà còn lan tỏa năng lượng tích cực đến cộng đồng.
-        </p>
+    <div class="bg-white rounded-2xl max-w-lg w-full p-0 relative shadow-2xl overflow-y-auto max-h-[92vh] flex flex-col items-center">
+      <button id="close-class-modal" class="absolute top-3 right-3 w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-xl font-bold">&times;</button>
+      <div class="w-full flex items-center justify-center pt-7">
+        <img src="VTN.jpg" alt="Võ Trọng Nghĩa" class="rounded-xl shadow-lg object-cover w-full max-w-[340px] h-auto border border-green-100">
       </div>
-      <div class="text-center mt-5">
-        <a href="#" id="to-register" class="inline-block px-6 py-2.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium transition">
-          Tôi muốn đăng ký ngay
-        </a>
+      <div class="w-full px-7 py-4 flex flex-col justify-center items-center">
+        <h2 class="text-2xl font-semibold text-green-800 mb-2 text-center">NamaHealing</h2>
+        <div class="text-base leading-relaxed text-gray-800 space-y-3 text-justify">
+          <p>
+            <b>Võ Trọng Nghĩa</b> là kiến trúc sư nổi tiếng thế giới về <span class="text-green-700 font-semibold">kiến trúc xanh</span> và <span class="text-yellow-900 font-semibold">kiến trúc tre</span> – các công trình của anh như "Nhà cho cây" (House for Trees), quán cà phê Gió và Nước, trường mẫu giáo Farming Kindergarten,... và nhiều công trình khác đã đạt những giải thưởng lớn, được quốc tế vinh danh. Tuy nhiên, ít ai biết rằng anh từng trải qua giai đoạn trầm cảm ẩn, dẫn đến quyết định tìm đến thiền như một phương pháp chữa lành.
+          </p>
+          <p>
+            Sinh ra tại Lệ Thủy, Quảng Bình — vùng đất từng là tọa độ chiến tranh — tuổi thơ của Võ Trọng Nghĩa gắn liền với nghèo khó và bạo lực học đường. Dù sau này đạt được nhiều thành tựu trong sự nghiệp, anh vẫn phải đối mặt với những tổn thương tâm lý sâu sắc. Việc thực hành thiền đã giúp anh vượt qua khổ đau, tìm lại sự cân bằng và trở thành một "người bình thường" như chính anh chia sẻ.
+          </p>
+          <p>
+            Bên cạnh vai trò kiến trúc sư, Võ Trọng Nghĩa còn từng là giáo sư thỉnh giảng tại Đại học Pennsylvania và Đại học Taipei, giảng dạy về thiền và sức khỏe tâm lý. Anh hiện đang tổ chức các lớp thiền NamaHealing nhằm hỗ trợ những người đang đối mặt với trầm cảm, rối loạn lo âu, mất ngủ và các vấn đề sức khỏe tâm thần khác.
+          </p>
+          <p class="italic text-green-700 font-medium">
+            Hành trình của Võ Trọng Nghĩa là minh chứng cho khả năng chữa lành của thiền định, không chỉ giúp cá nhân anh vượt qua khủng hoảng mà còn lan tỏa năng lượng tích cực đến cộng đồng.
+          </p>
+        </div>
+        <div class="text-center mt-5">
+          <a href="#" id="to-register" class="inline-block px-6 py-2.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium transition">
+            Tôi muốn đăng ký ngay
+          </a>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-  <!-- Modal: Hướng dẫn đăng ký lớp học (giữ nguyên) -->
+  <!-- Modal: Hướng dẫn đăng ký lớp học -->
   <div id="register-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 hidden">
     <div class="bg-white rounded-2xl max-w-lg w-full p-6 relative shadow-2xl">
       <button id="close-register-modal" class="absolute top-3 right-3 w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-xl font-bold">&times;</button>
+      
+      <!-- Cảnh báo nổi bật -->
+      <div class="mb-3 text-red-600 text-base font-semibold text-center uppercase tracking-wider">
+        * Lưu ý: Lớp thiền này CHỈ dành cho những người gặp vấn đề tâm lý (trầm cảm, lo âu, stress, mất ngủ...).<br>
+        Người bình thường / không có vấn đề tâm lý không được tham gia.
+      </div>
+      
       <div class="text-lg font-semibold mb-2 text-center">HƯỚNG DẪN ĐĂNG KÝ LỚP THIỀN ONLINE</div>
       <ol class="list-decimal pl-6 text-base mb-4 space-y-2">
-        <li>
-          <span class="font-medium">Đối tượng:</span>  
-          Lớp thiền dành cho người bị trầm cảm, stress, mất ngủ, rối loạn lo âu...
-        </li>
         <li>
           <span class="font-medium">Thời gian & Hình thức:</span>  
           Học qua Zoom (bật mic & camera), linh hoạt:
           <ul class="list-disc pl-6">
-            <li>Sáng: <b>6h00-7h00</b> (T3-T7)</li>
+            <li>Sáng: <b>6h00-6h40</b> (T3-T7)</li>
             <li>Tối: <b>20h45-21h30</b> (T2-CN)</li>
           </ul>
         </li>
@@ -215,6 +214,9 @@ require 'config.php';
             <li>STK: <b>0371000429939</b> (Vietcombank, CN Hồ Chí Minh)</li>
             <li>Nội dung: <i>dong hoc phi thien _ họ tên _ sdt</i></li>
           </ul>
+          <div class="mt-2 text-red-500 text-[15px] font-medium">
+            * Đây là <b>hộ kinh doanh cá thể (Trần Thị Mai Ly)</b>, nộp thuế 7% doanh thu nên <b>không có hóa đơn</b>.
+          </div>
         </li>
       </ol>
       <div class="mb-3">
