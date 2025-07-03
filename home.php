@@ -25,7 +25,7 @@ require 'config.php';
     .hero {
       position: relative;
       min-height: 100vh;
-      width: 100vw;
+      width: 100%; /* Sửa lại dòng này */
       background: url('https://images.unsplash.com/photo-1536514498073-50e69d39c6cf?q=80&w=2000&auto=format&fit=crop') center/cover no-repeat;
       display: flex;
       align-items: flex-start;
