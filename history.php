@@ -40,7 +40,7 @@ include 'header.php';
     <p class="text-center text-gray-500 mb-4"><?= htmlspecialchars($user['email']) ?></p>
 
     <div class="mb-5 text-center">
-      <a class="inline-block rounded-lg border border-mint text-mint-text px-4 py-1.5 text-sm font-medium hover:bg-mint hover:text-white transition"
+      <a class="inline-block rounded-lg border border-mint text-mint-text px-4 py-2 min-h-[40px] text-base font-medium hover:bg-mint hover:text-white transition"
          href="admin.php">&larr; Quay lại danh sách</a>
     </div>
 

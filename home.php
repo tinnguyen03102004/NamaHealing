@@ -30,7 +30,7 @@ require 'config.php';
       width: 100%;
       background: url('https://images.unsplash.com/photo-1536514498073-50e69d39c6cf?q=80&w=2000&auto=format&fit=crop') center/cover no-repeat;
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       justify-content: center;
     }
     .hero::before{
@@ -50,7 +50,7 @@ require 'config.php';
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding-top: 18vh;
+      padding-top: 12vh;
     }
     .subtitle{
       font-family:'Montserrat',sans-serif;
@@ -95,13 +95,14 @@ require 'config.php';
     @media (max-width:800px){
       .site-title{font-size:2.6rem;}
       .main-nav ul{gap:1.25rem;}
-      .title-wrapper{padding-top:6vh;}
+      .title-wrapper{padding-top:8vh;}
     }
     @media (max-width:550px){
       .site-title{font-size:1.9rem;}
-      .subtitle{font-size:0.7rem;}
-      .title-wrapper{padding-top:10vh;}
-      .main-nav ul{flex-direction:column; gap:0.6rem;}
+      .subtitle{font-size:0.85rem; letter-spacing:.15em;}
+      .title-wrapper{padding-top:14vh;}
+      .main-nav ul{flex-direction:column; gap:0.75rem;}
+      .main-nav a{display:block; padding:0.5rem 1rem;}
     }
     /* Header */
     .header-bar {
@@ -129,7 +130,7 @@ require 'config.php';
             </svg>
             <span class="logo-text">NamaHealing</span>
         </a>
-        <a href="login.php" class="text-sm px-4 py-1.5 rounded-full border border-white/40 hover:bg-white hover:text-black transition">
+        <a href="login.php" class="text-base px-4 py-2 min-h-[40px] rounded-full border border-white/40 hover:bg-white hover:text-black transition flex items-center justify-center">
             Đăng nhập
         </a>
     </div>
@@ -138,7 +139,7 @@ require 'config.php';
   <!-- ============ HERO ============ -->
   <main class="hero">
     <div class="title-wrapper">
-        <p class="subtitle tracking-[.35em]">VO TRONG NGHIA</p>
+        <p class="subtitle">VO TRONG NGHIA</p>
         <h1 class="site-title font-semibold">NAMA HEALING</h1>
         <nav class="main-nav" aria-label="Điều hướng chính">
           <ul>
@@ -158,9 +159,9 @@ require 'config.php';
       <div class="w-full flex items-center justify-center pt-7">
         <img src="VTN.jpg" alt="Võ Trọng Nghĩa" class="rounded-xl shadow-lg object-cover w-full max-w-[340px] h-auto border border-green-100">
       </div>
-      <div class="w-full px-2 sm:px-7 py-4 flex flex-col justify-center items-center">
-        <h2 class="text-2xl font-semibold text-green-800 mb-2 text-center">NamaHealing</h2>
-        <div class="text-base leading-relaxed text-gray-800 space-y-3 text-justify">
+        <div class="w-full px-4 sm:px-7 py-4 flex flex-col justify-center items-center">
+          <h2 class="text-2xl font-semibold text-green-800 mb-2 text-center">NamaHealing</h2>
+        <div class="text-base leading-relaxed text-gray-800 space-y-3 text-left sm:text-justify">
           <p>
             <b>Võ Trọng Nghĩa</b> là kiến trúc sư nổi tiếng thế giới về <span class="text-green-700 font-semibold">kiến trúc xanh</span> và <span class="text-yellow-900 font-semibold">kiến trúc tre</span> – các công trình của anh như "Nhà cho cây" (House for Trees), quán cà phê Gió và Nước, trường mẫu giáo Farming Kindergarten,... và nhiều công trình khác đã đạt những giải thưởng lớn, được quốc tế vinh danh. Tuy nhiên, ít ai biết rằng anh từng trải qua giai đoạn trầm cảm ẩn, dẫn đến quyết định tìm đến thiền như một phương pháp chữa lành.
           </p>
@@ -175,7 +176,7 @@ require 'config.php';
           </p>
         </div>
         <div class="text-center mt-5">
-          <a href="#" id="to-register" class="inline-block px-6 py-2.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium transition">
+          <a href="#" id="to-register" class="inline-block px-6 py-2.5 min-h-[40px] rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium transition flex items-center justify-center">
             Tôi muốn đăng ký ngay
           </a>
         </div>
@@ -185,12 +186,12 @@ require 'config.php';
 
   <!-- Modal: Hướng dẫn đăng ký lớp học -->
   <div id="register-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 hidden">
-    <div class="bg-white rounded-2xl w-[96vw] max-w-lg p-4 sm:p-6 relative shadow-2xl overflow-y-auto max-h-[95vh]">
+    <div class="bg-white rounded-2xl w-[96vw] max-w-lg p-4 sm:p-6 relative shadow-2xl overflow-y-auto max-h-[95vh] leading-relaxed">
       
       <!-- Cảnh báo nổi bật đầu modal -->
       <div class="mb-3 px-2 py-2 bg-red-50 border border-red-300 rounded text-red-700 text-base font-semibold text-center tracking-wider leading-snug">
         <span class="uppercase font-bold block">
-          * LƯU Ý: LỚP THIỀN NÀY CHỈ DÀNH CHO NGƯỜI GẶP CÁC VẤN ĐỀ TÂM LÝ (TRẦM CẢM, LO ÂU, STRESS, MẤT NGỦ...)
+          ⚠️ LƯU Ý: LỚP THIỀN NÀY CHỈ DÀNH CHO NGƯỜI GẶP CÁC VẤN ĐỀ TÂM LÝ (TRẦM CẢM, LO ÂU, STRESS, MẤT NGỦ...)
         </span>
         <span class="block mt-1 text-red-700">
           NGƯỜI BÌNH THƯỜNG / KHÔNG CÓ VẤN ĐỀ TÂM LÝ <span class="underline font-bold">KHÔNG ĐƯỢC THAM GIA</span>.
@@ -198,14 +199,14 @@ require 'config.php';
       </div>
       
       <!-- Nút đóng đặt dưới cảnh báo, không che nội dung -->
-      <button id="close-register-modal" class="absolute top-2 right-2 w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-xl font-bold z-10">&times;</button>
+      <button id="close-register-modal" class="absolute top-2 right-2 w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-xl font-bold z-10">&times;</button>
       
       <div class="text-lg font-semibold mb-2 text-center mt-1">HƯỚNG DẪN ĐĂNG KÝ LỚP THIỀN ONLINE</div>
-      <ol class="list-decimal pl-5 sm:pl-6 text-base mb-4 space-y-2">
+      <ol class="list-decimal pl-5 sm:pl-6 text-base mb-4 space-y-3">
         <li>
           <span class="font-medium">Thời gian & Hình thức:</span>  
           Học qua Zoom (bật mic & camera), linh hoạt:
-          <ul class="list-disc pl-5 sm:pl-6">
+            <ul class="list-disc pl-5 sm:pl-6 space-y-1">
             <li>Sáng: <b>6h00-6h40</b> (T3-T7)</li>
             <li>Tối: <b>20h45-21h30</b> (T2-CN)</li>
           </ul>
@@ -217,7 +218,7 @@ require 'config.php';
             <li><span class="text-green-600 font-semibold">Ưu đãi chỉ 5.000.000đ</span> cho học viên khó khăn hiện đang sinh sống tại Việt Nam</li>
           </ul>
           Chuyển khoản:
-          <ul class="list-disc pl-5 sm:pl-6 mt-1">
+            <ul class="list-disc pl-5 sm:pl-6 mt-1 space-y-2">
             <li>Chủ TK: <b>Trần Thị Mai Ly</b></li>
             <li>STK: <b>0371000429939</b> (Vietcombank, CN Hồ Chí Minh)</li>
             <li>Nội dung: <i>dong hoc phi thien _ họ tên _ sdt</i></li>
@@ -229,7 +230,7 @@ require 'config.php';
       </ol>
       <div class="mb-3">
         <span class="block font-medium">Các bước đăng ký:</span>
-        <ul class="list-decimal pl-5 sm:pl-6 mt-1 space-y-1">
+        <ul class="list-decimal pl-5 sm:pl-6 mt-1 space-y-3">
           <li>Chuyển khoản học phí theo thông tin trên.</li>
           <li>Chụp ảnh màn hình biên lai chuyển khoản.</li>
           <li>
