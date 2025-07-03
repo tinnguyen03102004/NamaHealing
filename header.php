@@ -43,13 +43,13 @@ if (session_status() === PHP_SESSION_NONE) session_start();
         <ul class="flex items-center gap-6 text-base">
           <?php if (!isset($_SESSION['uid'])): ?>
             <li>
-              <a href="login.php" class="px-4 py-1.5 rounded-full border border-[#9dcfc3] hover:bg-[#9dcfc3] hover:text-white transition">
+              <a href="login.php" class="px-4 py-2 min-h-[40px] text-base rounded-full border border-[#9dcfc3] hover:bg-[#9dcfc3] hover:text-white transition flex items-center justify-center">
                 Đăng nhập
               </a>
             </li>
           <?php else: ?>
             <li>
-              <a href="logout.php" class="px-4 py-1.5 rounded-full border border-[#9dcfc3] hover:bg-[#9dcfc3] hover:text-white transition">
+              <a href="logout.php" class="px-4 py-2 min-h-[40px] text-base rounded-full border border-[#9dcfc3] hover:bg-[#9dcfc3] hover:text-white transition flex items-center justify-center">
                 Đăng xuất
               </a>
             </li>
