@@ -1,7 +1,10 @@
 <?php
-session_start();
-
-define('ADMIN_PASS', getenv('ADMIN_PASS') ?: 'secret');
+define('REQUIRE_LOGIN', true);
+require 'config.php';
+if (!isset($_SESSION['uid']) || $_SESSION['role'] !== 'admin') {
+    header('Location: login.php');
+    exit;
+}
 
 $dataDir = __DIR__ . '/data';
 if (!is_dir($dataDir)) {
@@ -15,41 +18,6 @@ if (!file_exists($videosFile)) file_put_contents($videosFile, '[]');
 
 $success = '';
 $error = '';
-
-if (!isset($_SESSION['is_admin'])) {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $pass = $_POST['password'] ?? '';
-        if ($pass === ADMIN_PASS) {
-            $_SESSION['is_admin'] = true;
-            header('Location: admin_panel.php');
-            exit;
-        } else {
-            $error = 'Sai mật khẩu';
-        }
-    }
-    ?>
-    <!DOCTYPE html>
-    <html lang="vi">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Admin Login</title>
-      <script src="https://cdn.tailwindcss.com"></script>
-    </head>
-    <body class="bg-gray-50 flex items-center justify-center min-h-screen">
-      <form method="post" class="bg-white p-6 rounded shadow w-80">
-        <h1 class="text-xl font-semibold mb-4">Admin Login</h1>
-        <?php if ($error): ?>
-          <p class="text-red-600 mb-2"><?= htmlspecialchars($error) ?></p>
-        <?php endif; ?>
-        <input type="password" name="password" class="w-full border rounded px-3 py-2 mb-4" placeholder="Password" required>
-        <button type="submit" class="w-full bg-teal-600 text-white py-2 rounded">Login</button>
-      </form>
-    </body>
-    </html>
-    <?php
-    exit;
-}
 
 $articles = json_decode(file_get_contents($articlesFile), true);
 $videos = json_decode(file_get_contents($videosFile), true);
@@ -112,6 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <?php include 'header.php'; ?>
 <main class="max-w-3xl mx-auto px-4 py-6">
   <h1 class="text-2xl font-semibold mb-6">Admin Panel</h1>
+  <a class="inline-block rounded-lg border border-mint text-mint-text px-4 py-2 mb-6 text-sm font-medium hover:bg-mint hover:text-white transition" href="admin.php">&larr; Quay lại quản lý học viên</a>
   <?php if ($success): ?>
     <p class="text-green-600 mb-4"><?= htmlspecialchars($success) ?></p>
   <?php elseif ($error): ?>
