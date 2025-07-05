@@ -44,6 +44,8 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="flex flex-col sm:flex-row gap-2 mt-3 md:mt-0 w-full sm:w-auto">
       <a class="rounded-lg bg-mint text-mint-text font-semibold px-4 py-2 text-sm shadow hover:bg-mint-dark hover:text-white transition w-full sm:w-auto text-center"
          href="register.php">+ Thêm học viên mới</a>
+      <a class="rounded-lg bg-mint text-mint-text font-semibold px-4 py-2 text-sm shadow hover:bg-mint-dark hover:text-white transition w-full sm:w-auto text-center"
+         href="admin_panel.php">Quản lý bài &amp; video</a>
       <a class="rounded-lg border border-mint text-mint-text font-medium px-4 py-2 text-sm hover:bg-mint hover:text-white transition w-full sm:w-auto text-center"
          href="admin.php">Bỏ lọc</a>
     </div>
