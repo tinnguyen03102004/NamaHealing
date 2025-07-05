@@ -146,6 +146,8 @@ require 'config.php';
             <li><a href="home.php">Home</a></li>
             <li><a href="#" id="open-class-modal">Lớp học</a></li>
             <li><a href="#" id="open-register-modal">Đăng ký</a></li>
+            <li><a href="articles.php">Bài viết</a></li>
+            <li><a href="videos.php">Video</a></li>
             <li><a href="https://zalo.me/0839269501" target="_blank" rel="noopener">Liên hệ</a></li>
           </ul>
         </nav>
