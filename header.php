@@ -6,7 +6,10 @@ if (session_status() === PHP_SESSION_NONE) session_start();
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NamaHealing</title>
+  <title><?= isset($pageTitle) ? htmlspecialchars($pageTitle) : 'NamaHealing' ?></title>
+  <?php if (!empty($metaDescription)): ?>
+    <meta name="description" content="<?= htmlspecialchars($metaDescription) ?>">
+  <?php endif; ?>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Custom style -->
@@ -41,6 +44,8 @@ if (session_status() === PHP_SESSION_NONE) session_start();
       </a>
       <nav>
         <ul class="flex items-center gap-6 text-base">
+          <li><a href="articles.php" class="hover:text-[#9dcfc3]">Bài viết</a></li>
+          <li><a href="videos.php" class="hover:text-[#9dcfc3]">Video</a></li>
           <?php if (!isset($_SESSION['uid'])): ?>
             <li>
               <a href="login.php" class="px-4 py-2 min-h-[40px] text-base rounded-full border border-[#9dcfc3] hover:bg-[#9dcfc3] hover:text-white transition flex items-center justify-center">
