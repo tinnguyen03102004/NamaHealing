@@ -74,6 +74,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $success = 'Đã thêm video';
             }
         }
+    } elseif ($action === 'delete_article') {
+        $idx = intval($_POST['index'] ?? -1);
+        if (isset($articles[$idx])) {
+            array_splice($articles, $idx, 1);
+            file_put_contents($articlesFile, json_encode($articles, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+            $success = 'Đã xóa bài viết';
+        }
+    } elseif ($action === 'delete_video') {
+        $idx = intval($_POST['index'] ?? -1);
+        if (isset($videos[$idx])) {
+            array_splice($videos, $idx, 1);
+            file_put_contents($videosFile, json_encode($videos, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+            $success = 'Đã xóa video';
+        }
     }
 }
 ?>
@@ -99,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </form>
   </section>
 
-  <section>
+  <section class="mb-8">
     <h2 class="text-xl font-semibold mb-4">Thêm video</h2>
     <form method="post" class="space-y-4">
       <input type="hidden" name="action" value="add_video">
@@ -107,6 +121,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <input type="url" name="youtube_url" class="w-full border rounded px-3 py-2" placeholder="URL YouTube" required>
       <button type="submit" class="bg-teal-600 text-white px-4 py-2 rounded">Thêm video</button>
     </form>
+  </section>
+
+  <section class="mb-8">
+    <h2 class="text-xl font-semibold mb-2">Danh sách bài viết</h2>
+    <?php if (empty($articles)): ?>
+      <p class="text-gray-500">Chưa có bài viết nào.</p>
+    <?php else: ?>
+      <ul class="divide-y">
+        <?php foreach ($articles as $i => $a): ?>
+          <li class="py-2 flex justify-between items-center">
+            <span><?= htmlspecialchars($a['title']) ?></span>
+            <form method="post" onsubmit="return confirm('Xóa bài viết này?');">
+              <input type="hidden" name="action" value="delete_article">
+              <input type="hidden" name="index" value="<?= $i ?>">
+              <button class="text-red-600 hover:underline">Xóa</button>
+            </form>
+          </li>
+        <?php endforeach; ?>
+      </ul>
+    <?php endif; ?>
+  </section>
+
+  <section>
+    <h2 class="text-xl font-semibold mb-2">Danh sách video</h2>
+    <?php if (empty($videos)): ?>
+      <p class="text-gray-500">Chưa có video nào.</p>
+    <?php else: ?>
+      <ul class="divide-y">
+        <?php foreach ($videos as $i => $v): ?>
+          <li class="py-2 flex justify-between items-center">
+            <span><?= htmlspecialchars($v['title']) ?></span>
+            <form method="post" onsubmit="return confirm('Xóa video này?');">
+              <input type="hidden" name="action" value="delete_video">
+              <input type="hidden" name="index" value="<?= $i ?>">
+              <button class="text-red-600 hover:underline">Xóa</button>
+            </form>
+          </li>
+        <?php endforeach; ?>
+      </ul>
+    <?php endif; ?>
   </section>
 </main>
 <?php include 'footer.php'; ?>
