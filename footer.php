@@ -1,4 +1,8 @@
 <footer class="site-footer text-center w-full">
+  <nav class="mb-2">
+    <a href="articles.php" class="mx-2 hover:underline">Bài viết</a>
+    <a href="videos.php" class="mx-2 hover:underline">Video</a>
+  </nav>
   © <?= date('Y') ?> NamaHealing. Mọi thắc mắc liên hệ admin.
 </footer>
 
