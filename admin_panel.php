@@ -31,6 +31,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $source = trim($_POST['source'] ?? '');
         $description = trim($_POST['description'] ?? '');
         $link = trim($_POST['link'] ?? '');
+        $image = trim($_POST['image'] ?? '');
+        if ($link && $image === '') {
+            require_once __DIR__ . '/metadata.php';
+            $meta = get_link_metadata($link);
+            if (!empty($meta['image'])) {
+                $image = $meta['image'];
+            }
+            if ($title === '' && !empty($meta['title'])) {
+                $title = $meta['title'];
+            }
+            if ($description === '' && !empty($meta['description'])) {
+                $description = $meta['description'];
+            }
+        }
         if ($title === '' || $source === '') {
             $error = 'Thiếu thông tin bắt buộc';
         } else {
@@ -45,7 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'title' => $title,
                     'source' => $source,
                     'description' => $description,
-                    'link' => $link
+                    'link' => $link,
+                    'image' => $image
                 ]);
                 file_put_contents($articlesFile, json_encode($articles, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
                 $success = 'Đã thêm bài viết';
@@ -108,7 +123,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <input type="text" name="title" class="w-full border rounded px-3 py-2" placeholder="Tiêu đề" required>
       <input type="text" name="source" class="w-full border rounded px-3 py-2" placeholder="Nguồn" required>
       <textarea name="description" class="w-full border rounded px-3 py-2" placeholder="Mô tả"></textarea>
-      <input type="url" name="link" class="w-full border rounded px-3 py-2" placeholder="Link bài viết (tuỳ chọn)">
+      <input type="url" name="link" id="article-link" class="w-full border rounded px-3 py-2" placeholder="Link bài viết (tuỳ chọn)">
+      <div id="link-preview" class="border rounded p-3 hidden"></div>
       <button type="submit" class="bg-teal-600 text-white px-4 py-2 rounded">Thêm bài viết</button>
     </form>
   </section>
@@ -163,4 +179,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php endif; ?>
   </section>
 </main>
+<script type="module">
+import {renderLinkPreview} from './linkPreview.js';
+const linkInput = document.getElementById('article-link');
+const preview = document.getElementById('link-preview');
+linkInput.addEventListener('change', () => {
+  if (linkInput.value) {
+    renderLinkPreview(preview, linkInput.value);
+  } else {
+    preview.classList.add('hidden');
+    preview.innerHTML = '';
+  }
+});
+</script>
 <?php include 'footer.php'; ?>
