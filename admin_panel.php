@@ -24,7 +24,8 @@ function getMetadata(string $url): array {
     $xpath = new DOMXPath($doc);
     $meta = function(string $name) use ($xpath): string {
         $nodes = $xpath->query("//meta[@property='$name' or @name='$name']");
-        return $nodes->length ? trim($nodes->item(0)->getAttribute('content')) : '';
+        $node = $nodes->item(0);
+        return $node instanceof DOMElement ? trim($node->getAttribute('content')) : '';
     };
     $title = $meta('og:title');
     if (!$title && $doc->getElementsByTagName('title')->length) {
