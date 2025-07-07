@@ -5,6 +5,42 @@ if (file_exists(__DIR__ . '/vendor/autoload.php')) {
     require __DIR__ . '/vendor/autoload.php';
 }
 require_once __DIR__ . '/helpers/ThumbnailFetcher.php';
+
+function getMetadata(string $url): array {
+    $context = stream_context_create([
+        'http' => [
+            'follow_location' => true,
+            'timeout' => 5,
+            'user_agent' => 'Mozilla/5.0'
+        ]
+    ]);
+    $html = @file_get_contents($url, false, $context);
+    if ($html === false) {
+        return [];
+    }
+    libxml_use_internal_errors(true);
+    $doc = new DOMDocument();
+    $doc->loadHTML($html);
+    $xpath = new DOMXPath($doc);
+    $meta = function(string $name) use ($xpath): string {
+        $nodes = $xpath->query("//meta[@property='$name' or @name='$name']");
+        return $nodes->length ? trim($nodes->item(0)->getAttribute('content')) : '';
+    };
+    $title = $meta('og:title');
+    if (!$title && $doc->getElementsByTagName('title')->length) {
+        $title = trim($doc->getElementsByTagName('title')->item(0)->textContent);
+    }
+    $description = $meta('og:description');
+    if (!$description) {
+        $description = $meta('description');
+    }
+    $image = $meta('og:image');
+    return [
+        'title' => $title,
+        'description' => $description,
+        'image' => $image,
+    ];
+}
 if (!isset($_SESSION['uid']) || $_SESSION['role'] !== 'admin') {
     header('Location: login.php');
     exit;
@@ -36,10 +72,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $description = trim($_POST['description'] ?? '');
         $link = trim($_POST['link'] ?? '');
         $image = trim($_POST['image'] ?? '');
+
+        $meta = [];
+        if ($link !== '') {
+            $meta = getMetadata($link);
+        }
+
+        if ($title === '' && isset($meta['title'])) {
+            $title = $meta['title'];
+        }
+        if ($description === '' && isset($meta['description'])) {
+            $description = $meta['description'];
+        }
+
         if ($image === '' && $link !== '') {
-            $fetched = ThumbnailFetcher::get($link);
-            if ($fetched) {
-                $image = $fetched;
+            if (!empty($meta['image'])) {
+                $image = $meta['image'];
+            } else {
+                $fetched = ThumbnailFetcher::get($link);
+                if ($fetched) {
+                    $image = $fetched;
+                } else {
+                    $image = '';
+                }
             }
         }
         if ($title === '' || $source === '') {
