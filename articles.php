@@ -21,9 +21,9 @@ if (file_exists($file)) {
       <p class="text-sm text-gray-500 mb-2"><?= htmlspecialchars($article['source'] ?? '') ?></p>
       <?php if (!empty($article['link'])): ?>
         <a href="<?= htmlspecialchars($article['link']) ?>" target="_blank" rel="noopener" class="block rounded-lg overflow-hidden border hover:shadow transition">
-          <?php if (!empty($article['image'])): ?>
-            <img src="<?= htmlspecialchars($article['image']) ?>" alt="<?= htmlspecialchars($article['title']) ?>" class="w-full h-48 object-cover">
-          <?php endif; ?>
+            <?php if (!empty($article['image'])): ?>
+              <img src="<?= htmlspecialchars($article['image']) ?>" alt="<?= htmlspecialchars($article['title']) ?>" class="w-full aspect-video object-cover">
+            <?php endif; ?>
           <div class="p-3">
             <?php if (!empty($article['description'])): ?>
               <p class="text-sm mb-2">
