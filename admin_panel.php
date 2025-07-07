@@ -1,6 +1,10 @@
 <?php
 define('REQUIRE_LOGIN', true);
 require 'config.php';
+if (file_exists(__DIR__ . '/vendor/autoload.php')) {
+    require __DIR__ . '/vendor/autoload.php';
+}
+use App\Helpers\ThumbnailFetcher;
 if (!isset($_SESSION['uid']) || $_SESSION['role'] !== 'admin') {
     header('Location: login.php');
     exit;
@@ -32,6 +36,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $description = trim($_POST['description'] ?? '');
         $link = trim($_POST['link'] ?? '');
         $image = trim($_POST['image'] ?? '');
+        if ($image === '' && $link !== '') {
+            $fetched = ThumbnailFetcher::get($link);
+            if ($fetched) {
+                $image = $fetched;
+            }
+        }
         if ($title === '' || $source === '') {
             $error = 'Thiếu thông tin bắt buộc';
         } else {
