@@ -3,7 +3,7 @@
     "description": "?ng d?ng qu?n ly & chia s? thi?n NamaHealing",
     "autoload": {
         "psr-4": {
-            "Namahealing\\App\\": "src/"
+            "Namahealing\\App\\": "helpers/"
         }
     },
     "authors": [
