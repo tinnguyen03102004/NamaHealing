@@ -5,78 +5,7 @@ if (file_exists(__DIR__ . '/vendor/autoload.php')) {
     require __DIR__ . '/vendor/autoload.php';
 }
 require_once __DIR__ . '/helpers/ThumbnailFetcher.php';
-
-function getMetadata(string $url): array {
-    $context = stream_context_create([
-        'http' => [
-            'follow_location' => true,
-            'timeout' => 5,
-            'user_agent' => 'Mozilla/5.0'
-        ]
-    ]);
-    $html = @file_get_contents($url, false, $context);
-    if ($html === false) {
-        return [];
-    }
-
-    libxml_use_internal_errors(true);
-    $doc = new DOMDocument();
-    $doc->loadHTML($html);
-    $xpath = new DOMXPath($doc);
-    $meta = function(string $name) use ($xpath): string {
-        $nodes = $xpath->query("//meta[@property='$name' or @name='$name']");
-        $node = $nodes->item(0);
-        return $node instanceof DOMElement ? trim($node->getAttribute('content')) : '';
-    };
-
-    $title = $meta('og:title');
-    if (!$title && $doc->getElementsByTagName('title')->length) {
-        $title = trim($doc->getElementsByTagName('title')->item(0)->textContent);
-    }
-
-    $description = $meta('og:description');
-    if (!$description) {
-        $description = $meta('description');
-    }
-
-    // try a variety of meta tags for the preview image
-    $imageCandidates = [
-        'og:image:secure_url',
-        'og:image:url',
-        'og:image',
-        'twitter:image',
-        'twitter:image:src',
-        'image',
-    ];
-    $image = '';
-    foreach ($imageCandidates as $c) {
-        $image = $meta($c);
-        if ($image !== '') {
-            break;
-        }
-    }
-
-    if ($image === '') {
-        $nodes = $xpath->query("//link[@rel='image_src']");
-        if ($nodes->length) {
-            $image = trim($nodes->item(0)->getAttribute('href'));
-        }
-    }
-
-    if ($image === '') {
-        $nodes = $xpath->query("//img[@data-src]/@data-src | //img[@src]/@src");
-        $node = $nodes->item(0);
-        if ($node) {
-            $image = trim($node->nodeValue);
-        }
-    }
-
-    return [
-        'title' => $title,
-        'description' => $description,
-        'image' => $image,
-    ];
-}
+require_once __DIR__ . '/helpers/MetaFetcher.php';
 if (!isset($_SESSION['uid']) || $_SESSION['role'] !== 'admin') {
     header('Location: login.php');
     exit;
@@ -106,28 +35,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $title = trim($_POST['title'] ?? '');
         $link = trim($_POST['link'] ?? '');
         $image = trim($_POST['image'] ?? '');
+        $descInput = trim($_POST['description'] ?? '');
 
         $meta = [];
         if ($link !== '') {
-            $meta = getMetadata($link);
+            $meta = MetaFetcher::fetchMetaFromUrl($link);
         }
 
         if ($title === '' && isset($meta['title'])) {
             $title = $meta['title'];
         }
-        $description = $meta['description'] ?? '';
+        $description = $descInput !== '' ? $descInput : ($meta['description'] ?? '');
 
-        if ($image === '' && $link !== '') {
-            if (!empty($meta['image'])) {
-                $image = $meta['image'];
-            } else {
-                $fetched = ThumbnailFetcher::get($link);
-                if ($fetched) {
-                    $image = $fetched;
-                } else {
-                    $image = '';
-                }
+        if ($image === '' && !empty($meta['image'])) {
+            $image = $meta['image'];
+        }
+        if ($image === '' && !empty($_FILES['thumbnail']['tmp_name'])) {
+            $uploadDir = __DIR__ . '/uploads';
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
             }
+            $ext = pathinfo($_FILES['thumbnail']['name'], PATHINFO_EXTENSION);
+            $fname = uniqid('thumb_') . '.' . strtolower($ext);
+            if (move_uploaded_file($_FILES['thumbnail']['tmp_name'], "$uploadDir/$fname")) {
+                $image = 'uploads/' . $fname;
+            }
+        }
+        if ($image === '' && $link !== '') {
+            $image = ThumbnailFetcher::get($link);
         }
         if ($title === '' || $link === '') {
             $error = 'Thiếu tiêu đề hoặc link';
@@ -202,12 +137,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   <section class="mb-8">
     <h2 class="text-xl font-semibold mb-4">Thêm bài viết</h2>
-    <form method="post" class="space-y-4">
+    <form method="post" enctype="multipart/form-data" id="article-form" class="space-y-4">
       <input type="hidden" name="action" value="add_article">
-      <input type="text" name="title" class="w-full border rounded px-3 py-2" placeholder="Tiêu đề" required>
-      <input type="url" name="link" class="w-full border rounded px-3 py-2" placeholder="Link bài viết" required>
-      <input type="url" name="image" class="w-full border rounded px-3 py-2" placeholder="Ảnh bìa (tuỳ chọn)">
-      <button type="submit" class="bg-teal-600 text-white px-4 py-2 rounded">Thêm bài viết</button>
+      <input type="text" id="article-title" name="title" class="w-full border rounded px-3 py-2" placeholder="Tiêu đề" required>
+      <input type="url" id="article-link" name="link" class="w-full border rounded px-3 py-2" placeholder="Link bài viết" required>
+      <textarea id="article-desc" name="description" class="w-full border rounded px-3 py-2" placeholder="Mô tả"></textarea>
+      <input type="url" id="article-image" name="image" class="w-full border rounded px-3 py-2" placeholder="Ảnh bìa (tuỳ chọn)">
+      <input type="file" id="thumbnail-upload" name="thumbnail" class="hidden">
+      <p id="thumb-msg" class="text-red-600 text-sm hidden">Không tìm thấy ảnh, vui lòng tải lên.</p>
+      <div class="flex gap-2">
+        <button type="button" id="fetch-meta" class="border px-4 py-2 rounded">Lấy dữ liệu</button>
+        <button type="submit" class="bg-teal-600 text-white px-4 py-2 rounded">Thêm bài viết</button>
+      </div>
     </form>
   </section>
 
@@ -260,5 +201,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </ul>
     <?php endif; ?>
   </section>
+  <script>
+    const linkInput = document.getElementById('article-link');
+    const titleInput = document.getElementById('article-title');
+    const descInput = document.getElementById('article-desc');
+    const imgInput = document.getElementById('article-image');
+    const fileInput = document.getElementById('thumbnail-upload');
+    const msg = document.getElementById('thumb-msg');
+    document.getElementById('fetch-meta').onclick = async () => {
+      const url = linkInput.value.trim();
+      if (!url) return;
+      const resp = await fetch('fetch_meta.php?url=' + encodeURIComponent(url));
+      if (!resp.ok) return;
+      const data = await resp.json();
+      if (!titleInput.value) titleInput.value = data.title || '';
+      if (!descInput.value) descInput.value = data.description || '';
+      if (data.image) {
+        imgInput.value = data.image;
+        fileInput.classList.add('hidden');
+        msg.classList.add('hidden');
+      } else {
+        fileInput.classList.remove('hidden');
+        msg.classList.remove('hidden');
+      }
+    };
+    linkInput.addEventListener('change', () => document.getElementById('fetch-meta').click());
+  </script>
 </main>
 <?php include 'footer.php'; ?>
