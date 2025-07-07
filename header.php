@@ -11,6 +11,7 @@ if (session_status() === PHP_SESSION_NONE) session_start();
     <meta name="description" content="<?= htmlspecialchars($metaDescription) ?>">
   <?php endif; ?>
   <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="style.css">
   <!-- Google Fonts: Cormorant Garamond (logo) + Montserrat (content) -->
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
