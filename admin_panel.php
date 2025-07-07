@@ -18,6 +18,7 @@ function getMetadata(string $url): array {
     if ($html === false) {
         return [];
     }
+
     libxml_use_internal_errors(true);
     $doc = new DOMDocument();
     $doc->loadHTML($html);
@@ -27,15 +28,49 @@ function getMetadata(string $url): array {
         $node = $nodes->item(0);
         return $node instanceof DOMElement ? trim($node->getAttribute('content')) : '';
     };
+
     $title = $meta('og:title');
     if (!$title && $doc->getElementsByTagName('title')->length) {
         $title = trim($doc->getElementsByTagName('title')->item(0)->textContent);
     }
+
     $description = $meta('og:description');
     if (!$description) {
         $description = $meta('description');
     }
-    $image = $meta('og:image');
+
+    // try a variety of meta tags for the preview image
+    $imageCandidates = [
+        'og:image:secure_url',
+        'og:image:url',
+        'og:image',
+        'twitter:image',
+        'twitter:image:src',
+        'image',
+    ];
+    $image = '';
+    foreach ($imageCandidates as $c) {
+        $image = $meta($c);
+        if ($image !== '') {
+            break;
+        }
+    }
+
+    if ($image === '') {
+        $nodes = $xpath->query("//link[@rel='image_src']");
+        if ($nodes->length) {
+            $image = trim($nodes->item(0)->getAttribute('href'));
+        }
+    }
+
+    if ($image === '') {
+        $nodes = $xpath->query("//img[@data-src]/@data-src | //img[@src]/@src");
+        $node = $nodes->item(0);
+        if ($node) {
+            $image = trim($node->nodeValue);
+        }
+    }
+
     return [
         'title' => $title,
         'description' => $description,
