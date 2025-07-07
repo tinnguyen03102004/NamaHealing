@@ -68,8 +68,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
     if ($action === 'add_article') {
         $title = trim($_POST['title'] ?? '');
-        $source = trim($_POST['source'] ?? '');
-        $description = trim($_POST['description'] ?? '');
         $link = trim($_POST['link'] ?? '');
         $image = trim($_POST['image'] ?? '');
 
@@ -81,9 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($title === '' && isset($meta['title'])) {
             $title = $meta['title'];
         }
-        if ($description === '' && isset($meta['description'])) {
-            $description = $meta['description'];
-        }
+        $description = $meta['description'] ?? '';
 
         if ($image === '' && $link !== '') {
             if (!empty($meta['image'])) {
@@ -97,8 +93,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
         }
-        if ($title === '' || $source === '') {
-            $error = 'Thiếu thông tin bắt buộc';
+        if ($title === '' || $link === '') {
+            $error = 'Thiếu tiêu đề hoặc link';
         } else {
             foreach ($articles as $a) {
                 if ($a['title'] === $title || (!empty($link) && !empty($a['link']) && $a['link'] === $link)) {
@@ -107,13 +103,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
             if (!$error) {
-                array_unshift($articles, [
+                $new = [
                     'title' => $title,
-                    'source' => $source,
-                    'description' => $description,
                     'link' => $link,
-                    'image' => $image
-                ]);
+                ];
+                if ($description !== '') $new['description'] = $description;
+                if ($image !== '') $new['image'] = $image;
+                array_unshift($articles, $new);
                 file_put_contents($articlesFile, json_encode($articles, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
                 $success = 'Đã thêm bài viết';
             }
@@ -173,9 +169,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <form method="post" class="space-y-4">
       <input type="hidden" name="action" value="add_article">
       <input type="text" name="title" class="w-full border rounded px-3 py-2" placeholder="Tiêu đề" required>
-      <input type="text" name="source" class="w-full border rounded px-3 py-2" placeholder="Nguồn" required>
-      <textarea name="description" class="w-full border rounded px-3 py-2" placeholder="Mô tả"></textarea>
-      <input type="url" name="link" class="w-full border rounded px-3 py-2" placeholder="Link bài viết (tuỳ chọn)">
+      <input type="url" name="link" class="w-full border rounded px-3 py-2" placeholder="Link bài viết" required>
       <input type="url" name="image" class="w-full border rounded px-3 py-2" placeholder="Ảnh bìa (tuỳ chọn)">
       <button type="submit" class="bg-teal-600 text-white px-4 py-2 rounded">Thêm bài viết</button>
     </form>
