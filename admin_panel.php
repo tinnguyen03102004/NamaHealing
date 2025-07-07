@@ -31,6 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $source = trim($_POST['source'] ?? '');
         $description = trim($_POST['description'] ?? '');
         $link = trim($_POST['link'] ?? '');
+        $image = trim($_POST['image'] ?? '');
         if ($title === '' || $source === '') {
             $error = 'Thiếu thông tin bắt buộc';
         } else {
@@ -45,7 +46,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'title' => $title,
                     'source' => $source,
                     'description' => $description,
-                    'link' => $link
+                    'link' => $link,
+                    'image' => $image
                 ]);
                 file_put_contents($articlesFile, json_encode($articles, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
                 $success = 'Đã thêm bài viết';
@@ -109,6 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <input type="text" name="source" class="w-full border rounded px-3 py-2" placeholder="Nguồn" required>
       <textarea name="description" class="w-full border rounded px-3 py-2" placeholder="Mô tả"></textarea>
       <input type="url" name="link" class="w-full border rounded px-3 py-2" placeholder="Link bài viết (tuỳ chọn)">
+      <input type="url" name="image" class="w-full border rounded px-3 py-2" placeholder="Ảnh bìa (tuỳ chọn)">
       <button type="submit" class="bg-teal-600 text-white px-4 py-2 rounded">Thêm bài viết</button>
     </form>
   </section>
