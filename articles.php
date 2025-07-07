@@ -18,7 +18,9 @@ if (file_exists($file)) {
   <?php foreach ($articles as $article): ?>
     <article class="border-b pb-4 mb-4">
       <h3 class="text-xl font-semibold mb-1"><?= htmlspecialchars($article['title'] ?? '') ?></h3>
-      <p class="text-sm text-gray-500 mb-2"><?= htmlspecialchars($article['source'] ?? '') ?></p>
+      <?php if (!empty($article['source'])): ?>
+        <p class="text-sm text-gray-500 mb-2"><?= htmlspecialchars($article['source']) ?></p>
+      <?php endif; ?>
       <?php if (!empty($article['link'])): ?>
         <a href="<?= htmlspecialchars($article['link']) ?>" target="_blank" rel="noopener" class="block rounded-lg overflow-hidden border hover:shadow transition">
             <?php if (!empty($article['image'])): ?>
