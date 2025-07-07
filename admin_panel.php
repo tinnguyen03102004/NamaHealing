@@ -4,7 +4,7 @@ require 'config.php';
 if (file_exists(__DIR__ . '/vendor/autoload.php')) {
     require __DIR__ . '/vendor/autoload.php';
 }
-use App\Helpers\ThumbnailFetcher;
+require_once __DIR__ . '/helpers/ThumbnailFetcher.php';
 if (!isset($_SESSION['uid']) || $_SESSION['role'] !== 'admin') {
     header('Location: login.php');
     exit;
