@@ -19,9 +19,9 @@ if (file_exists($file)) {
     <?php foreach ($videos as $video): ?>
       <div class="bg-white rounded-xl shadow overflow-hidden flex flex-col">
         <?php if (!empty($video['title'])): ?>
-          <h3 class="text-lg font-semibold p-4 pb-2"><?= htmlspecialchars($video['title']) ?></h3>
+          <h3 class="text-base font-semibold p-4 pb-2"><?= htmlspecialchars($video['title']) ?></h3>
         <?php else: ?>
-          <h3 class="text-lg font-semibold p-4 pb-2">Video không có tiêu đề</h3>
+          <h3 class="text-base font-semibold p-4 pb-2">Video không có tiêu đề</h3>
         <?php endif; ?>
         <iframe class="w-full aspect-video" src="https://www.youtube.com/embed/<?= htmlspecialchars($video['youtube_id'] ?? '') ?>" allowfullscreen loading="lazy"></iframe>
       </div>
