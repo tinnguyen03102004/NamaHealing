@@ -122,6 +122,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             file_put_contents($videosFile, json_encode($videos, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
             $success = 'Đã xóa video';
         }
+    } elseif ($action === 'move_article') {
+        $idx = intval($_POST['index'] ?? -1);
+        $dir = $_POST['dir'] ?? '';
+        if ($dir === 'up' && $idx > 0 && isset($articles[$idx])) {
+            [$articles[$idx - 1], $articles[$idx]] = [$articles[$idx], $articles[$idx - 1]];
+            file_put_contents($articlesFile, json_encode($articles, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+            $success = 'Đã cập nhật thứ tự';
+        } elseif ($dir === 'down' && $idx >= 0 && $idx < count($articles) - 1 && isset($articles[$idx])) {
+            [$articles[$idx], $articles[$idx + 1]] = [$articles[$idx + 1], $articles[$idx]];
+            file_put_contents($articlesFile, json_encode($articles, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+            $success = 'Đã cập nhật thứ tự';
+        }
+    } elseif ($action === 'move_video') {
+        $idx = intval($_POST['index'] ?? -1);
+        $dir = $_POST['dir'] ?? '';
+        if ($dir === 'up' && $idx > 0 && isset($videos[$idx])) {
+            [$videos[$idx - 1], $videos[$idx]] = [$videos[$idx], $videos[$idx - 1]];
+            file_put_contents($videosFile, json_encode($videos, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+            $success = 'Đã cập nhật thứ tự';
+        } elseif ($dir === 'down' && $idx >= 0 && $idx < count($videos) - 1 && isset($videos[$idx])) {
+            [$videos[$idx], $videos[$idx + 1]] = [$videos[$idx + 1], $videos[$idx]];
+            file_put_contents($videosFile, json_encode($videos, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+            $success = 'Đã cập nhật thứ tự';
+        }
     }
 }
 ?>
@@ -171,11 +195,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php foreach ($articles as $i => $a): ?>
           <li class="py-2 flex justify-between items-center">
             <span><?= htmlspecialchars($a['title']) ?></span>
-            <form method="post" onsubmit="return confirm('Xóa bài viết này?');">
-              <input type="hidden" name="action" value="delete_article">
-              <input type="hidden" name="index" value="<?= $i ?>">
-              <button class="text-red-600 hover:underline">Xóa</button>
-            </form>
+            <div class="flex items-center gap-2">
+              <?php if ($i > 0): ?>
+                <form method="post">
+                  <input type="hidden" name="action" value="move_article">
+                  <input type="hidden" name="dir" value="up">
+                  <input type="hidden" name="index" value="<?= $i ?>">
+                  <button class="px-2">&#8593;</button>
+                </form>
+              <?php endif; ?>
+              <?php if ($i < count($articles) - 1): ?>
+                <form method="post">
+                  <input type="hidden" name="action" value="move_article">
+                  <input type="hidden" name="dir" value="down">
+                  <input type="hidden" name="index" value="<?= $i ?>">
+                  <button class="px-2">&#8595;</button>
+                </form>
+              <?php endif; ?>
+              <form method="post" onsubmit="return confirm('Xóa bài viết này?');">
+                <input type="hidden" name="action" value="delete_article">
+                <input type="hidden" name="index" value="<?= $i ?>">
+                <button class="text-red-600 hover:underline">Xóa</button>
+              </form>
+            </div>
           </li>
         <?php endforeach; ?>
       </ul>
@@ -191,11 +233,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php foreach ($videos as $i => $v): ?>
           <li class="py-2 flex justify-between items-center">
             <span><?= htmlspecialchars($v['title']) ?></span>
-            <form method="post" onsubmit="return confirm('Xóa video này?');">
-              <input type="hidden" name="action" value="delete_video">
-              <input type="hidden" name="index" value="<?= $i ?>">
-              <button class="text-red-600 hover:underline">Xóa</button>
-            </form>
+            <div class="flex items-center gap-2">
+              <?php if ($i > 0): ?>
+                <form method="post">
+                  <input type="hidden" name="action" value="move_video">
+                  <input type="hidden" name="dir" value="up">
+                  <input type="hidden" name="index" value="<?= $i ?>">
+                  <button class="px-2">&#8593;</button>
+                </form>
+              <?php endif; ?>
+              <?php if ($i < count($videos) - 1): ?>
+                <form method="post">
+                  <input type="hidden" name="action" value="move_video">
+                  <input type="hidden" name="dir" value="down">
+                  <input type="hidden" name="index" value="<?= $i ?>">
+                  <button class="px-2">&#8595;</button>
+                </form>
+              <?php endif; ?>
+              <form method="post" onsubmit="return confirm('Xóa video này?');">
+                <input type="hidden" name="action" value="delete_video">
+                <input type="hidden" name="index" value="<?= $i ?>">
+                <button class="text-red-600 hover:underline">Xóa</button>
+              </form>
+            </div>
           </li>
         <?php endforeach; ?>
       </ul>
