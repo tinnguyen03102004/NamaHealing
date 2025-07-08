@@ -15,11 +15,15 @@ if (file_exists($file)) {
 <?php include 'header.php'; ?>
 <main class="max-w-7xl mx-auto px-4 py-6">
   <h1 class="text-2xl font-semibold mb-6">Video</h1>
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+  <div class="video-grid">
     <?php foreach ($videos as $video): ?>
-      <div>
-        <h3 class="text-lg font-semibold mb-2"><?= htmlspecialchars($video['title'] ?? '') ?></h3>
-        <iframe class="w-full aspect-video rounded-lg" src="https://www.youtube.com/embed/<?= htmlspecialchars($video['youtube_id'] ?? '') ?>" allowfullscreen loading="lazy"></iframe>
+      <div class="video-card">
+        <?php if (!empty($video['title'])): ?>
+          <h3><?= htmlspecialchars($video['title']) ?></h3>
+        <?php else: ?>
+          <h3>Video không có tiêu đề</h3>
+        <?php endif; ?>
+        <iframe src="https://www.youtube.com/embed/<?= htmlspecialchars($video['youtube_id'] ?? '') ?>" width="100%" height="auto" allowfullscreen loading="lazy"></iframe>
       </div>
     <?php endforeach; ?>
   </div>

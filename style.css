@@ -129,6 +129,50 @@
     --tw-shadow-color: color-mix(in oklab, #76a89e26 var(--tw-shadow-alpha), transparent);
   }
 }
+
+/* Custom video grid styles */
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 32px;
+  justify-items: center;
+}
+
+.video-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px #0001;
+  padding: 16px;
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.video-card iframe {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  min-height: 180px;
+  border-radius: 8px;
+  border: none;
+  background: #000;
+  margin-bottom: 8px;
+}
+
+.video-card h3,
+.video-card p {
+  margin: 0 0 8px 0;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .video-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 600px) {
+  .video-grid { grid-template-columns: 1fr; }
+}
 .backdrop-blur-\[2px\] {
   --tw-backdrop-blur: blur(2px);
   -webkit-backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
