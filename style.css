@@ -177,14 +177,11 @@
 .video-card iframe {
   aspect-ratio: 16 / 9;
   width: 100%;
-  min-height: 320px;
   display: block;
-  min-height: 220px;
-  border-radius: 8px;
   border: none;
+  border-radius: 8px;
   background: #000;
-  margin-bottom: 0;
-  display: block;
+  min-height: 220px;
 }
 
 @media (min-width: 640px) {
