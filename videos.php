@@ -23,7 +23,7 @@ if (file_exists($file)) {
         <?php else: ?>
           <h3>Video không có tiêu đề</h3>
         <?php endif; ?>
-        <iframe src="https://www.youtube.com/embed/<?= htmlspecialchars($video['youtube_id'] ?? '') ?>" width="100%" height="auto" allowfullscreen loading="lazy"></iframe>
+        <iframe src="https://www.youtube.com/embed/<?= htmlspecialchars($video['youtube_id'] ?? '') ?>" width="100%" allowfullscreen loading="lazy"></iframe>
       </div>
     <?php endforeach; ?>
   </div>
