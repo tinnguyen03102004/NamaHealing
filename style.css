@@ -130,52 +130,6 @@
   }
 }
 
-/* --- GRID WRAPPER --- */
-.video-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 32px;
-  justify-items: center;
-  padding-block: 1rem;
-}
-
-@media (min-width: 640px) {
-  .video-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (min-width: 1024px) {
-  .video-grid { grid-template-columns: repeat(3, 1fr); }
-}
-
-/* --- CARD--- */
-.video-card {
-  width: 100%;
-  max-width: 420px;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px #0001;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.video-card h3 {
-  margin: 0;
-  font-size: 1.05rem;
-  font-weight: 600;
-  color: #374151;
-  line-height: 1.4;
-}
-
-.video-card iframe {
-  aspect-ratio: 16 / 9;
-  width: 100%;
-  display: block;
-  border: none;
-  border-radius: 8px;
-  background: #000;
-  min-height: 220px;
-}
 
 .backdrop-blur-\[2px\] {
   --tw-backdrop-blur: blur(2px);
