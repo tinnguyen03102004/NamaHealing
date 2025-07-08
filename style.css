@@ -155,7 +155,8 @@
 .video-card iframe {
   aspect-ratio: 16 / 9;
   width: 100%;
-  min-height: 180px;
+  display: block;
+  min-height: 220px;
   border-radius: 8px;
   border: none;
   background: #000;
