@@ -13,17 +13,19 @@ if (file_exists($file)) {
 }
 ?>
 <?php include 'header.php'; ?>
-<main class="max-w-7xl mx-auto px-4 py-6">
-  <h1 class="text-2xl font-semibold mb-6">Video</h1>
-  <?php foreach ($videos as $video): ?>
-    <div class="mb-6">
-      <?php if (!empty($video['title'])): ?>
-        <h3 class="text-lg font-semibold mb-2"><?= htmlspecialchars($video['title']) ?></h3>
-      <?php else: ?>
-        <h3 class="text-lg font-semibold mb-2">Video không có tiêu đề</h3>
-      <?php endif; ?>
-      <iframe class="w-full aspect-video rounded-lg" src="https://www.youtube.com/embed/<?= htmlspecialchars($video['youtube_id'] ?? '') ?>" allowfullscreen loading="lazy"></iframe>
-    </div>
-  <?php endforeach; ?>
+<main class="max-w-6xl mx-auto px-4 py-8">
+  <h1 class="text-xl font-semibold mb-8">Video</h1>
+  <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+    <?php foreach ($videos as $video): ?>
+      <div class="bg-white rounded-xl shadow overflow-hidden flex flex-col">
+        <?php if (!empty($video['title'])): ?>
+          <h3 class="text-lg font-semibold p-4 pb-2"><?= htmlspecialchars($video['title']) ?></h3>
+        <?php else: ?>
+          <h3 class="text-lg font-semibold p-4 pb-2">Video không có tiêu đề</h3>
+        <?php endif; ?>
+        <iframe class="w-full aspect-video" src="https://www.youtube.com/embed/<?= htmlspecialchars($video['youtube_id'] ?? '') ?>" allowfullscreen loading="lazy"></iframe>
+      </div>
+    <?php endforeach; ?>
+  </div>
 </main>
 <?php include 'footer.php'; ?>
