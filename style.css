@@ -130,46 +130,59 @@
   }
 }
 
-/* Custom video grid styles */
+/* Video grid: 1 cột trên mobile, 2 cột tablet, 1 cột desktop */
 .video-grid {
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  gap: 20px;
-  justify-items: stretch;
-  grid-auto-rows: 1fr;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  justify-items: center;
 }
 
+@media (min-width: 640px) {
+  .video-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (min-width: 1024px) {
+  .video-grid {
+    grid-template-columns: 1fr;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* Video card full width, không max-width nhỏ */
 .video-card {
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 2px 8px #0001;
   padding: 16px;
   width: 100%;
-  max-width: 420px;
+  max-width: 900px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  height: 100%;
+  align-items: stretch;
+  margin: 0 auto;
+}
+
+.video-card h3 {
+  margin-bottom: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: left;
+  color: #374151;
 }
 
 .video-card iframe {
   aspect-ratio: 16 / 9;
   width: 100%;
-  min-height: 180px;
+  min-height: 320px;
   border-radius: 8px;
   border: none;
   background: #000;
-  margin-bottom: 8px;
-}
-
-.video-card h3,
-.video-card p {
-  margin: 0 0 8px 0;
-  text-align: center;
-}
-
-.video-card h3 {
-  min-height: 2.5em;
+  margin-bottom: 0;
+  display: block;
 }
 
 @media (min-width: 640px) {
