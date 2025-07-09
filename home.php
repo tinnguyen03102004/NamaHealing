@@ -125,9 +125,7 @@ require 'config.php';
   <header class="h-16 w-full fixed top-0 left-0 z-10 flex items-center header-bar">
     <div class="max-w-7xl mx-auto px-6 w-full flex items-center justify-between">
         <a href="home.php" class="flex items-center gap-2 text-xl text-white font-semibold">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-green-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-            </svg>
+            <img src="logoNama.png" alt="NamaHealing logo" class="w-6 h-6" />
             <span class="logo-text">NamaHealing</span>
         </a>
         <a href="login.php" class="text-base px-4 py-2 min-h-[40px] rounded-full border border-white/40 hover:bg-white hover:text-black transition flex items-center justify-center">
