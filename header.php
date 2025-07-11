@@ -36,7 +36,7 @@ require_once __DIR__ . '/i18n.php';
   <!-- Header bar -->
   <header class="h-16 w-full fixed top-0 left-0 z-10 flex items-center header-bar backdrop-blur bg-transparent">
     <div class="max-w-7xl mx-auto px-6 w-full flex items-center justify-between">
-      <a href="home.php" class="flex items-center gap-2 text-xl text-[#374151] logo-text">
+      <a href="home.php" class="flex items-center gap-1 text-xl text-[#374151] logo-text">
         <img src="logoNama.png" alt="NamaHealing logo" class="w-16 h-16" />
         <span class="logo-text">NamaHealing</span>
       </a>

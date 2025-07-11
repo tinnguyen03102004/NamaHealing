@@ -124,7 +124,7 @@ require 'config.php';
   <!-- Thanh header trong suốt hoàn toàn -->
   <header class="h-16 w-full fixed top-0 left-0 z-10 flex items-center header-bar">
     <div class="max-w-7xl mx-auto px-6 w-full flex items-center justify-between">
-        <a href="home.php" class="flex items-center gap-2 text-xl text-white font-semibold">
+        <a href="home.php" class="flex items-center gap-1 text-xl text-white font-semibold">
             <img src="logoNama.png" alt="NamaHealing logo" class="w-16 h-16" />
             <span class="logo-text">NamaHealing</span>
         </a>
