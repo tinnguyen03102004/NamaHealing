@@ -125,7 +125,7 @@ require 'config.php';
   <header class="h-16 w-full fixed top-0 left-0 z-10 flex items-center header-bar">
     <div class="max-w-7xl mx-auto px-6 w-full flex items-center justify-between">
         <a href="home.php" class="flex items-center gap-2 text-xl text-white font-semibold">
-            <img src="logoNama.png" alt="NamaHealing logo" class="w-6 h-6" />
+            <img src="logoNama.png" alt="NamaHealing logo" class="w-16 h-16" />
             <span class="logo-text">NamaHealing</span>
         </a>
         <a href="login.php" class="text-base px-4 py-2 min-h-[40px] rounded-full border border-white/40 hover:bg-white hover:text-black transition flex items-center justify-center">
