@@ -1,5 +1,5 @@
 <?php
-$pageTitle = 'Video';
+$pageTitle = __('videos_heading');
 $metaDescription = 'Video hướng dẫn thiền, yoga và chữa lành từ NamaHealing giúp bạn thư giãn, cân bằng cuộc sống.';
 
 $file = __DIR__ . '/data/videos.json';
@@ -14,14 +14,14 @@ if (file_exists($file)) {
 ?>
 <?php include 'header.php'; ?>
 <main class="max-w-6xl mx-auto px-4 py-8">
-  <h1 class="text-2xl font-semibold mb-8">Video</h1>
+  <h1 class="text-2xl font-semibold mb-8"><?= __('videos_heading') ?></h1>
   <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
     <?php foreach ($videos as $video): ?>
       <div class="bg-white rounded-xl shadow overflow-hidden flex flex-col">
         <?php if (!empty($video['title'])): ?>
           <h3 class="text-base font-semibold p-4 pb-2"><?= htmlspecialchars($video['title']) ?></h3>
         <?php else: ?>
-          <h3 class="text-base font-semibold p-4 pb-2">Video không có tiêu đề</h3>
+          <h3 class="text-base font-semibold p-4 pb-2"><?= __('untitled_video') ?></h3>
         <?php endif; ?>
         <iframe class="w-full aspect-video" src="https://www.youtube.com/embed/<?= htmlspecialchars($video['youtube_id'] ?? '') ?>" allowfullscreen loading="lazy"></iframe>
       </div>

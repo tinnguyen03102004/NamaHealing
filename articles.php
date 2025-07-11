@@ -1,5 +1,5 @@
 <?php
-$pageTitle = 'Bài viết';
+$pageTitle = __('articles_heading');
 $metaDescription = 'Tổng hợp các bài viết chia sẻ kiến thức thiền định, yoga và tự chữa lành từ NamaHealing.';
 
 $file = __DIR__ . '/data/articles.json';
@@ -14,7 +14,7 @@ if (file_exists($file)) {
 ?>
 <?php include 'header.php'; ?>
 <main class="max-w-3xl mx-auto px-4 py-6">
-  <h1 class="text-2xl font-semibold mb-6">Bài viết</h1>
+  <h1 class="text-2xl font-semibold mb-6"><?= __('articles_heading') ?></h1>
   <?php foreach ($articles as $article): ?>
     <article class="border-b pb-4 mb-4">
       <h3 class="text-xl font-semibold mb-1"><?= htmlspecialchars($article['title'] ?? '') ?></h3>
@@ -32,7 +32,7 @@ if (file_exists($file)) {
                 <?= htmlspecialchars(mb_strimwidth($article['description'], 0, 150, '...')) ?>
               </p>
             <?php endif; ?>
-            <span class="text-teal-600 hover:underline">Đọc tiếp</span>
+            <span class="text-teal-600 hover:underline"><?= __('read_more') ?></span>
           </div>
         </a>
       <?php else: ?>

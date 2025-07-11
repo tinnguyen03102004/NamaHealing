@@ -71,4 +71,8 @@ return [
     'home_nav_contact' => 'Contact',
     'register_now' => 'I want to register now',
     'thumb_not_found' => 'Thumbnail not found, please upload one.',
+    'articles_heading' => 'Articles',
+    'videos_heading' => 'Videos',
+    'read_more' => 'Read more',
+    'untitled_video' => 'Untitled video',
 ];

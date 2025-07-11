@@ -71,4 +71,8 @@ return [
     'home_nav_contact' => 'Liên hệ',
     'register_now' => 'Tôi muốn đăng ký ngay',
     'thumb_not_found' => 'Không tìm thấy ảnh, vui lòng tải lên.',
+    'articles_heading' => 'Bài viết',
+    'videos_heading' => 'Video',
+    'read_more' => 'Đọc tiếp',
+    'untitled_video' => 'Video không có tiêu đề',
 ];
