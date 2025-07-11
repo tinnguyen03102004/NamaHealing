@@ -32,17 +32,17 @@ include 'header.php';
 ?>
 <div class="d-flex justify-content-center align-items-center" style="min-height:60vh;">
   <div class="card p-4 text-center" style="max-width:400px;">
-    <h3 class="mb-3 text-danger">Bạn đã hết buổi học!</h3>
+    <h3 class="mb-3 text-danger"><?= __('out_of_sessions') ?></h3>
     <div class="mb-3 text-secondary">
-      Vui lòng liên hệ admin để được cộng thêm buổi nhé.<br>
+      <?= __('contact_admin') ?><br>
     </div>
     <a class="btn btn-success w-100 mb-2" href="<?= $zalo_1 ?>" target="_blank" rel="noopener">
-      Đăng ký gia hạn qua Zalo Nguyễn Hữu Tín 0839269501
+      <?= __('renew_zalo1') ?>
     </a>
     <a class="btn btn-success w-100 mb-2" href="<?= $zalo_2 ?>" target="_blank" rel="noopener">
-      Đăng ký gia hạn qua Zalo Mai Hoàn 0989399278
+      <?= __('renew_zalo2') ?>
     </a>
-    <a class="btn btn-secondary w-100" href="dashboard.php">Quay lại trang chính</a>
+    <a class="btn btn-secondary w-100" href="dashboard.php"><?= __('back_to_dashboard') ?></a>
   </div>
 </div>
 <?php include 'footer.php'; ?>
