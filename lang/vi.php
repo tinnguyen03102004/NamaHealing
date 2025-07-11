@@ -71,4 +71,5 @@ return [
     'home_nav_contact' => 'Liên hệ',
     'register_now' => 'Tôi muốn đăng ký ngay',
     'thumb_not_found' => 'Không tìm thấy ảnh, vui lòng tải lên.',
+    'footer_message' => '© %d NamaHealing. Mọi thắc mắc liên hệ admin.',
 ];
