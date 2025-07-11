@@ -101,7 +101,7 @@ require 'config.php';
       .site-title{font-size:1.9rem;}
       .subtitle{font-size:0.85rem; letter-spacing:.15em;}
       .title-wrapper{padding-top:14vh;}
-      .main-nav ul{flex-direction:column; gap:0.75rem;}
+      .main-nav ul{flex-direction:column; gap:1rem;}
       .main-nav a{display:block; padding:0.5rem 1rem;}
     }
     /* Header */
@@ -122,13 +122,13 @@ require 'config.php';
 
 <body class="overflow-x-hidden">
   <!-- Thanh header trong suốt hoàn toàn -->
-  <header class="h-16 w-full fixed top-0 left-0 z-10 flex items-center header-bar">
-    <div class="max-w-7xl mx-auto px-6 w-full flex items-center justify-between">
-        <a href="home.php" class="flex items-center gap-0 text-xl text-white font-semibold">
+  <header class="w-full fixed top-0 left-0 z-10 flex flex-col sm:flex-row items-center header-bar">
+    <div class="max-w-7xl mx-auto px-6 w-full flex flex-col sm:flex-row items-center justify-between gap-2">
+        <a href="home.php" class="flex items-center gap-2 text-xl text-white font-semibold">
             <img src="logoNama.png" alt="NamaHealing logo" class="w-16 h-16" />
             <span class="logo-text">NamaHealing</span>
         </a>
-        <div class="flex items-center gap-6">
+        <div class="flex flex-col sm:flex-row items-center gap-3 sm:gap-6 w-full sm:w-auto">
             <a href="login.php" class="text-base px-4 py-2 min-h-[40px] rounded-full border border-white/40 hover:bg-white hover:text-black transition flex items-center justify-center">
                 <?= __('login_button') ?>
             </a>
