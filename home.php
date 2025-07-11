@@ -129,7 +129,7 @@ require 'config.php';
             <span class="logo-text">NamaHealing</span>
         </a>
         <a href="login.php" class="text-base px-4 py-2 min-h-[40px] rounded-full border border-white/40 hover:bg-white hover:text-black transition flex items-center justify-center">
-            Đăng nhập
+            <?= __('login_button') ?>
         </a>
     </div>
   </header>
@@ -141,12 +141,12 @@ require 'config.php';
         <h1 class="site-title font-semibold">NAMA HEALING</h1>
         <nav class="main-nav" aria-label="Điều hướng chính">
           <ul>
-            <li><a href="home.php">Home</a></li>
-            <li><a href="#" id="open-class-modal">Lớp học</a></li>
-            <li><a href="#" id="open-register-modal">Đăng ký</a></li>
-            <li><a href="articles.php">Bài viết</a></li>
-            <li><a href="videos.php">Video</a></li>
-            <li><a href="https://zalo.me/0839269501" target="_blank" rel="noopener">Liên hệ</a></li>
+            <li><a href="home.php"><?= __('home_nav_home') ?></a></li>
+            <li><a href="#" id="open-class-modal"><?= __('home_nav_class') ?></a></li>
+            <li><a href="#" id="open-register-modal"><?= __('home_nav_register') ?></a></li>
+            <li><a href="articles.php"><?= __('home_nav_articles') ?></a></li>
+            <li><a href="videos.php"><?= __('home_nav_videos') ?></a></li>
+            <li><a href="https://zalo.me/0839269501" target="_blank" rel="noopener"><?= __('home_nav_contact') ?></a></li>
           </ul>
         </nav>
     </div>
@@ -177,7 +177,7 @@ require 'config.php';
         </div>
         <div class="text-center mt-5">
           <a href="#" id="to-register" class="inline-block px-6 py-2.5 min-h-[40px] rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium transition flex items-center justify-center">
-            Tôi muốn đăng ký ngay
+            <?= __('register_now') ?>
           </a>
         </div>
       </div>

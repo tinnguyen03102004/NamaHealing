@@ -168,7 +168,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <textarea id="article-desc" name="description" class="w-full border rounded px-3 py-2" placeholder="Mô tả"></textarea>
       <input type="url" id="article-image" name="image" class="w-full border rounded px-3 py-2" placeholder="Ảnh bìa (tuỳ chọn)">
       <input type="file" id="thumbnail-upload" name="thumbnail" class="hidden">
-      <p id="thumb-msg" class="text-red-600 text-sm hidden">Không tìm thấy ảnh, vui lòng tải lên.</p>
+      <p id="thumb-msg" class="text-red-600 text-sm hidden"><?= __('thumb_not_found') ?></p>
       <div class="flex gap-2">
         <button type="button" id="fetch-meta" class="border px-4 py-2 rounded">Lấy dữ liệu</button>
         <button type="submit" class="bg-teal-600 text-white px-4 py-2 rounded">Thêm bài viết</button>
@@ -212,10 +212,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   <button class="px-2">&#8595;</button>
                 </form>
               <?php endif; ?>
-              <form method="post" onsubmit="return confirm('Xóa bài viết này?');">
+              <form method="post" onsubmit="return confirm('<?= __('confirm_delete_article') ?>');">
                 <input type="hidden" name="action" value="delete_article">
                 <input type="hidden" name="index" value="<?= $i ?>">
-                <button class="text-red-600 hover:underline">Xóa</button>
+                <button class="text-red-600 hover:underline"><?= __('delete') ?></button>
               </form>
             </div>
           </li>
@@ -250,10 +250,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   <button class="px-2">&#8595;</button>
                 </form>
               <?php endif; ?>
-              <form method="post" onsubmit="return confirm('Xóa video này?');">
+              <form method="post" onsubmit="return confirm('<?= __('confirm_delete_video') ?>');">
                 <input type="hidden" name="action" value="delete_video">
                 <input type="hidden" name="index" value="<?= $i ?>">
-                <button class="text-red-600 hover:underline">Xóa</button>
+                <button class="text-red-600 hover:underline"><?= __('delete') ?></button>
               </form>
             </div>
           </li>

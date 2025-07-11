@@ -8,6 +8,7 @@ try {
 }
 
 session_start();
+require_once __DIR__ . '/i18n.php';
 
 if (defined('REQUIRE_LOGIN') && !isset($_SESSION['uid'])) {
     header('Location: login.php');

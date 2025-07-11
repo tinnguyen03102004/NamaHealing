@@ -37,17 +37,17 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <div class="mb-6 flex flex-col md:flex-row items-start md:items-end justify-between gap-3">
     <div>
       <h2 class="text-2xl font-heading font-semibold text-mint-text mb-1">
-        Quản trị viên – Danh sách học viên
+        <?= __('admin_title') ?>
       </h2>
-      <p class="text-sm text-gray-500">Quản lý, cộng buổi, xem lịch sử từng học viên</p>
+      <p class="text-sm text-gray-500"><?= __('admin_subtitle') ?></p>
     </div>
     <div class="flex flex-col sm:flex-row gap-2 mt-3 md:mt-0 w-full sm:w-auto">
       <a class="rounded-lg bg-mint text-mint-text font-semibold px-4 py-2 text-sm shadow hover:bg-mint-dark hover:text-white transition w-full sm:w-auto text-center"
-         href="register.php">+ Thêm học viên mới</a>
+         href="register.php"><?= __('add_student') ?></a>
       <a class="rounded-lg bg-mint text-mint-text font-semibold px-4 py-2 text-sm shadow hover:bg-mint-dark hover:text-white transition w-full sm:w-auto text-center"
-         href="admin_panel.php">Quản lý bài &amp; video</a>
+         href="admin_panel.php"><?= __('manage_posts') ?></a>
       <a class="rounded-lg border border-mint text-mint-text font-medium px-4 py-2 text-sm hover:bg-mint hover:text-white transition w-full sm:w-auto text-center"
-         href="admin.php">Bỏ lọc</a>
+         href="admin.php"><?= __('clear_filter') ?></a>
     </div>
   </div>
 
@@ -55,16 +55,16 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <form class="mb-5 flex flex-col sm:flex-row items-center gap-3" method="get">
     <input type="text" name="q"
       class="rounded-md border border-mint px-3 py-2 focus:border-mint-dark focus:ring-mint w-full sm:w-52 text-sm"
-      placeholder="Tìm tên, email hoặc SĐT"
+      placeholder="<?= __('search_placeholder') ?>"
       value="<?= htmlspecialchars($keyword) ?>">
     <select name="status"
       class="rounded-md border border-mint px-3 py-2 focus:border-mint-dark focus:ring-mint text-sm w-full sm:w-36">
-      <option value="all"    <?= $status==='all'    ? 'selected' : '' ?>>Tất cả</option>
-      <option value="active" <?= $status==='active' ? 'selected' : '' ?>>Còn buổi</option>
-      <option value="expired"<?= $status==='expired'? 'selected' : '' ?>>Hết buổi</option>
+      <option value="all"    <?= $status==='all'    ? 'selected' : '' ?>><?= __('filter_all') ?></option>
+      <option value="active" <?= $status==='active' ? 'selected' : '' ?>><?= __('filter_active') ?></option>
+      <option value="expired"<?= $status==='expired'? 'selected' : '' ?>><?= __('filter_expired') ?></option>
     </select>
     <button class="rounded-lg bg-mint text-mint-text font-semibold px-4 py-2 text-sm shadow hover:bg-mint-dark hover:text-white transition w-full sm:w-auto">
-      Lọc
+      <?= __('filter_button') ?>
     </button>
   </form>
 
@@ -73,17 +73,17 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <table class="w-full min-w-[650px] text-sm border-separate border-spacing-y-1">
       <thead>
         <tr class="bg-mint/10 text-mint-text text-base font-semibold">
-          <th class="py-2 px-2 sm:px-3 rounded-tl-xl whitespace-nowrap">ID</th>
-          <th class="py-2 px-2 sm:px-3 whitespace-nowrap">Họ tên</th>
-          <th class="py-2 px-2 sm:px-3 whitespace-nowrap">Email / Số ĐT</th>
-          <th class="py-2 px-2 sm:px-3 text-center whitespace-nowrap">Số buổi còn</th>
-          <th class="py-2 px-2 sm:px-3 rounded-tr-xl text-center whitespace-nowrap">Thao tác</th>
+          <th class="py-2 px-2 sm:px-3 rounded-tl-xl whitespace-nowrap"><?= __('tbl_id') ?></th>
+          <th class="py-2 px-2 sm:px-3 whitespace-nowrap"><?= __('tbl_name') ?></th>
+          <th class="py-2 px-2 sm:px-3 whitespace-nowrap"><?= __('tbl_email') ?></th>
+          <th class="py-2 px-2 sm:px-3 text-center whitespace-nowrap"><?= __('tbl_remaining') ?></th>
+          <th class="py-2 px-2 sm:px-3 rounded-tr-xl text-center whitespace-nowrap"><?= __('tbl_actions') ?></th>
         </tr>
       </thead>
       <tbody>
       <?php if (empty($students)): ?>
         <tr>
-          <td colspan="5" class="py-5 text-center text-gray-400">Không tìm thấy học viên nào.</td>
+          <td colspan="5" class="py-5 text-center text-gray-400"><?= __('not_found') ?></td>
         </tr>
       <?php else: foreach ($students as $row): ?>
         <tr class="hover:bg-mint/5 transition">
@@ -99,21 +99,21 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
               <input type="hidden" name="uid" value="<?= $row['id'] ?>">
               <input type="number" name="add" value="1" min="1"
                 class="w-14 rounded border border-mint px-2 py-1 text-sm focus:border-mint-dark focus:ring-mint" />
-              <button class="rounded bg-mint/90 text-mint-text px-2 py-1 text-xs font-semibold shadow hover:bg-mint-dark hover:text-white transition" title="Cộng buổi">
-                Cộng
+              <button class="rounded bg-mint/90 text-mint-text px-2 py-1 text-xs font-semibold shadow hover:bg-mint-dark hover:text-white transition" title="<?= __('add_sessions') ?> buổi">
+                <?= __('add_sessions') ?>
               </button>
             </form>
             <!-- XÓA -->
             <a href="delete_user.php?id=<?= $row['id'] ?>"
                class="rounded bg-red-100 text-red-700 px-3 py-1 text-xs font-semibold shadow hover:bg-red-400 hover:text-white transition"
-               onclick="return confirm('Xóa học viên này?');" title="Xóa học viên">
-              Xóa
+               onclick="return confirm('<?= __('confirm_delete_student') ?>');" title="<?= __('delete') ?> học viên">
+              <?= __('delete') ?>
             </a>
             <!-- LỊCH SỬ -->
             <a href="history.php?id=<?= $row['id'] ?>"
                class="rounded bg-blue-100 text-blue-700 px-3 py-1 text-xs font-semibold shadow hover:bg-blue-400 hover:text-white transition"
-               title="Lịch sử cộng/xóa buổi">
-              Lịch sử
+               title="<?= __('history') ?>">
+              <?= __('history') ?>
             </a>
           </td>
         </tr>
