@@ -128,9 +128,16 @@ require 'config.php';
             <img src="logoNama.png" alt="NamaHealing logo" class="w-16 h-16" />
             <span class="logo-text">NamaHealing</span>
         </a>
-        <a href="login.php" class="text-base px-4 py-2 min-h-[40px] rounded-full border border-white/40 hover:bg-white hover:text-black transition flex items-center justify-center">
-            <?= __('login_button') ?>
-        </a>
+        <div class="flex items-center gap-6">
+            <a href="login.php" class="text-base px-4 py-2 min-h-[40px] rounded-full border border-white/40 hover:bg-white hover:text-black transition flex items-center justify-center">
+                <?= __('login_button') ?>
+            </a>
+            <span>
+              <a href="?lang=vi" class="text-sm <?= ($_SESSION['lang'] ?? 'vi') === 'vi' ? 'font-bold' : '' ?>"><?= __('language_vi') ?></a>
+              |
+              <a href="?lang=en" class="text-sm <?= ($_SESSION['lang'] ?? 'vi') === 'en' ? 'font-bold' : '' ?>"><?= __('language_en') ?></a>
+            </span>
+        </div>
     </div>
   </header>
 

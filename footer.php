@@ -1,5 +1,7 @@
+<?php if (session_status() === PHP_SESSION_NONE) session_start(); ?>
+<?php require_once __DIR__ . '/i18n.php'; ?>
 <footer class="site-footer text-center w-full">
-  © <?= date('Y') ?> NamaHealing. Mọi thắc mắc liên hệ admin.
+  <?= sprintf(__('footer_message'), date('Y')) ?>
 </footer>
 
 <!-- Zalo FAB góc phải dưới -->
