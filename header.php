@@ -34,14 +34,14 @@ require_once __DIR__ . '/i18n.php';
 </head>
 <body class="bg-[#f9fafb] text-[#374151]">
   <!-- Header bar -->
-  <header class="h-16 w-full fixed top-0 left-0 z-10 flex items-center header-bar backdrop-blur bg-transparent">
-    <div class="max-w-7xl mx-auto px-6 w-full flex items-center justify-between">
-      <a href="home.php" class="flex items-center gap-0 text-xl text-[#374151] logo-text">
+  <header class="w-full fixed top-0 left-0 z-10 flex flex-col sm:flex-row items-center header-bar backdrop-blur bg-transparent">
+    <div class="max-w-7xl mx-auto px-6 w-full flex flex-col sm:flex-row items-center justify-between gap-2">
+      <a href="home.php" class="flex items-center gap-2 text-xl text-[#374151] logo-text">
         <img src="logoNama.png" alt="NamaHealing logo" class="w-16 h-16" />
         <span class="logo-text">NamaHealing</span>
       </a>
-      <nav>
-        <ul class="flex items-center gap-6 text-base">
+      <nav class="w-full sm:w-auto">
+        <ul class="flex flex-col sm:flex-row items-center gap-3 sm:gap-6 text-base">
           <?php if (!isset($_SESSION['uid'])): ?>
             <li>
               <a href="login.php" class="px-4 py-2 min-h-[40px] text-base rounded-full border border-[#9dcfc3] hover:bg-[#9dcfc3] hover:text-white transition flex items-center justify-center">
@@ -64,4 +64,4 @@ require_once __DIR__ . '/i18n.php';
       </nav>
     </div>
   </header>
-  <div style="height: 4rem;"></div> <!-- Đệm để tránh header che nội dung -->
+  <div class="h-20 sm:h-16"></div> <!-- Đệm để tránh header che nội dung -->
