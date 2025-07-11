@@ -122,21 +122,28 @@ require 'config.php';
 
 <body class="overflow-x-hidden">
   <!-- Thanh header trong suốt hoàn toàn -->
-  <header class="w-full fixed top-0 left-0 z-10 flex flex-col sm:flex-row items-center header-bar">
-    <div class="max-w-7xl mx-auto px-6 w-full flex flex-col sm:flex-row items-center justify-between gap-2">
-        <a href="home.php" class="flex items-center gap-2 text-xl text-white font-semibold">
-            <img src="logoNama.png" alt="NamaHealing logo" class="w-16 h-16" />
-            <span class="logo-text">NamaHealing</span>
-        </a>
-        <div class="flex flex-col sm:flex-row items-center gap-3 sm:gap-6 w-full sm:w-auto">
-            <a href="login.php" class="text-base px-4 py-2 min-h-[40px] rounded-full border border-white/40 hover:bg-white hover:text-black transition flex items-center justify-center">
-                <?= __('login_button') ?>
+  <header class="w-full fixed top-0 left-0 z-10 header-bar">
+    <div class="max-w-7xl mx-auto px-6 w-full flex flex-col">
+        <div class="flex items-center justify-between w-full">
+            <a href="home.php" class="flex items-center gap-2 text-xl text-white font-semibold">
+                <img src="logoNama.png" alt="NamaHealing logo" class="w-16 h-16" />
+                <span class="logo-text">NamaHealing</span>
             </a>
-            <span>
-              <a href="?lang=vi" class="text-sm <?= ($_SESSION['lang'] ?? 'vi') === 'vi' ? 'font-bold' : '' ?>"><?= __('language_vi') ?></a>
-              |
-              <a href="?lang=en" class="text-sm <?= ($_SESSION['lang'] ?? 'vi') === 'en' ? 'font-bold' : '' ?>"><?= __('language_en') ?></a>
-            </span>
+            <div class="flex items-center gap-3 sm:gap-6">
+                <a href="login.php" class="text-base px-4 py-2 min-h-[40px] rounded-full border border-white/40 hover:bg-white hover:text-black transition flex items-center justify-center">
+                    <?= __('login_button') ?>
+                </a>
+                <span class="hidden sm:block">
+                  <a href="?lang=vi" class="text-sm <?= ($_SESSION['lang'] ?? 'vi') === 'vi' ? 'font-bold' : '' ?>"><?= __('language_vi') ?></a>
+                  |
+                  <a href="?lang=en" class="text-sm <?= ($_SESSION['lang'] ?? 'vi') === 'en' ? 'font-bold' : '' ?>"><?= __('language_en') ?></a>
+                </span>
+            </div>
+        </div>
+        <div class="block sm:hidden text-center mt-1">
+            <a href="?lang=vi" class="text-sm <?= ($_SESSION['lang'] ?? 'vi') === 'vi' ? 'font-bold' : '' ?>"><?= __('language_vi') ?></a>
+            |
+            <a href="?lang=en" class="text-sm <?= ($_SESSION['lang'] ?? 'vi') === 'en' ? 'font-bold' : '' ?>"><?= __('language_en') ?></a>
         </div>
     </div>
   </header>
