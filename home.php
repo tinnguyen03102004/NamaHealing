@@ -169,18 +169,10 @@ require 'config.php';
         <div class="w-full px-4 sm:px-7 py-4 flex flex-col justify-center items-center">
           <h2 class="text-2xl font-semibold text-green-800 mb-2 text-center">NamaHealing</h2>
         <div class="text-base leading-relaxed text-gray-800 space-y-3 text-left sm:text-justify">
-          <p>
-            <b>Võ Trọng Nghĩa</b> là kiến trúc sư nổi tiếng thế giới về <span class="text-green-700 font-semibold">kiến trúc xanh</span> và <span class="text-yellow-900 font-semibold">kiến trúc tre</span> – các công trình của anh như "Nhà cho cây" (House for Trees), quán cà phê Gió và Nước, trường mẫu giáo Farming Kindergarten,... và nhiều công trình khác đã đạt những giải thưởng lớn, được quốc tế vinh danh. Tuy nhiên, ít ai biết rằng anh từng trải qua giai đoạn trầm cảm ẩn, dẫn đến quyết định tìm đến thiền như một phương pháp chữa lành.
-          </p>
-          <p>
-            Sinh ra tại Lệ Thủy, Quảng Bình — vùng đất từng là tọa độ chiến tranh — tuổi thơ của Võ Trọng Nghĩa gắn liền với nghèo khó và bạo lực học đường. Dù sau này đạt được nhiều thành tựu trong sự nghiệp, anh vẫn phải đối mặt với những tổn thương tâm lý sâu sắc. Việc thực hành thiền đã giúp anh vượt qua khổ đau, tìm lại sự cân bằng và trở thành một "người bình thường" như chính anh chia sẻ.
-          </p>
-          <p>
-            Bên cạnh vai trò kiến trúc sư, Võ Trọng Nghĩa còn từng là giáo sư thỉnh giảng tại Đại học Pennsylvania và Đại học Taipei, giảng dạy về thiền và sức khỏe tâm lý. Anh hiện đang tổ chức các lớp thiền NamaHealing nhằm hỗ trợ những người đang đối mặt với trầm cảm, rối loạn lo âu, mất ngủ và các vấn đề sức khỏe tâm thần khác.
-          </p>
-          <p class="italic text-green-700 font-medium">
-            Hành trình của Võ Trọng Nghĩa là minh chứng cho khả năng chữa lành của thiền định, không chỉ giúp cá nhân anh vượt qua khủng hoảng mà còn lan tỏa năng lượng tích cực đến cộng đồng.
-          </p>
+          <p><?= __('class_p1') ?></p>
+          <p><?= __('class_p2') ?></p>
+          <p><?= __('class_p3') ?></p>
+          <p class="italic text-green-700 font-medium"><?= __('class_p4') ?></p>
         </div>
         <div class="text-center mt-5">
           <a href="#" id="to-register" class="inline-block px-6 py-2.5 min-h-[40px] rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium transition flex items-center justify-center">
@@ -198,58 +190,54 @@ require 'config.php';
       <!-- Cảnh báo nổi bật đầu modal -->
       <div class="mb-3 px-2 py-2 bg-red-50 border border-red-300 rounded text-red-700 text-base font-semibold text-center tracking-wider leading-snug">
         <span class="uppercase font-bold block">
-          ⚠️ LƯU Ý: LỚP THIỀN NÀY CHỈ DÀNH CHO NGƯỜI GẶP CÁC VẤN ĐỀ TÂM LÝ (TRẦM CẢM, LO ÂU, STRESS, MẤT NGỦ...)
+          <?= __('register_warning_line1') ?>
         </span>
         <span class="block mt-1 text-red-700">
-          NGƯỜI BÌNH THƯỜNG / KHÔNG CÓ VẤN ĐỀ TÂM LÝ <span class="underline font-bold">KHÔNG ĐƯỢC THAM GIA</span>.
+          <?= __('register_warning_line2') ?>
         </span>
       </div>
       
       <!-- Nút đóng đặt dưới cảnh báo, không che nội dung -->
       <button id="close-register-modal" class="absolute top-2 right-2 w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-xl font-bold z-10">&times;</button>
       
-      <div class="text-lg font-semibold mb-2 text-center mt-1">HƯỚNG DẪN ĐĂNG KÝ LỚP THIỀN ONLINE</div>
+      <div class="text-lg font-semibold mb-2 text-center mt-1"><?= __('register_guide_title') ?></div>
       <ol class="list-decimal pl-5 sm:pl-6 text-base mb-4 space-y-3">
         <li>
-          <span class="font-medium">Thời gian & Hình thức:</span>  
-          Học qua Zoom (bật mic & camera), linh hoạt:
+          <span class="font-medium"><?= __('register_time_title') ?></span>
+          <?= __('register_time_desc') ?>
             <ul class="list-disc pl-5 sm:pl-6 space-y-1">
-            <li>Sáng: <b>6h00-6h40</b> (T3-T7)</li>
-            <li>Tối: <b>20h45-21h30</b> (T2-CN)</li>
+            <li><?= __('register_time_morning') ?></li>
+            <li><?= __('register_time_evening') ?></li>
           </ul>
         </li>
         <li>
-          <span class="font-medium">Học phí:</span>
+          <span class="font-medium"><?= __('register_fee_title') ?></span>
           <ul class="list-disc pl-5 sm:pl-6">
-            <li>Khóa 20 buổi: <span class="text-red-600 font-semibold">8.000.000đ</span></li>
-            <li><span class="text-green-600 font-semibold">Ưu đãi chỉ 5.000.000đ</span> cho học viên khó khăn hiện đang sinh sống tại Việt Nam</li>
+            <li><?= __('register_fee_full') ?></li>
+            <li><?= __('register_fee_discount') ?></li>
           </ul>
-          Chuyển khoản:
+          <?= __('register_bank_title') ?>
             <ul class="list-disc pl-5 sm:pl-6 mt-1 space-y-2">
-            <li>Chủ TK: <b>Trần Thị Mai Ly</b></li>
-            <li>STK: <b>0371000429939</b> (Vietcombank, CN Hồ Chí Minh)</li>
-            <li>Nội dung: <i>dong hoc phi thien _ họ tên _ sdt</i></li>
+            <li><?= __('register_bank_holder') ?></li>
+            <li><?= __('register_bank_account') ?></li>
+            <li><?= __('register_bank_note') ?></li>
           </ul>
           <div class="mt-2 text-red-500 text-[15px] font-medium">
-            * Đây là <b>hộ kinh doanh cá thể (Trần Thị Mai Ly)</b>, nộp thuế 7% doanh thu nên <b>không có hóa đơn</b>.
+            <?= __('register_fee_note') ?>
           </div>
         </li>
       </ol>
       <div class="mb-3">
-        <span class="block font-medium">Các bước đăng ký:</span>
+        <span class="block font-medium"><?= __('register_steps_title') ?></span>
         <ul class="list-decimal pl-5 sm:pl-6 mt-1 space-y-3">
-          <li>Chuyển khoản học phí theo thông tin trên.</li>
-          <li>Chụp ảnh màn hình biên lai chuyển khoản.</li>
-          <li>
-            Điền thông tin tại 
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSeLxjPK6Fq95bnVIe17dkadmPDC-1FLGIM2Fku0EMDALyq_4A/viewform?usp=sf_link"
-             class="underline text-blue-600 font-medium" target="_blank">Form đăng ký học thiền</a>
-          </li>
-          <li>Gửi biên lai học phí cho Admin (qua Zalo góc phải) để nhận tài khoản và link Zoom.</li>
+          <li><?= __('register_step1') ?></li>
+          <li><?= __('register_step2') ?></li>
+          <li><?= __('register_step3') ?></li>
+          <li><?= __('register_step4') ?></li>
         </ul>
       </div>
       <div class="mt-2 text-sm text-gray-500 text-center">
-        <b>Hỗ trợ/Zalo:</b> <a href="https://zalo.me/0839269501" target="_blank" class="underline">0839 269 501</a>
+        <?= __('register_support') ?>
       </div>
     </div>
   </div>
