@@ -127,7 +127,7 @@ require 'config.php';
     <div class="max-w-7xl mx-auto px-6 w-full flex flex-col">
         <div class="flex items-center justify-between w-full">
             <a href="home.php" class="flex items-center gap-2 text-xl text-white font-semibold">
-                <img src="logoNama.png" alt="NamaHealing logo" class="w-16 h-16" />
+                <img src="logoNama.png" alt="NamaHealing logo" class="w-8 h-8" />
                 <span class="logo-text">NamaHealing</span>
             </a>
             <div class="flex items-center gap-3 sm:gap-6">
