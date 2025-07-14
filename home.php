@@ -118,6 +118,19 @@ require 'config.php';
       font-weight: 500;
     }
     #docs-item:hover #docs-menu { display:block !important; }
+    /* Docs dropdown colors */
+    #docs-menu {
+      background-color: #ffffff;
+      color: #000000;
+    }
+    #docs-menu a:hover { background-color: #f3f4f6; }
+    @media (prefers-color-scheme: dark) {
+      #docs-menu {
+        background-color: #1f2937;
+        color: #f9fafb;
+      }
+      #docs-menu a:hover { background-color: #374151; }
+    }
   </style>
 </head>
 
@@ -163,7 +176,7 @@ require 'config.php';
             <li><a href="videos.php"><?= __('home_nav_videos') ?></a></li>
             <li id="docs-item" class="relative">
               <a href="#" id="docs-toggle"><?= __('home_nav_docs') ?></a>
-              <ul id="docs-menu" class="absolute left-0 hidden bg-white text-black rounded shadow-md mt-1 whitespace-nowrap">
+              <ul id="docs-menu" class="absolute left-0 hidden rounded shadow-md mt-1 whitespace-nowrap">
                 <li><a href="docs/prayers.php" class="block px-3 py-1 hover:bg-gray-100"><?= __('home_docs_prayer') ?></a></li>
                 <li><a href="docs/chanting.php" class="block px-3 py-1 hover:bg-gray-100"><?= __('home_docs_chant') ?></a></li>
                 <li><a href="docs/reference.php" class="block px-3 py-1 hover:bg-gray-100"><?= __('home_docs_reference') ?></a></li>
@@ -284,11 +297,7 @@ require 'config.php';
       if(e.target === this) this.classList.add('hidden');
     };
 
-    // ---- Docs dropdown ----
-    document.getElementById('docs-toggle').onclick = function(e) {
-      e.preventDefault();
-      document.getElementById('docs-menu').classList.toggle('hidden');
-    };
+
 
     // Chuyển từ modal giới thiệu sang modal đăng ký khi bấm nút "Tôi muốn đăng ký ngay"
     document.getElementById('to-register').onclick = function(e) {
