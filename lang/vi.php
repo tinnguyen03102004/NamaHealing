@@ -68,6 +68,7 @@ return [
     'home_nav_register' => 'Đăng ký',
     'home_nav_articles' => 'Bài viết',
     'home_nav_videos' => 'Video',
+    'home_nav_docs' => 'Tài Liệu',
     'home_nav_contact' => 'Liên hệ',
     'register_now' => 'Tôi muốn đăng ký ngay',
     'thumb_not_found' => 'Không tìm thấy ảnh, vui lòng tải lên.',
@@ -97,4 +98,7 @@ return [
     'register_step3' => 'Điền thông tin tại <a href="https://docs.google.com/forms/d/e/1FAIpQLSeLxjPK6Fq95bnVIe17dkadmPDC-1FLGIM2Fku0EMDALyq_4A/viewform?usp=sf_link" class="underline text-blue-600 font-medium" target="_blank">Form đăng ký học thiền</a>',
     'register_step4' => 'Gửi biên lai học phí cho Admin (qua Zalo góc phải) để nhận tài khoản và link Zoom.',
     'register_support' => '<b>Hỗ trợ/Zalo:</b> <a href="https://zalo.me/0839269501" target="_blank" class="underline">0839 269 501</a>',
+    'home_docs_prayer' => 'Bài Kinh',
+    'home_docs_chant' => 'Sách Kinh Tụng',
+    'home_docs_reference' => 'Sách Tham Khảo',
 ];

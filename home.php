@@ -117,6 +117,7 @@ require 'config.php';
       font-size: 1.3rem;
       font-weight: 500;
     }
+    #docs-item:hover #docs-menu { display:block !important; }
   </style>
 </head>
 
@@ -160,6 +161,14 @@ require 'config.php';
             <li><a href="#" id="open-register-modal"><?= __('home_nav_register') ?></a></li>
             <li><a href="articles.php"><?= __('home_nav_articles') ?></a></li>
             <li><a href="videos.php"><?= __('home_nav_videos') ?></a></li>
+            <li id="docs-item" class="relative">
+              <a href="#" id="docs-toggle"><?= __('home_nav_docs') ?></a>
+              <ul id="docs-menu" class="absolute left-0 hidden bg-white text-black rounded shadow-md mt-1 whitespace-nowrap">
+                <li><a href="docs/prayers.php" class="block px-3 py-1 hover:bg-gray-100"><?= __('home_docs_prayer') ?></a></li>
+                <li><a href="docs/chanting.php" class="block px-3 py-1 hover:bg-gray-100"><?= __('home_docs_chant') ?></a></li>
+                <li><a href="docs/reference.php" class="block px-3 py-1 hover:bg-gray-100"><?= __('home_docs_reference') ?></a></li>
+              </ul>
+            </li>
             <li><a href="https://zalo.me/0839269501" target="_blank" rel="noopener"><?= __('home_nav_contact') ?></a></li>
           </ul>
         </nav>
@@ -273,6 +282,12 @@ require 'config.php';
     };
     document.getElementById('register-modal').onclick = function(e) {
       if(e.target === this) this.classList.add('hidden');
+    };
+
+    // ---- Docs dropdown ----
+    document.getElementById('docs-toggle').onclick = function(e) {
+      e.preventDefault();
+      document.getElementById('docs-menu').classList.toggle('hidden');
     };
 
     // Chuyển từ modal giới thiệu sang modal đăng ký khi bấm nút "Tôi muốn đăng ký ngay"

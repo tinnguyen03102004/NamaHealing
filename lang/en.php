@@ -68,6 +68,7 @@ return [
     'home_nav_register' => 'Register',
     'home_nav_articles' => 'Articles',
     'home_nav_videos' => 'Videos',
+    'home_nav_docs' => 'Docs',
     'home_nav_contact' => 'Contact',
     'register_now' => 'I want to register now',
     'thumb_not_found' => 'Thumbnail not found, please upload one.',
@@ -97,4 +98,7 @@ return [
     'register_step3' => 'Fill in the information at <a href="https://docs.google.com/forms/d/e/1FAIpQLSeLxjPK6Fq95bnVIe17dkadmPDC-1FLGIM2Fku0EMDALyq_4A/viewform?usp=sf_link" class="underline text-blue-600 font-medium" target="_blank">Meditation class registration form</a>',
     'register_step4' => 'Send the receipt to the Admin (via the Zalo icon at the bottom right) to receive your account and Zoom link.',
     'register_support' => '<b>Support/Zalo:</b> <a href="https://zalo.me/0839269501" target="_blank" class="underline">0839 269 501</a>',
+    'home_docs_prayer' => 'Prayers',
+    'home_docs_chant' => 'Chanting Books',
+    'home_docs_reference' => 'Reference Books',
 ];
