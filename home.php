@@ -117,7 +117,6 @@ require 'config.php';
       font-size: 1.3rem;
       font-weight: 500;
     }
-    #docs-item:hover #docs-menu { display:block !important; }
     /* Docs dropdown colors */
     #docs-menu {
       background-color: #ffffff;
@@ -296,6 +295,21 @@ require 'config.php';
     document.getElementById('register-modal').onclick = function(e) {
       if(e.target === this) this.classList.add('hidden');
     };
+
+    // ---- Docs dropdown ----
+    const docsToggle = document.getElementById('docs-toggle');
+    const docsMenu = document.getElementById('docs-menu');
+    docsToggle.onclick = function(e) {
+      e.preventDefault();
+      docsMenu.classList.toggle('hidden');
+    };
+    document.addEventListener('click', function(e) {
+      if (!docsMenu.classList.contains('hidden') &&
+          !docsMenu.contains(e.target) &&
+          !docsToggle.contains(e.target)) {
+        docsMenu.classList.add('hidden');
+      }
+    });
 
 
 
