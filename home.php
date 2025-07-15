@@ -122,8 +122,8 @@ require 'config.php';
 
 <body class="overflow-x-hidden">
   <!-- Thanh header trong suốt hoàn toàn -->
-  <header class="w-full fixed top-0 left-0 z-10 header-bar">
-    <div class="max-w-7xl mx-auto px-6 w-full flex flex-col">
+  <header class="w-full fixed top-0 left-0 z-10 header-bar h-16">
+    <div class="max-w-7xl mx-auto px-6 w-full flex items-center justify-between h-full">
         <div class="flex items-center justify-between w-full">
             <a href="home.php" class="flex items-center gap-2 text-xl text-white font-semibold">
                 <img src="logoNama.png" alt="NamaHealing logo" class="w-8 h-8" />
