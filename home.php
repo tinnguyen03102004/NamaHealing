@@ -148,8 +148,7 @@ require 'config.php';
     </div>
   </header>
 
-  <div class="h-14"></div>
-
+ 
   <!-- ============ HERO ============ -->
   <main class="hero">
     <div class="title-wrapper">
