@@ -65,4 +65,5 @@ require_once __DIR__ . '/i18n.php';
       </div>
     </div>
   </header>
-  <div class="h-20 sm:h-16"></div> <!-- Đệm để tránh header che nội dung -->
+  <!-- Spacer to prevent the header from overlapping content -->
+  <div class="h-24 sm:h-20"></div>
