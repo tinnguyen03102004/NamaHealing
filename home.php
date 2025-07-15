@@ -69,7 +69,7 @@ require 'config.php';
       color:#fff;
       text-shadow: 0 4px 22px #26505044, 0 1px 0 #fff9;
     }
-    .main-nav ul{
+    .main-nav > ul{
       list-style:none;
       display:flex;
       gap:2.3rem;
@@ -94,14 +94,14 @@ require 'config.php';
     }
     @media (max-width:800px){
       .site-title{font-size:2.6rem;}
-      .main-nav ul{gap:1.25rem;}
+      .main-nav > ul{gap:1.25rem;}
       .title-wrapper{padding-top:8vh;}
     }
     @media (max-width:550px){
       .site-title{font-size:1.9rem;}
       .subtitle{font-size:0.85rem; letter-spacing:.15em;}
       .title-wrapper{padding-top:14vh;}
-      .main-nav ul{flex-direction:column; gap:1rem;}
+      .main-nav > ul{flex-direction:column; gap:1rem;}
       .main-nav a{display:block; padding:0.5rem 1rem;}
     }
     /* Header */
@@ -116,19 +116,6 @@ require 'config.php';
       font-family: serif !important;
       font-size: 1.3rem;
       font-weight: 500;
-    }
-    /* Docs dropdown colors */
-    #docs-menu {
-      background-color: #ffffff;
-      color: #000000;
-    }
-    #docs-menu a:hover { background-color: #f3f4f6; }
-    @media (prefers-color-scheme: dark) {
-      #docs-menu {
-        background-color: #1f2937;
-        color: #f9fafb;
-      }
-      #docs-menu a:hover { background-color: #374151; }
     }
   </style>
 </head>
@@ -177,7 +164,7 @@ require 'config.php';
               <a href="#" class="cursor-pointer">
                 <?= __('home_nav_docs') ?>
               </a>
-              <ul id="docs-menu" class="absolute left-0 top-full mt-1 hidden group-hover:block rounded shadow-md whitespace-nowrap">
+              <ul class="absolute left-0 top-full mt-1 hidden group-hover:block bg-slate-800 text-white rounded shadow-md whitespace-nowrap z-20">
                 <li><a href="docs/prayers.php" class="block px-3 py-1 hover:bg-gray-100"><?= __('home_docs_prayer') ?></a></li>
                 <li><a href="docs/chanting.php" class="block px-3 py-1 hover:bg-gray-100"><?= __('home_docs_chant') ?></a></li>
                 <li><a href="docs/reference.php" class="block px-3 py-1 hover:bg-gray-100"><?= __('home_docs_reference') ?></a></li>
