@@ -1,29 +1,19 @@
 <?php
 // home.php – trang chủ NAMA HEALING
 require 'config.php';
+$pageTitle = 'NAMA HEALING – Home';
+$metaDescription = 'NamaHealing - thiền chữa lành và cân bằng tinh thần.';
+include 'header.php';
 ?>
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NAMA HEALING – Home</title>
 
-  <!-- TailwindCSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
-
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Montserrat', sans-serif;
-      overflow-x: hidden;   /* Ngăn scroll ngang */
-      box-sizing: border-box;
-    }
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+    overflow-x: hidden;   /* Ngăn scroll ngang */
+    box-sizing: border-box;
+  }
     .hero {
       position: relative;
       min-height: 100vh;
@@ -118,65 +108,34 @@ require 'config.php';
       font-weight: 500;
     }
   </style>
-</head>
 
-<body class="overflow-x-hidden">
-  <!-- Thanh header trong suốt hoàn toàn -->
-  <header class="w-full fixed top-0 left-0 z-10 header-bar">
-    <div class="max-w-7xl mx-auto px-6 w-full flex flex-col">
-        <div class="flex items-center justify-between w-full">
-            <a href="home.php" class="flex items-center gap-2 text-xl text-white font-semibold">
-                <img src="logoNama.png" alt="NamaHealing logo" class="w-8 h-8" />
-                <span class="logo-text">NamaHealing</span>
+<!-- ============ HERO ============ -->
+<main class="hero">
+  <div class="title-wrapper">
+      <p class="subtitle">VO TRONG NGHIA</p>
+      <h1 class="site-title font-semibold">NAMA HEALING</h1>
+      <nav class="main-nav" aria-label="Điều hướng chính">
+        <ul>
+          <li><a href="home.php"><?= __('home_nav_home') ?></a></li>
+          <li><a href="#" id="open-class-modal"><?= __('home_nav_class') ?></a></li>
+          <li><a href="#" id="open-register-modal"><?= __('home_nav_register') ?></a></li>
+          <li><a href="articles.php"><?= __('home_nav_articles') ?></a></li>
+          <li><a href="videos.php"><?= __('home_nav_videos') ?></a></li>
+          <li class="relative group">
+            <a href="#" class="cursor-pointer">
+              <?= __('home_nav_docs') ?>
             </a>
-            <div class="flex items-center gap-3 sm:gap-6">
-                <a href="login.php" class="text-base px-4 py-2 min-h-[40px] rounded-full border border-white/40 hover:bg-white hover:text-black transition flex items-center justify-center">
-                    <?= __('login_button') ?>
-                </a>
-                <span class="hidden sm:block">
-                  <a href="?lang=vi" class="text-sm <?= ($_SESSION['lang'] ?? 'vi') === 'vi' ? 'font-bold' : '' ?>"><?= __('language_vi') ?></a>
-                  |
-                  <a href="?lang=en" class="text-sm <?= ($_SESSION['lang'] ?? 'vi') === 'en' ? 'font-bold' : '' ?>"><?= __('language_en') ?></a>
-                </span>
-            </div>
-        </div>
-        <div class="block sm:hidden text-center mt-1">
-            <a href="?lang=vi" class="text-sm <?= ($_SESSION['lang'] ?? 'vi') === 'vi' ? 'font-bold' : '' ?>"><?= __('language_vi') ?></a>
-            |
-            <a href="?lang=en" class="text-sm <?= ($_SESSION['lang'] ?? 'vi') === 'en' ? 'font-bold' : '' ?>"><?= __('language_en') ?></a>
-        </div>
-    </div>
-  </header>
-
-  <div class="h-14"></div>
-
-  <!-- ============ HERO ============ -->
-  <main class="hero">
-    <div class="title-wrapper">
-        <p class="subtitle">VO TRONG NGHIA</p>
-        <h1 class="site-title font-semibold">NAMA HEALING</h1>
-        <nav class="main-nav" aria-label="Điều hướng chính">
-          <ul>
-            <li><a href="home.php"><?= __('home_nav_home') ?></a></li>
-            <li><a href="#" id="open-class-modal"><?= __('home_nav_class') ?></a></li>
-            <li><a href="#" id="open-register-modal"><?= __('home_nav_register') ?></a></li>
-            <li><a href="articles.php"><?= __('home_nav_articles') ?></a></li>
-            <li><a href="videos.php"><?= __('home_nav_videos') ?></a></li>
-            <li class="relative group">
-              <a href="#" class="cursor-pointer">
-                <?= __('home_nav_docs') ?>
-              </a>
-              <ul class="absolute left-0 top-full mt-1 hidden group-hover:block bg-slate-800 text-white rounded shadow-md whitespace-nowrap z-20">
-                <li><a href="docs/prayers.php" class="block px-3 py-1 hover:bg-gray-100"><?= __('home_docs_prayer') ?></a></li>
-                <li><a href="docs/chanting.php" class="block px-3 py-1 hover:bg-gray-100"><?= __('home_docs_chant') ?></a></li>
-                <li><a href="docs/reference.php" class="block px-3 py-1 hover:bg-gray-100"><?= __('home_docs_reference') ?></a></li>
-              </ul>
-            </li>
-            <li><a href="https://zalo.me/0839269501" target="_blank" rel="noopener"><?= __('home_nav_contact') ?></a></li>
-          </ul>
-        </nav>
-    </div>
-  </main>
+            <ul class="absolute left-0 top-full mt-1 hidden group-hover:block bg-slate-800 text-white rounded shadow-md whitespace-nowrap z-20">
+              <li><a href="docs/prayers.php" class="block px-3 py-1 hover:bg-gray-100"><?= __('home_docs_prayer') ?></a></li>
+              <li><a href="docs/chanting.php" class="block px-3 py-1 hover:bg-gray-100"><?= __('home_docs_chant') ?></a></li>
+              <li><a href="docs/reference.php" class="block px-3 py-1 hover:bg-gray-100"><?= __('home_docs_reference') ?></a></li>
+            </ul>
+          </li>
+          <li><a href="https://zalo.me/0839269501" target="_blank" rel="noopener"><?= __('home_nav_contact') ?></a></li>
+  </ul>
+      </nav>
+  </div>
+</main>
 
   <!-- Modal: Giới thiệu Lớp học & Võ Trọng Nghĩa -->
   <div id="class-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 hidden">
@@ -299,5 +258,3 @@ require 'config.php';
   </script>
 
   <?php include 'footer.php'; ?>
-</body>
-</html>
