@@ -173,9 +173,9 @@ require 'config.php';
             <li><a href="#" id="open-register-modal"><?= __('home_nav_register') ?></a></li>
             <li><a href="articles.php"><?= __('home_nav_articles') ?></a></li>
             <li><a href="videos.php"><?= __('home_nav_videos') ?></a></li>
-            <li id="docs-item" class="relative">
-              <a href="#" id="docs-toggle"><?= __('home_nav_docs') ?></a>
-              <ul id="docs-menu" class="absolute left-0 hidden rounded shadow-md mt-1 whitespace-nowrap">
+            <li class="relative group">
+              <a href="#"><?= __('home_nav_docs') ?></a>
+              <ul id="docs-menu" class="absolute left-0 hidden group-hover:block rounded shadow-md mt-1 whitespace-nowrap">
                 <li><a href="docs/prayers.php" class="block px-3 py-1 hover:bg-gray-100"><?= __('home_docs_prayer') ?></a></li>
                 <li><a href="docs/chanting.php" class="block px-3 py-1 hover:bg-gray-100"><?= __('home_docs_chant') ?></a></li>
                 <li><a href="docs/reference.php" class="block px-3 py-1 hover:bg-gray-100"><?= __('home_docs_reference') ?></a></li>
@@ -296,20 +296,6 @@ require 'config.php';
       if(e.target === this) this.classList.add('hidden');
     };
 
-    // ---- Docs dropdown ----
-    const docsToggle = document.getElementById('docs-toggle');
-    const docsMenu = document.getElementById('docs-menu');
-    docsToggle.onclick = function(e) {
-      e.preventDefault();
-      docsMenu.classList.toggle('hidden');
-    };
-    document.addEventListener('click', function(e) {
-      if (!docsMenu.classList.contains('hidden') &&
-          !docsMenu.contains(e.target) &&
-          !docsToggle.contains(e.target)) {
-        docsMenu.classList.add('hidden');
-      }
-    });
 
 
 
