@@ -101,4 +101,7 @@ return [
     'home_docs_prayer' => 'Bài Kinh',
     'home_docs_chant' => 'Sách Kinh Tụng',
     'home_docs_reference' => 'Sách Tham Khảo',
+    'chatbot' => 'Chatbot',
+    'chatbot_placeholder' => 'Nhập câu hỏi của bạn…',
+    'chatbot_send' => 'Gửi',
 ];

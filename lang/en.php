@@ -101,4 +101,7 @@ return [
     'home_docs_prayer' => 'Prayers',
     'home_docs_chant' => 'Chanting Books',
     'home_docs_reference' => 'Reference Books',
+    'chatbot' => 'Chatbot',
+    'chatbot_placeholder' => 'Type your question…',
+    'chatbot_send' => 'Send',
 ];
