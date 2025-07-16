@@ -4,6 +4,8 @@
   <?= sprintf(__('footer_message'), date('Y')) ?>
 </footer>
 
+<!-- Chatbot FAB đặt ngay trên nút Zalo -->
+<div id="chatbot-fab" title="<?= __('chatbot') ?>" tabindex="0" aria-label="<?= __('chatbot') ?>">🤖</div>
 <!-- Zalo FAB góc phải dưới -->
 <div id="zalo-fab" title="Zalo tư vấn" tabindex="0" aria-label="Zalo tư vấn"></div>
 
@@ -19,6 +21,27 @@
 
 <!-- CSS Zalo FAB chỉ riêng cho footer -->
 <style>
+  #chatbot-fab {
+    position: fixed;
+    right: 25px;
+    bottom: 95px;
+    z-index: 9999;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: #9dcfc3;
+    color: #285F57;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,.18);
+    cursor: pointer;
+    transition: box-shadow .2s;
+  }
+  #chatbot-fab:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,.22);
+  }
   #zalo-fab {
     position: fixed;
     right: 25px;
@@ -80,6 +103,11 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    const chat = document.getElementById('chatbot-fab');
+    if (chat) {
+      chat.onclick = () => { window.location.href = 'chatbot.php'; };
+      chat.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') chat.click(); };
+    }
     const fab = document.getElementById('zalo-fab');
     const box = document.getElementById('zalo-branch');
     fab.onclick = e => { box.classList.toggle('show'); e.stopPropagation(); };

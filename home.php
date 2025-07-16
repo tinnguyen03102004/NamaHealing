@@ -156,7 +156,6 @@ require 'config.php';
         <h1 class="site-title font-semibold">NAMA HEALING</h1>
         <nav class="main-nav" aria-label="Điều hướng chính">
           <ul>
-            <li><a href="home.php"><?= __('home_nav_home') ?></a></li>
             <li><a href="#" id="open-class-modal"><?= __('home_nav_class') ?></a></li>
             <li><a href="#" id="open-register-modal"><?= __('home_nav_register') ?></a></li>
             <li><a href="articles.php"><?= __('home_nav_articles') ?></a></li>

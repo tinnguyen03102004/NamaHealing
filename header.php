@@ -34,8 +34,8 @@ require_once __DIR__ . '/i18n.php';
 </head>
 <body class="bg-[#f9fafb] text-[#374151]">
   <!-- Header bar -->
-  <header class="w-full fixed top-0 left-0 z-10 header-bar backdrop-blur bg-transparent">
-    <div class="max-w-7xl mx-auto px-6 w-full flex flex-col">
+  <header class="w-full fixed top-0 left-0 z-10 header-bar h-16">
+    <div class="max-w-7xl mx-auto px-6 w-full flex items-center justify-between h-full">
       <div class="flex items-center justify-between w-full">
         <a href="home.php" class="flex items-center gap-2 text-xl text-[#374151] logo-text">
           <img src="logoNama.png" alt="NamaHealing logo" class="w-8 h-8" />
