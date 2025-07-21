@@ -2,4 +2,10 @@
 
 ## Chatbot Feature
 
-The chatbot uses the OpenAI API. Set an environment variable `OPENAI_API_KEY` with your API key before using `chatbot.php` or `chatbot_api.php`.
+The chatbot uses the OpenAI API. You can place your API key in a `.env` file:
+
+```
+OPENAI_API_KEY=sk-proj-...
+```
+
+The key will be loaded automatically by `config.php` when using `chatbot.php` or `chatbot_api.php`.
