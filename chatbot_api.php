@@ -11,6 +11,12 @@ if ($message !== '') {
     $history[] = ['role' => 'user', 'content' => $message];
     $apiKey = getenv('OPENAI_API_KEY');
 
+    if (empty($apiKey)) {
+        header('Content-Type: application/json');
+        echo json_encode(['error' => 'Missing API key']);
+        exit;
+    }
+
     $payload = json_encode([
         'model' => 'gpt-3.5-turbo',
         'messages' => $history
@@ -27,6 +33,12 @@ if ($message !== '') {
         CURLOPT_POSTFIELDS => $payload,
     ]);
     $response = curl_exec($ch);
+    if ($response === false) {
+        curl_close($ch);
+        header('Content-Type: application/json');
+        echo json_encode(['error' => 'Request failed']);
+        exit;
+    }
     curl_close($ch);
 
     $reply = '';
