@@ -38,7 +38,11 @@ async function sendMessage() {
   });
   if (res.ok) {
     const data = await res.json();
-    if (data.reply) appendMessage('assistant', data.reply);
+    if (data.reply) {
+      appendMessage('assistant', data.reply);
+    } else if (data.error) {
+      appendMessage('assistant', data.error);
+    }
   } else {
     appendMessage('assistant', 'Error');
   }
