@@ -166,7 +166,7 @@
       if (!msg) return;
       appendMessage('user', msg);
       input.value = '';
-      const res = await fetch('/chatbot_api.php', {
+      const res = await fetch('/chatgptapi.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: msg })
