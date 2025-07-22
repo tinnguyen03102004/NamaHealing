@@ -11,7 +11,7 @@
   <div class="chat-header flex items-center justify-between bg-[#9dcfc3] text-[#285F57] px-4 py-2">
     <div class="flex items-center gap-2">
       <img src="logoNama.png" alt="Bot" class="w-8 h-8 rounded-full">
-      <span class="font-semibold">Nama Bot</span>
+      <span class="font-semibold">NamaHealing Bot</span>
     </div>
     <button id="chatbot-close" class="text-2xl leading-none">&times;</button>
   </div>
@@ -142,7 +142,7 @@
 </style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
+  function initChatbotPopup() {
     const chatFab = document.getElementById('chatbot-fab');
     const popup = document.getElementById('chatbot-popup');
     const closeBtn = document.getElementById('chatbot-close');
@@ -197,7 +197,13 @@
     zaloBox.onclick = e => e.stopPropagation();
     document.addEventListener('click', () => zaloBox.classList.remove('show'));
     fab.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') fab.click(); };
-  });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initChatbotPopup);
+  } else {
+    initChatbotPopup();
+  }
 </script>
 </body>
 </html>
