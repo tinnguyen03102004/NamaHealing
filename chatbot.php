@@ -19,7 +19,8 @@ function appendMessage(role, text) {
   const div = document.createElement('div');
   div.className = role === 'user' ? 'text-right' : 'text-left';
   const span = document.createElement('span');
-  span.className = 'inline-block px-3 py-2 rounded-lg ' + (role === 'user' ? 'bg-teal-100 text-gray-700' : 'bg-gray-100 text-gray-700');
+  span.className = 'inline-block px-3 py-2 rounded-lg whitespace-pre-wrap ' +
+    (role === 'user' ? 'bg-teal-100 text-gray-700' : 'bg-gray-100 text-gray-700');
   span.textContent = text;
   div.appendChild(span);
   box.appendChild(div);

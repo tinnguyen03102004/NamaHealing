@@ -117,6 +117,9 @@
 .whitespace-nowrap {
   white-space: nowrap;
 }
+.whitespace-pre-wrap {
+  white-space: pre-wrap;
+}
 .text-\[\#285F57\] {
   color: #285F57;
 }
