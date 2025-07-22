@@ -9,7 +9,7 @@ $message = trim($input['message'] ?? '');
 
 if ($message !== '') {
     $history[] = ['role' => 'user', 'content' => $message];
-    $apiKey = getenv('OPENAI_API_KEY');
+   $apiKey = !empty($_ENV['OPENAI_API_KEY']) ? $_ENV['OPENAI_API_KEY'] : getenv('OPENAI_API_KEY');
 
     if (empty($apiKey)) {
         header('Content-Type: application/json');
