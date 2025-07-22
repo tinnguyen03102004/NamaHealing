@@ -132,11 +132,24 @@ function initChatbot() {
     const div = document.createElement('div');
     div.className = role === 'user' ? 'text-right' : 'text-left';
     const span = document.createElement('span');
-    span.className = 'inline-block px-3 py-2 rounded-lg ' + (role === 'user' ? 'bg-teal-100 text-gray-700' : 'bg-gray-100 text-gray-700');
+    span.className = 'inline-block px-3 py-2 rounded-lg whitespace-pre-wrap ' +
+      (role === 'user' ? 'bg-teal-100 text-gray-700' : 'bg-gray-100 text-gray-700');
     span.textContent = text;
     div.appendChild(span);
     box.appendChild(div);
     box.scrollTop = box.scrollHeight;
+  }
+
+  function showTyping() {
+    const div = document.createElement('div');
+    div.className = 'text-left';
+    const span = document.createElement('span');
+    span.className = 'inline-block px-3 py-2 rounded-lg bg-gray-100 text-gray-700 opacity-70 animate-pulse';
+    span.textContent = '...';
+    div.appendChild(span);
+    box.appendChild(div);
+    box.scrollTop = box.scrollHeight;
+    return div;
   }
 
   async function sendMessage() {
@@ -144,11 +157,13 @@ function initChatbot() {
     if (!msg) return;
     append('user', msg);
     input.value = '';
+    const typing = showTyping();
     const res = await fetch('chatgptapi.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: msg })
     });
+    typing.remove();
     if (res.ok) {
       const data = await res.json();
       if (data.reply) append('assistant', data.reply);

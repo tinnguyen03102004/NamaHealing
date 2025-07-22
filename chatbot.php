@@ -26,17 +26,32 @@ function appendMessage(role, text) {
   box.appendChild(div);
   box.scrollTop = box.scrollHeight;
 }
+
+function showTyping() {
+  const box = document.getElementById('chat-box');
+  const div = document.createElement('div');
+  div.className = 'text-left';
+  const span = document.createElement('span');
+  span.className = 'inline-block px-3 py-2 rounded-lg bg-gray-100 text-gray-700 opacity-70 animate-pulse';
+  span.textContent = '...';
+  div.appendChild(span);
+  box.appendChild(div);
+  box.scrollTop = box.scrollHeight;
+  return div;
+}
 async function sendMessage() {
   const input = document.getElementById('chat-input');
   const msg = input.value.trim();
   if (!msg) return;
   appendMessage('user', msg);
   input.value = '';
+  const typing = showTyping();
   const res = await fetch('chatgptapi.php', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ message: msg })
   });
+  typing.remove();
   if (res.ok) {
     const data = await res.json();
     if (data.reply) {
