@@ -297,19 +297,6 @@ require 'config.php';
       if(e.target === this) this.classList.add('hidden');
     };
 
-    // ---- Modal Lớp thiền Ukraine ----
-    document.getElementById('open-ukraine-modal').onclick = function(e) {
-      e.preventDefault();
-      document.getElementById('ukraine-modal').classList.remove('hidden');
-    };
-    document.getElementById('close-ukraine-modal').onclick = closeUkraine;
-    document.getElementById('dismiss-ukraine-modal').onclick = closeUkraine;
-    document.getElementById('ukraine-modal').onclick = function(e) {
-      if(e.target === this) closeUkraine();
-    };
-    function closeUkraine() {
-      document.getElementById('ukraine-modal').classList.add('hidden');
-    }
     // Chuyển từ modal giới thiệu sang modal đăng ký khi bấm nút "Tôi muốn đăng ký ngay"
     document.getElementById('to-register').onclick = function(e) {
       e.preventDefault();

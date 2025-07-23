@@ -66,7 +66,6 @@ return [
     'home_nav_home' => 'Home',
     'home_nav_class' => 'Classes',
     'home_nav_register' => 'Register',
-    'home_nav_ukraine' => 'Ukraine Meditation',
     'home_nav_articles' => 'Articles',
     'home_nav_videos' => 'Videos',
     'home_nav_docs' => 'Docs',
@@ -105,7 +104,4 @@ return [
     'chatbot' => 'Chatbot',
     'chatbot_placeholder' => 'Type your question…',
     'chatbot_send' => 'Send',
-    'ukraine_title' => 'Free meditation class for Ukrainians affected by war',
-    'ukraine_desc' => 'Originating from deep empathy and understanding of the wounds that war leaves behind, Dr. Võ Trọng Nghĩa has decided to open a special meditation class exclusively for the Ukrainian people and soldiers. With the desire to share, accompany and help ease the pain and loss they endure, this class is a safe space where each person can rediscover peace, emotional support and profound healing. Under the caring guidance of the teacher, the class aims to bring hope, resilience and renewed energy so everyone can overcome challenges and gradually rebuild life from the devastation of war.\nIf you are interested in joining this special online class, please contact Zalo 0839269501 for further guidance and support.',
-    'close' => 'Close',
 ];
