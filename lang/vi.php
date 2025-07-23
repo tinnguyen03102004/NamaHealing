@@ -53,6 +53,7 @@ return [
     'create_student' => 'Tạo học viên',
     'language_vi' => 'Tiếng Việt',
     'language_en' => 'English',
+    'language_uk' => 'Tiếng Ukraine',
     'out_of_sessions' => 'Bạn đã hết buổi học!',
     'contact_admin' => 'Vui lòng liên hệ admin để được cộng thêm buổi nhé.',
     'renew_zalo1' => 'Đăng ký gia hạn qua Zalo Nguyễn Hữu Tín 0839269501',

@@ -134,16 +134,20 @@ require 'config.php';
                     <?= __('login_button') ?>
                 </a>
                 <span class="hidden sm:block">
-                  <a href="?lang=vi" class="text-sm <?= ($_SESSION['lang'] ?? 'vi') === 'vi' ? 'font-bold' : '' ?>"><?= __('language_vi') ?></a>
+                  <a href="?lang=vi" class="text-sm <?= ($_SESSION['lang'] ?? 'vi') === 'vi' ? 'font-bold' : '' ?>" aria-label="<?= __('language_vi') ?>">🇻🇳</a>
                   |
-                  <a href="?lang=en" class="text-sm <?= ($_SESSION['lang'] ?? 'vi') === 'en' ? 'font-bold' : '' ?>"><?= __('language_en') ?></a>
+                  <a href="?lang=en" class="text-sm <?= ($_SESSION['lang'] ?? 'vi') === 'en' ? 'font-bold' : '' ?>" aria-label="<?= __('language_en') ?>">🇬🇧</a>
+                  |
+                  <a href="?lang=uk" class="text-sm <?= ($_SESSION['lang'] ?? 'vi') === 'uk' ? 'font-bold' : '' ?>" aria-label="<?= __('language_uk') ?>">🇺🇦</a>
                 </span>
             </div>
         </div>
         <div class="block sm:hidden text-center mt-1">
-            <a href="?lang=vi" class="text-sm <?= ($_SESSION['lang'] ?? 'vi') === 'vi' ? 'font-bold' : '' ?>"><?= __('language_vi') ?></a>
+            <a href="?lang=vi" class="text-sm <?= ($_SESSION['lang'] ?? 'vi') === 'vi' ? 'font-bold' : '' ?>" aria-label="<?= __('language_vi') ?>">🇻🇳</a>
             |
-            <a href="?lang=en" class="text-sm <?= ($_SESSION['lang'] ?? 'vi') === 'en' ? 'font-bold' : '' ?>"><?= __('language_en') ?></a>
+            <a href="?lang=en" class="text-sm <?= ($_SESSION['lang'] ?? 'vi') === 'en' ? 'font-bold' : '' ?>" aria-label="<?= __('language_en') ?>">🇬🇧</a>
+            |
+            <a href="?lang=uk" class="text-sm <?= ($_SESSION['lang'] ?? 'vi') === 'uk' ? 'font-bold' : '' ?>" aria-label="<?= __('language_uk') ?>">🇺🇦</a>
         </div>
     </div>
   </header>
