@@ -157,7 +157,6 @@ require 'config.php';
         <nav class="main-nav" aria-label="Điều hướng chính">
           <ul>
             <li><a href="#" id="open-class-modal"><?= __('home_nav_class') ?></a></li>
-            <li><a href="#" id="open-ukraine-modal"><?= __('home_nav_ukraine') ?></a></li>
             <li><a href="#" id="open-register-modal"><?= __('home_nav_register') ?></a></li>
             <li><a href="articles.php"><?= __('home_nav_articles') ?></a></li>
             <li><a href="videos.php"><?= __('home_nav_videos') ?></a></li>
@@ -261,17 +260,6 @@ require 'config.php';
     </div>
   </div>
 
-  <!-- Modal: Ukraine Meditation Class -->
-  <div id="ukraine-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 hidden">
-    <div class="bg-emerald-800 text-white rounded-2xl w-[96vw] max-w-lg p-5 sm:p-6 relative shadow-2xl overflow-y-auto max-h-[95vh] text-center">
-      <button id="close-ukraine-modal" class="absolute top-2 right-2 w-9 h-9 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-xl font-bold">&times;</button>
-      <h2 class="text-xl sm:text-2xl font-semibold mb-4"><?= __('ukraine_title') ?></h2>
-      <p class="whitespace-pre-line leading-relaxed"><?= __('ukraine_desc') ?></p>
-      <button id="dismiss-ukraine-modal" class="mt-6 px-6 py-2 min-h-[38px] rounded-full bg-white/20 hover:bg-white/30 text-white font-medium"><?= __('close') ?></button>
-    </div>
-  </div>
-
-  <!-- Modal script -->
   <script>
     // ---- Modal Giới thiệu lớp học ----
     document.getElementById('open-class-modal').onclick = function(e) {
