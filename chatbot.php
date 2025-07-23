@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
     log.scrollTop = log.scrollHeight;
 
     try {
-      const res  = await fetch('chatgetapi.php', {
+      const res  = await fetch('chatgptapi.php', {
         method: 'POST',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: 'message=' + encodeURIComponent(text)
