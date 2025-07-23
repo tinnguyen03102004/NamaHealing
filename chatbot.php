@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const userWrap = document.createElement('div');
     userWrap.className = 'flex justify-end mb-2';
     const userBubble = document.createElement('div');
-    userBubble.className = 'bg-blue-500 text-white px-4 py-2 rounded-lg max-w-xs break-words';
+    userBubble.className = 'bg-blue-500 text-white px-4 py-2 rounded-lg max-w-xs break-words whitespace-pre-wrap';
     userBubble.textContent = text;
     userWrap.appendChild(userBubble);
     log.appendChild(userWrap);
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const botWrap = document.createElement('div');
         botWrap.className = 'flex justify-start mb-2';
         const botBubble = document.createElement('div');
-        botBubble.className = 'bg-gray-200 px-4 py-2 rounded-lg max-w-xs break-words';
+        botBubble.className = 'bg-gray-200 px-4 py-2 rounded-lg max-w-xs break-words whitespace-pre-wrap';
         botBubble.textContent = reply;
         botWrap.appendChild(botBubble);
         log.appendChild(botWrap);
