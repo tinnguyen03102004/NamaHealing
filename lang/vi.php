@@ -66,6 +66,7 @@ return [
     'home_nav_home' => 'Home',
     'home_nav_class' => 'Lớp học',
     'home_nav_register' => 'Đăng ký',
+    'home_nav_ukraine' => 'Lớp thiền Ukraine',
     'home_nav_articles' => 'Bài viết',
     'home_nav_videos' => 'Video',
     'home_nav_docs' => 'Tài Liệu',
@@ -104,4 +105,7 @@ return [
     'chatbot' => 'Chatbot',
     'chatbot_placeholder' => 'Nhập câu hỏi của bạn…',
     'chatbot_send' => 'Gửi',
+    'ukraine_title' => 'Lớp thiền miễn phí dành cho người Ukraine bị ảnh hưởng bởi chiến tranh',
+    'ukraine_desc' => 'Xuất phát từ sự đồng cảm sâu sắc và thấu hiểu những vết thương lòng mà chiến tranh để lại, Tiến sĩ Võ Trọng Nghĩa đã quyết định mở một lớp thiền đặc biệt dành riêng cho người dân cũng như những người lính Ukraine. Với mong muốn được san sẻ, đồng hành và góp phần xoa dịu những nỗi đau, mất mát mà họ đang phải gánh chịu, lớp học này là một không gian an toàn, nơi mỗi người có thể tìm lại sự bình yên, sự nâng đỡ tinh thần và quá trình chữa lành từ sâu bên trong. Dưới sự hướng dẫn ân cần và tận tâm của thầy, lớp thiền mong muốn mang lại hy vọng, sự vững chãi và năng lượng mới để mỗi người vượt qua thử thách, từng bước kiến tạo lại cuộc sống từ những đổ vỡ của chiến tranh.\nAi quan tâm và muốn đăng ký tham gia lớp thiền online đặc biệt này, xin vui lòng liên hệ Zalo 0839269501 để được hướng dẫn và hỗ trợ thêm.',
+    'close' => 'Đóng',
 ];
