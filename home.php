@@ -165,6 +165,9 @@ require 'config.php';
             <li><a href="articles.php"><?= __('home_nav_articles') ?></a></li>
             <li><a href="videos.php"><?= __('home_nav_videos') ?></a></li>
             <li><a href="chatbot.php"><?= __("chatbot") ?></a></li>
+            <li>
+              <a href="ukraine_meditation.php" class="px-4 py-1 rounded-full bg-yellow-400 text-black font-semibold hover:bg-yellow-500">Lớp Thiền Ukraine</a>
+            </li>
             <li class="relative group">
               <a href="#" class="cursor-pointer">
                 <?= __('home_nav_docs') ?>
