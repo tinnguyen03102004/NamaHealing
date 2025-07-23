@@ -6,7 +6,12 @@ if (session_status() === PHP_SESSION_NONE) {
 function load_lang(): void {
     $lang = $_SESSION['lang'] ?? 'vi';
     if (isset($_GET['lang'])) {
-        $lang = $_GET['lang'] === 'en' ? 'en' : 'vi';
+        $chosen = $_GET['lang'];
+        if (in_array($chosen, ['vi', 'en', 'uk'], true)) {
+            $lang = $chosen;
+        } else {
+            $lang = 'vi';
+        }
         $_SESSION['lang'] = $lang;
     }
     $file = __DIR__ . "/lang/$lang.php";

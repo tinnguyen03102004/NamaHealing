@@ -53,6 +53,7 @@ return [
     'create_student' => 'Create student',
     'language_vi' => 'Vietnamese',
     'language_en' => 'English',
+    'language_uk' => 'Ukrainian',
     'out_of_sessions' => 'You have no sessions left!',
     'contact_admin' => 'Please contact admin to add more sessions.',
     'renew_zalo1' => 'Renew via Zalo Nguyễn Hữu Tín 0839269501',
