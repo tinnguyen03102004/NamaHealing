@@ -45,15 +45,31 @@ document.addEventListener('DOMContentLoaded', () => {
     log.scrollTop = log.scrollHeight;
 
     try {
-      const res  = await fetch('chatgetapi.php', {
+      const res = await fetch('chatgptapi.php', {
         method: 'POST',
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body: 'message=' + encodeURIComponent(text)
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text })
       });
-      const html = await res.text();
       indicator.remove();
-      log.insertAdjacentHTML('beforeend', html);
-      log.scrollTop = log.scrollHeight;
+      if (res.ok) {
+        const data = await res.json();
+        const reply = data.reply || data.error || 'Error';
+        const botWrap = document.createElement('div');
+        botWrap.className = 'flex justify-start mb-2';
+        const botBubble = document.createElement('div');
+        botBubble.className = 'bg-gray-200 px-4 py-2 rounded-lg max-w-xs break-words';
+        botBubble.textContent = reply;
+        botWrap.appendChild(botBubble);
+        log.appendChild(botWrap);
+        log.scrollTop = log.scrollHeight;
+      } else {
+        const errorWrap = document.createElement('div');
+        errorWrap.className = 'flex justify-start mb-2';
+        errorWrap.innerHTML =
+          '<div class="bg-gray-200 text-red-600 px-4 py-2 rounded-lg">Error</div>';
+        log.appendChild(errorWrap);
+        log.scrollTop = log.scrollHeight;
+      }
     } catch (err) {
       indicator.remove();
       const errorWrap = document.createElement('div');
