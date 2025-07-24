@@ -101,8 +101,8 @@ require 'config.php';
       .site-title{font-size:1.9rem;}
       .subtitle{font-size:0.85rem; letter-spacing:.15em;}
       .title-wrapper{padding-top:14vh;}
-      .main-nav > ul{flex-direction:column; gap:1rem;}
-      .main-nav a{display:block; padding:0.5rem 1rem;}
+      .main-nav > ul{flex-direction:column; align-items:center; gap:1rem;}
+      .main-nav a{display:block; padding:0.5rem 0; width:100%; text-align:center;}
     }
     /* Header */
     .header-bar {
@@ -112,11 +112,15 @@ require 'config.php';
       -webkit-backdrop-filter: blur(10px);
       box-shadow: none;
     }
-    .logo-text {
-      font-family: serif !important;
-      font-size: 1.3rem;
-      font-weight: 500;
-    }
+      .logo-text {
+        font-family: serif !important;
+        font-size: 1.3rem;
+        font-weight: 500;
+      }
+      .cta-button {
+        text-align: center;
+        margin-bottom: 1rem;
+      }
 
   </style>
 </head>
@@ -160,8 +164,10 @@ require 'config.php';
         <p class="subtitle">VO TRONG NGHIA</p>
         <h1 class="site-title font-semibold">NAMA HEALING</h1>
         <nav class="main-nav" aria-label="Điều hướng chính">
+          <div class="cta-button sm:hidden">
+            <a href="ukraine_meditation.php" class="px-4 py-2 rounded-full bg-emerald-600 text-white font-semibold hover:bg-emerald-700">Lớp Thiền Ukraine</a>
+          </div>
           <ul>
-            <li class="sm:hidden"><a href="ukraine_meditation.php" class="px-4 py-2 rounded-full bg-emerald-600 text-white font-semibold hover:bg-emerald-700">Lớp Thiền Ukraine</a></li>
             <li><a href="#" id="open-class-modal"><?= __('home_nav_class') ?></a></li>
             <li><a href="#" id="open-register-modal"><?= __('home_nav_register') ?></a></li>
             <li><a href="articles.php"><?= __('home_nav_articles') ?></a></li>
