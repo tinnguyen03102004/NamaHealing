@@ -163,10 +163,10 @@ require 'config.php';
     <div class="title-wrapper">
         <p class="subtitle">VO TRONG NGHIA</p>
         <h1 class="site-title font-semibold">NAMA HEALING</h1>
+        <div class="cta-button mt-4">
+          <a href="ukraine_meditation.php" class="px-4 py-2 rounded-full bg-emerald-600 text-white font-semibold hover:bg-emerald-700">Lớp Thiền Ukraine</a>
+        </div>
         <nav class="main-nav" aria-label="Điều hướng chính">
-          <div class="cta-button sm:hidden">
-            <a href="ukraine_meditation.php" class="px-4 py-2 rounded-full bg-emerald-600 text-white font-semibold hover:bg-emerald-700">Lớp Thiền Ukraine</a>
-          </div>
           <ul>
             <li><a href="#" id="open-class-modal"><?= __('home_nav_class') ?></a></li>
             <li><a href="#" id="open-register-modal"><?= __('home_nav_register') ?></a></li>
@@ -186,9 +186,6 @@ require 'config.php';
             <li><a href="https://zalo.me/0839269501" target="_blank" rel="noopener"><?= __('home_nav_contact') ?></a></li>
           </ul>
         </nav>
-        <div class="hidden sm:block mt-4 text-center">
-          <a href="ukraine_meditation.php" class="px-4 py-2 rounded-full bg-emerald-600 text-white font-semibold hover:bg-emerald-700">Lớp Thiền Ukraine</a>
-        </div>
     </div>
   </main>
 
