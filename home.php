@@ -50,7 +50,6 @@ require 'config.php';
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding-top: 12vh;
     }
     .subtitle{
       font-family:'Montserrat',sans-serif;
@@ -119,7 +118,7 @@ require 'config.php';
       }
       .cta-button {
         text-align: center;
-        margin-bottom: 1rem;
+        margin-bottom: 2.5rem;
       }
 
   </style>
