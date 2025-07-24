@@ -118,14 +118,6 @@ require 'config.php';
       font-weight: 500;
     }
 
-    @media (max-width: 640px) {
-      #ukraine-class-btn {
-        position: fixed;
-        right: 24px;
-        bottom: 166px;
-        z-index: 9999;
-      }
-    }
   </style>
 </head>
 
@@ -169,6 +161,7 @@ require 'config.php';
         <h1 class="site-title font-semibold">NAMA HEALING</h1>
         <nav class="main-nav" aria-label="Điều hướng chính">
           <ul>
+            <li class="sm:hidden"><a href="ukraine_meditation.php" class="px-4 py-2 rounded-full bg-emerald-600 text-white font-semibold hover:bg-emerald-700">Lớp Thiền Ukraine</a></li>
             <li><a href="#" id="open-class-modal"><?= __('home_nav_class') ?></a></li>
             <li><a href="#" id="open-register-modal"><?= __('home_nav_register') ?></a></li>
             <li><a href="articles.php"><?= __('home_nav_articles') ?></a></li>
@@ -187,8 +180,8 @@ require 'config.php';
             <li><a href="https://zalo.me/0839269501" target="_blank" rel="noopener"><?= __('home_nav_contact') ?></a></li>
           </ul>
         </nav>
-        <div class="mt-4 text-center">
-          <a id="ukraine-class-btn" href="ukraine_meditation.php" class="px-4 py-2 rounded-full bg-emerald-600 text-white font-semibold hover:bg-emerald-700">Lớp Thiền Ukraine</a>
+        <div class="hidden sm:block mt-4 text-center">
+          <a href="ukraine_meditation.php" class="px-4 py-2 rounded-full bg-emerald-600 text-white font-semibold hover:bg-emerald-700">Lớp Thiền Ukraine</a>
         </div>
     </div>
   </main>
