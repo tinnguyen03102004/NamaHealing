@@ -3,7 +3,7 @@ require 'config.php';
 $pageTitle = __('chatbot');
 include 'header.php';
 ?>
-<main class="flex flex-col items-center min-h-screen px-4 pt-4 pb-40">
+<main class="flex flex-col items-center min-h-screen px-4 pt-4 pb-20">
   <h1 class="text-2xl font-semibold mb-4 w-full max-w-lg text-center">
     <?= __('chatbot') ?>
   </h1>
@@ -12,7 +12,7 @@ include 'header.php';
       NamaHealing Bot - Tư vấn lớp thiền chữ đựa
     </div>
   </div>
-  <form id="chat-form" class="fixed bottom-20 left-1/2 -translate-x-1/2 w-full max-w-lg flex gap-2 px-4 py-3 bg-white border-t border-gray-200">
+  <form id="chat-form" class="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-lg flex gap-2 px-4 py-3 bg-white border-t border-gray-200 shadow-md z-10" style="padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));">
     <input id="chat-input" type="text" class="flex-grow border border-gray-300 rounded-full px-3 py-2 focus:outline-none" placeholder="<?= __('chatbot_placeholder') ?>" />
     <button type="submit" class="px-4 py-2 bg-[#9dcfc3] text-[#285F57] rounded-full hover:bg-[#76a89e]">
       <?= __('chatbot_send') ?>
