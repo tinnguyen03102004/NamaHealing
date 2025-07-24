@@ -1,5 +1,8 @@
-<?php if (session_status() === PHP_SESSION_NONE) session_start(); ?>
-<?php require_once __DIR__ . '/i18n.php'; ?>
+<?php
+if (session_status() === PHP_SESSION_NONE) session_start();
+require_once __DIR__ . '/i18n.php';
+$isChatbotPage = basename($_SERVER['PHP_SELF']) === 'chatbot.php';
+?>
 <footer class="site-footer text-center w-full">
   <?= sprintf(__('footer_message'), date('Y')) ?>
 </footer>
@@ -115,6 +118,13 @@
     transition: transform .3s ease, opacity .3s ease;
   }
   .chatbot-popup.show { display: flex; opacity: 1; transform: translateY(0); }
+<?php if ($isChatbotPage): ?>
+  @media (max-width: 640px) {
+    #chatbot-fab,
+    #zalo-fab,
+    #zalo-branch { display: none !important; }
+  }
+<?php endif; ?>
 </style>
 <script>
 function initChatbot() {
