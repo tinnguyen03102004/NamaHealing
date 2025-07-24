@@ -117,6 +117,15 @@ require 'config.php';
       font-size: 1.3rem;
       font-weight: 500;
     }
+
+    @media (max-width: 640px) {
+      #ukraine-class-btn {
+        position: fixed;
+        right: 24px;
+        bottom: 166px;
+        z-index: 9999;
+      }
+    }
   </style>
 </head>
 
@@ -179,7 +188,7 @@ require 'config.php';
           </ul>
         </nav>
         <div class="mt-4 text-center">
-          <a href="ukraine_meditation.php" class="px-4 py-2 rounded-full bg-emerald-600 text-white font-semibold hover:bg-emerald-700">Lớp Thiền Ukraine</a>
+          <a id="ukraine-class-btn" href="ukraine_meditation.php" class="px-4 py-2 rounded-full bg-emerald-600 text-white font-semibold hover:bg-emerald-700">Lớp Thiền Ukraine</a>
         </div>
     </div>
   </main>
