@@ -34,7 +34,7 @@ if ($message !== '') {
     }
 
     $payload = json_encode([
-        'model' => 'ft:gpt-4o-mini-2024-07-18:vtn-architects::BwR4fBbw',
+        'model' => 'ft:gpt-4o-mini-2024-07-18:vtn-architects::BwmlNlD6',
         'messages' => $history
     ]);
 
