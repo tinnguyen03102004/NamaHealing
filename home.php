@@ -165,9 +165,6 @@ require 'config.php';
             <li><a href="articles.php"><?= __('home_nav_articles') ?></a></li>
             <li><a href="videos.php"><?= __('home_nav_videos') ?></a></li>
             <li><a href="chatbot.php"><?= __("chatbot") ?></a></li>
-            <li>
-              <a href="ukraine_meditation.php" class="px-4 py-1 rounded-full bg-yellow-400 text-black font-semibold hover:bg-yellow-500">Lớp Thiền Ukraine</a>
-            </li>
             <li class="relative group">
               <a href="#" class="cursor-pointer">
                 <?= __('home_nav_docs') ?>
@@ -181,6 +178,9 @@ require 'config.php';
             <li><a href="https://zalo.me/0839269501" target="_blank" rel="noopener"><?= __('home_nav_contact') ?></a></li>
           </ul>
         </nav>
+        <div class="mt-4 text-center">
+          <a href="ukraine_meditation.php" class="px-4 py-2 rounded-full bg-emerald-600 text-white font-semibold hover:bg-emerald-700">Lớp Thiền Ukraine</a>
+        </div>
     </div>
   </main>
 
