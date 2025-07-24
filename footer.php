@@ -1,6 +1,6 @@
 <?php if (session_status() === PHP_SESSION_NONE) session_start(); ?>
 <?php require_once __DIR__ . '/i18n.php'; ?>
-<footer class="site-footer fixed bottom-0 left-0 w-full bg-white z-0 py-3 text-center" style="padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));">
+<footer class="site-footer text-center w-full">
   <?= sprintf(__('footer_message'), date('Y')) ?>
 </footer>
 
@@ -99,7 +99,7 @@
   .chatbot-popup {
     position: fixed;
     right: 24px;
-    bottom: calc(58px + 24px);
+    bottom: 90px;
     z-index: 10000;
     width: calc(100% - 40px);
     max-width: 370px;
@@ -113,7 +113,6 @@
     opacity: 0;
     transform: translateY(20px);
     transition: transform .3s ease, opacity .3s ease;
-    padding-bottom: env(safe-area-inset-bottom);
   }
   .chatbot-popup.show { display: flex; opacity: 1; transform: translateY(0); }
 </style>
