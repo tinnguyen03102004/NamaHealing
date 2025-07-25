@@ -19,4 +19,10 @@ class RoutesTest extends TestCase {
     public function testVideosPage() {
         $this->assertEquals(200, $this->request('/videos.php'));
     }
+
+    public function testDocsPages() {
+        $this->assertEquals(200, $this->request('/docs/prayers.php'));
+        $this->assertEquals(200, $this->request('/docs/chanting.php'));
+        $this->assertEquals(200, $this->request('/docs/reference.php'));
+    }
 }
