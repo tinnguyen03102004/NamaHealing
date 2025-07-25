@@ -106,4 +106,7 @@ return [
     'chatbot' => 'Chatbot',
     'chatbot_placeholder' => 'Nhập câu hỏi của bạn…',
     'chatbot_send' => 'Gửi',
+    'home_nav_ukraine' => 'Lớp thiền Ukraine',
+    'ukraine_class_title' => 'Lớp thiền hỗ trợ người Ukraine',
+    'ukraine_class_desc' => 'Lớp thiền online miễn phí cho người Ukraine bị ảnh hưởng bởi chiến tranh. Liên hệ chúng tôi để biết thêm chi tiết.',
 ];

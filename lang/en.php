@@ -106,4 +106,7 @@ return [
     'chatbot' => 'Chatbot',
     'chatbot_placeholder' => 'Type your question…',
     'chatbot_send' => 'Send',
+    'home_nav_ukraine' => 'Ukraine Class',
+    'ukraine_class_title' => 'Meditation for Ukrainians',
+    'ukraine_class_desc' => 'Free online meditation sessions supporting Ukrainians affected by the war. Contact us for details.',
 ];

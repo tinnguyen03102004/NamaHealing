@@ -171,6 +171,7 @@ require 'config.php';
             <li><a href="#" id="open-register-modal"><?= __('home_nav_register') ?></a></li>
             <li><a href="articles.php"><?= __('home_nav_articles') ?></a></li>
             <li><a href="videos.php"><?= __('home_nav_videos') ?></a></li>
+            <li><a href="docs/ukraine.php"><?= __('home_nav_ukraine') ?></a></li>
             <li><a href="chatbot.php"><?= __("chatbot") ?></a></li>
             <li class="relative group">
               <a href="#" class="cursor-pointer">
