@@ -1,5 +1,10 @@
 {
-    "prayers": [],
+    "prayers": [
+        {
+            "title": "KINH NHẬT TỤNG",
+            "link": "https:\/\/theravada.vn\/wp-content\/uploads\/2020\/09\/KINH-NHAT-TUNG-pa-auk.pdf"
+        }
+    ],
     "chanting": [],
     "reference": []
 }
