@@ -12,9 +12,9 @@ require_once 'header.php';
         <p class="mb-6 text-center text-lg leading-relaxed">Xuất phát từ sự đồng cảm sâu sắc và thấu hiểu những vết thương lòng mà chiến tranh để lại, Tiến sĩ Võ Trọng Nghĩa đã quyết định mở một lớp thiền đặc biệt dành riêng cho người dân cũng như những người lính Ukraine. Với mong muốn được san sẻ, đồng hành và góp phần xoa dịu những nỗi đau, mất mát mà họ đang phải gánh chịu, lớp học này là một không gian an toàn, nơi mỗi người có thể tìm lại sự bình yên, sự nâng đỡ tinh thần và quá trình chữa lành từ sâu bên trong. Dưới sự hướng dẫn ân cần và tận tâm của thầy, lớp thiền mong muốn mang lại hy vọng, sự vững chãi và năng lượng mới để mỗi người vượt qua thử thách, từng bước kiến tạo lại cuộc sống từ những đổ vỡ của chiến tranh.</p>
         <div id="form-message" class="hidden mb-4 text-center text-sm"></div>
         <form id="google-form" class="space-y-4" novalidate>
-            <input type="text" name="name" id="name" required placeholder="Họ và Tên" class="w-full border px-3 py-2 rounded text-black" />
-            <input type="email" name="email" id="email" required placeholder="Email" class="w-full border px-3 py-2 rounded text-black" />
-            <input type="text" name="state" id="state" required placeholder="Tình trạng tâm lí hiện tại" class="w-full border px-3 py-2 rounded text-black" />
+            <input type="text" name="name" id="name" required placeholder="<?= __('placeholder_name') ?>" class="w-full border px-3 py-2 rounded text-black" />
+            <input type="email" name="email" id="email" required placeholder="<?= __('placeholder_email') ?>" class="w-full border px-3 py-2 rounded text-black" />
+            <textarea name="state" id="state" rows="3" required placeholder="<?= __('placeholder_state') ?>" class="w-full border px-3 py-2 rounded text-black"></textarea>
             <button type="submit" id="submit-button" class="w-full bg-indigo-600 text-white py-2 rounded">Gửi đăng ký</button>
         </form>
     </div>
