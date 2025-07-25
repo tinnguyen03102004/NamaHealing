@@ -1,18 +1,21 @@
 <?php
-$pageTitle = 'Lớp Thiền Ukraine';
+$pageTitle = 'Lớp thiền hỗ trợ tâm lí đặc biệt dành riêng cho người Ukraine bị ảnh hưởng bởi chiến tranh';
 require_once 'header.php';
 ?>
 
-<div class="max-w-xl mx-auto p-6">
-    <h1 class="text-3xl font-bold text-center mb-4">Lớp Thiền Ukraine</h1>
-    <p class="mb-6 text-center">Nếu bạn đang ở Ukraine và muốn tham gia lớp thiền của NamaHealing, hãy để lại thông tin liên hệ của bạn bên dưới.</p>
-
-    <div id="form-message" class="hidden mb-4 text-center text-sm"></div>
-    <form id="google-form" class="space-y-4" novalidate>
-        <input type="text" name="name" id="name" required placeholder="Họ và Tên" class="w-full border px-3 py-2 rounded" />
-        <input type="email" name="email" id="email" required placeholder="Email" class="w-full border px-3 py-2 rounded" />
-        <button type="submit" id="submit-button" class="w-full bg-indigo-600 text-white py-2 rounded">Gửi đăng ký</button>
-    </form>
+<div class="relative bg-cover bg-center py-12" style="background-image: url('ukraine.png');">
+    <div class="absolute inset-0 bg-black/50"></div>
+    <div class="relative max-w-xl mx-auto p-6 text-white">
+        <h1 class="text-3xl font-bold text-center mb-4 font-heading">Lớp thiền hỗ trợ tâm lí đặc biệt dành riêng cho người Ukraine bị ảnh hưởng bởi chiến tranh</h1>
+        <p class="mb-6 text-center text-lg leading-relaxed">Xuất phát từ sự đồng cảm sâu sắc và thấu hiểu những vết thương lòng mà chiến tranh để lại, Tiến sĩ Võ Trọng Nghĩa đã quyết định mở một lớp thiền đặc biệt dành riêng cho người dân cũng như những người lính Ukraine. Với mong muốn được san sẻ, đồng hành và góp phần xoa dịu những nỗi đau, mất mát mà họ đang phải gánh chịu, lớp học này là một không gian an toàn, nơi mỗi người có thể tìm lại sự bình yên, sự nâng đỡ tinh thần và quá trình chữa lành từ sâu bên trong. Dưới sự hướng dẫn ân cần và tận tâm của thầy, lớp thiền mong muốn mang lại hy vọng, sự vững chãi và năng lượng mới để mỗi người vượt qua thử thách, từng bước kiến tạo lại cuộc sống từ những đổ vỡ của chiến tranh.</p>
+        <div id="form-message" class="hidden mb-4 text-center text-sm"></div>
+        <form id="google-form" class="space-y-4" novalidate>
+            <input type="text" name="name" id="name" required placeholder="Họ và Tên" class="w-full border px-3 py-2 rounded text-black" />
+            <input type="email" name="email" id="email" required placeholder="Email" class="w-full border px-3 py-2 rounded text-black" />
+            <input type="text" name="state" id="state" required placeholder="Tình trạng tâm lí hiện tại" class="w-full border px-3 py-2 rounded text-black" />
+            <button type="submit" id="submit-button" class="w-full bg-indigo-600 text-white py-2 rounded">Gửi đăng ký</button>
+        </form>
+    </div>
 </div>
 
 <script>
@@ -30,6 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const formActionURL = 'YOUR_FORM_ACTION_URL'; // Dán link action của Google Form vào đây
         const entryIdName = 'ENTRY_ID_FOR_NAME';       // Dán entry ID cho trường "Họ Tên"
         const entryIdEmail = 'ENTRY_ID_FOR_EMAIL';     // Dán entry ID cho trường "Email"
+        const entryIdState = 'ENTRY_ID_FOR_STATE';     // Dán entry ID cho trường "Tình trạng tâm lí hiện tại"
         // --- KẾT THÚC PHẦN THAY THẾ ---
 
         // Kiểm tra xem người dùng đã điền thông tin chưa
@@ -41,11 +45,13 @@ document.addEventListener('DOMContentLoaded', function() {
         // Lấy dữ liệu từ form trên web
         const nameValue = document.getElementById('name').value;
         const emailValue = document.getElementById('email').value;
+        const stateValue = document.getElementById('state').value;
         
         // Tạo đối tượng FormData để gửi đi
         const formData = new FormData();
         formData.append(entryIdName, nameValue);
         formData.append(entryIdEmail, emailValue);
+        formData.append(entryIdState, stateValue);
         
         // Vô hiệu hóa nút gửi và hiển thị trạng thái đang gửi
         submitButton.disabled = true;
