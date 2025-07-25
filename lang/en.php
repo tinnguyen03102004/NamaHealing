@@ -44,6 +44,7 @@ return [
     'confirm_delete_student' => 'Delete this student?',
     'confirm_delete_article' => 'Delete this article?',
     'confirm_delete_video' => 'Delete this video?',
+    'confirm_delete_doc' => 'Delete this document?',
     'no_student' => 'Student not found!',
     'back' => 'Back',
     'class_login' => 'Login',

@@ -44,6 +44,7 @@ return [
     'confirm_delete_student' => 'Видалити цього студента?',
     'confirm_delete_article' => 'Видалити цю статтю?',
     'confirm_delete_video' => 'Видалити це відео?',
+    'confirm_delete_doc' => 'Видалити цей документ?',
     'no_student' => 'Студента не знайдено!',
     'back' => 'Назад',
     'class_login' => 'Вхід',

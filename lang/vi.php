@@ -44,6 +44,7 @@ return [
     'confirm_delete_student' => 'Xóa học viên này?',
     'confirm_delete_article' => 'Xóa bài viết này?',
     'confirm_delete_video' => 'Xóa video này?',
+    'confirm_delete_doc' => 'Xóa tài liệu này?',
     'no_student' => 'Không tìm thấy học viên!',
     'back' => 'Quay lại',
     'class_login' => 'Đăng nhập',

@@ -23,4 +23,14 @@ class DataTest extends TestCase {
         }
         $this->assertTrue(true);
     }
+
+    public function testDocsData() {
+        $data = $this->read(__DIR__ . '/../data/docs.json');
+        if (empty($data)) {
+            $this->markTestSkipped('No docs');
+        }
+        $this->assertArrayHasKey('prayers', $data);
+        $this->assertArrayHasKey('chanting', $data);
+        $this->assertArrayHasKey('reference', $data);
+    }
 }

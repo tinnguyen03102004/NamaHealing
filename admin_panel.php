@@ -17,17 +17,21 @@ if (!is_dir($dataDir)) {
 }
 $articlesFile = $dataDir . '/articles.json';
 $videosFile = $dataDir . '/videos.json';
+$docsFile    = $dataDir . '/docs.json';
 
 if (!file_exists($articlesFile)) file_put_contents($articlesFile, '[]');
-if (!file_exists($videosFile)) file_put_contents($videosFile, '[]');
+if (!file_exists($videosFile))  file_put_contents($videosFile, '[]');
+if (!file_exists($docsFile))    file_put_contents($docsFile, json_encode(['prayers'=>[], 'chanting'=>[], 'reference'=>[]], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
 $success = '';
 $error = '';
 
 $articles = json_decode(file_get_contents($articlesFile), true);
-$videos = json_decode(file_get_contents($videosFile), true);
-if (!is_array($articles)) $articles = [];
-if (!is_array($videos)) $videos = [];
+$videos   = json_decode(file_get_contents($videosFile), true);
+$docs     = json_decode(file_get_contents($docsFile), true);
+$articles = is_array($articles) ? $articles : [];
+$videos   = is_array($videos)   ? $videos   : [];
+$docs = is_array($docs) && isset($docs['prayers']) ? $docs : ['prayers'=>[], 'chanting'=>[], 'reference'=>[]];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
@@ -146,6 +150,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             file_put_contents($videosFile, json_encode($videos, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
             $success = 'Đã cập nhật thứ tự';
         }
+    } elseif ($action === 'add_doc') {
+        $cat = $_POST['category'] ?? '';
+        $title = trim($_POST['doc_title'] ?? '');
+        $link = trim($_POST['doc_link'] ?? '');
+        if (!in_array($cat, ['prayers','chanting','reference'], true) || $title === '' || $link === '') {
+            $error = 'Thiếu thông tin tài liệu';
+        } else {
+            $docs[$cat][] = ['title' => $title, 'link' => $link];
+            file_put_contents($docsFile, json_encode($docs, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+            $success = 'Đã thêm tài liệu';
+        }
+    } elseif ($action === 'delete_doc') {
+        $cat = $_POST['category'] ?? '';
+        $idx = intval($_POST['index'] ?? -1);
+        if (isset($docs[$cat][$idx])) {
+            array_splice($docs[$cat], $idx, 1);
+            file_put_contents($docsFile, json_encode($docs, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+            $success = 'Đã xóa tài liệu';
+        }
+    } elseif ($action === 'move_doc') {
+        $cat = $_POST['category'] ?? '';
+        $idx = intval($_POST['index'] ?? -1);
+        $dir = $_POST['dir'] ?? '';
+        if ($dir === 'up' && $idx > 0 && isset($docs[$cat][$idx])) {
+            [$docs[$cat][$idx - 1], $docs[$cat][$idx]] = [$docs[$cat][$idx], $docs[$cat][$idx - 1]];
+            file_put_contents($docsFile, json_encode($docs, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+            $success = 'Đã cập nhật thứ tự';
+        } elseif ($dir === 'down' && $idx >= 0 && $idx < count($docs[$cat]) - 1 && isset($docs[$cat][$idx])) {
+            [$docs[$cat][$idx], $docs[$cat][$idx + 1]] = [$docs[$cat][$idx + 1], $docs[$cat][$idx]];
+            file_put_contents($docsFile, json_encode($docs, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+            $success = 'Đã cập nhật thứ tự';
+        }
     }
 }
 ?>
@@ -184,6 +220,150 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <input type="url" name="youtube_url" class="w-full border rounded px-3 py-2" placeholder="URL YouTube" required>
       <button type="submit" class="bg-teal-600 text-white px-4 py-2 rounded">Thêm video</button>
     </form>
+  </section>
+
+  <section class="mb-8">
+    <h2 class="text-xl font-semibold mb-4">Thêm tài liệu</h2>
+    <form method="post" class="space-y-4">
+      <input type="hidden" name="action" value="add_doc">
+      <select name="category" class="w-full border rounded px-3 py-2" required>
+        <option value="prayers"><?= __('home_docs_prayer') ?></option>
+        <option value="chanting"><?= __('home_docs_chant') ?></option>
+        <option value="reference"><?= __('home_docs_reference') ?></option>
+      </select>
+      <input type="text" name="doc_title" class="w-full border rounded px-3 py-2" placeholder="Tiêu đề" required>
+      <input type="url" name="doc_link" class="w-full border rounded px-3 py-2" placeholder="Link tài liệu" required>
+      <button type="submit" class="bg-teal-600 text-white px-4 py-2 rounded">Thêm tài liệu</button>
+    </form>
+  </section>
+
+  <section class="mb-8">
+    <h2 class="text-xl font-semibold mb-2"><?= __('home_docs_prayer') ?></h2>
+    <?php if (empty($docs['prayers'])): ?>
+      <p class="text-gray-500">Chưa có tài liệu.</p>
+    <?php else: ?>
+      <ul class="divide-y">
+        <?php foreach ($docs['prayers'] as $i => $d): ?>
+          <li class="py-2 flex justify-between items-center">
+            <a href="<?= htmlspecialchars($d['link']) ?>" target="_blank" class="hover:underline">
+              <?= htmlspecialchars($d['title']) ?>
+            </a>
+            <div class="flex items-center gap-2">
+              <?php if ($i > 0): ?>
+                <form method="post">
+                  <input type="hidden" name="action" value="move_doc">
+                  <input type="hidden" name="category" value="prayers">
+                  <input type="hidden" name="dir" value="up">
+                  <input type="hidden" name="index" value="<?= $i ?>">
+                  <button class="px-2">&#8593;</button>
+                </form>
+              <?php endif; ?>
+              <?php if ($i < count($docs['prayers']) - 1): ?>
+                <form method="post">
+                  <input type="hidden" name="action" value="move_doc">
+                  <input type="hidden" name="category" value="prayers">
+                  <input type="hidden" name="dir" value="down">
+                  <input type="hidden" name="index" value="<?= $i ?>">
+                  <button class="px-2">&#8595;</button>
+                </form>
+              <?php endif; ?>
+              <form method="post" onsubmit="return confirm('<?= __('confirm_delete_doc') ?>');">
+                <input type="hidden" name="action" value="delete_doc">
+                <input type="hidden" name="category" value="prayers">
+                <input type="hidden" name="index" value="<?= $i ?>">
+                <button class="text-red-600 hover:underline"><?= __('delete') ?></button>
+              </form>
+            </div>
+          </li>
+        <?php endforeach; ?>
+      </ul>
+    <?php endif; ?>
+  </section>
+
+  <section class="mb-8">
+    <h2 class="text-xl font-semibold mb-2"><?= __('home_docs_chant') ?></h2>
+    <?php if (empty($docs['chanting'])): ?>
+      <p class="text-gray-500">Chưa có tài liệu.</p>
+    <?php else: ?>
+      <ul class="divide-y">
+        <?php foreach ($docs['chanting'] as $i => $d): ?>
+          <li class="py-2 flex justify-between items-center">
+            <a href="<?= htmlspecialchars($d['link']) ?>" target="_blank" class="hover:underline">
+              <?= htmlspecialchars($d['title']) ?>
+            </a>
+            <div class="flex items-center gap-2">
+              <?php if ($i > 0): ?>
+                <form method="post">
+                  <input type="hidden" name="action" value="move_doc">
+                  <input type="hidden" name="category" value="chanting">
+                  <input type="hidden" name="dir" value="up">
+                  <input type="hidden" name="index" value="<?= $i ?>">
+                  <button class="px-2">&#8593;</button>
+                </form>
+              <?php endif; ?>
+              <?php if ($i < count($docs['chanting']) - 1): ?>
+                <form method="post">
+                  <input type="hidden" name="action" value="move_doc">
+                  <input type="hidden" name="category" value="chanting">
+                  <input type="hidden" name="dir" value="down">
+                  <input type="hidden" name="index" value="<?= $i ?>">
+                  <button class="px-2">&#8595;</button>
+                </form>
+              <?php endif; ?>
+              <form method="post" onsubmit="return confirm('<?= __('confirm_delete_doc') ?>');">
+                <input type="hidden" name="action" value="delete_doc">
+                <input type="hidden" name="category" value="chanting">
+                <input type="hidden" name="index" value="<?= $i ?>">
+                <button class="text-red-600 hover:underline"><?= __('delete') ?></button>
+              </form>
+            </div>
+          </li>
+        <?php endforeach; ?>
+      </ul>
+    <?php endif; ?>
+  </section>
+
+  <section class="mb-8">
+    <h2 class="text-xl font-semibold mb-2"><?= __('home_docs_reference') ?></h2>
+    <?php if (empty($docs['reference'])): ?>
+      <p class="text-gray-500">Chưa có tài liệu.</p>
+    <?php else: ?>
+      <ul class="divide-y">
+        <?php foreach ($docs['reference'] as $i => $d): ?>
+          <li class="py-2 flex justify-between items-center">
+            <a href="<?= htmlspecialchars($d['link']) ?>" target="_blank" class="hover:underline">
+              <?= htmlspecialchars($d['title']) ?>
+            </a>
+            <div class="flex items-center gap-2">
+              <?php if ($i > 0): ?>
+                <form method="post">
+                  <input type="hidden" name="action" value="move_doc">
+                  <input type="hidden" name="category" value="reference">
+                  <input type="hidden" name="dir" value="up">
+                  <input type="hidden" name="index" value="<?= $i ?>">
+                  <button class="px-2">&#8593;</button>
+                </form>
+              <?php endif; ?>
+              <?php if ($i < count($docs['reference']) - 1): ?>
+                <form method="post">
+                  <input type="hidden" name="action" value="move_doc">
+                  <input type="hidden" name="category" value="reference">
+                  <input type="hidden" name="dir" value="down">
+                  <input type="hidden" name="index" value="<?= $i ?>">
+                  <button class="px-2">&#8595;</button>
+                </form>
+              <?php endif; ?>
+              <form method="post" onsubmit="return confirm('<?= __('confirm_delete_doc') ?>');">
+                <input type="hidden" name="action" value="delete_doc">
+                <input type="hidden" name="category" value="reference">
+                <input type="hidden" name="index" value="<?= $i ?>">
+                <button class="text-red-600 hover:underline"><?= __('delete') ?></button>
+              </form>
+            </div>
+          </li>
+        <?php endforeach; ?>
+      </ul>
+    <?php endif; ?>
   </section>
 
   <section class="mb-8">
