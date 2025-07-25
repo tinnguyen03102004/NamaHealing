@@ -127,7 +127,7 @@ require 'config.php';
 <body class="overflow-x-hidden">
   <!-- Thanh header trong suốt hoàn toàn -->
   <header class="w-full fixed top-0 left-0 z-10 header-bar h-16">
-    <div class="max-w-7xl mx-auto px-6 w-full flex items-center justify-between h-full">
+    <div class="max-w-7xl mx-auto px-6 w-full flex flex-col sm:flex-row items-center sm:justify-between h-full">
         <div class="flex items-center justify-between w-full">
             <a href="home.php" class="flex items-center gap-2 text-xl text-white font-semibold">
                 <img src="logoNama.png" alt="NamaHealing logo" class="w-8 h-8" />
@@ -146,7 +146,7 @@ require 'config.php';
                 </span>
             </div>
         </div>
-        <div class="block sm:hidden text-center mt-1">
+        <div class="sm:hidden w-full text-center mt-1">
             <a href="?lang=vi" class="text-sm country-code <?= ($_SESSION['lang'] ?? 'vi') === 'vi' ? 'font-bold' : '' ?>" aria-label="<?= __('language_vi') ?>">vn</a>
             |
             <a href="?lang=en" class="text-sm country-code <?= ($_SESSION['lang'] ?? 'vi') === 'en' ? 'font-bold' : '' ?>" aria-label="<?= __('language_en') ?>">en</a>
