@@ -22,7 +22,7 @@ $isChatbotPage = basename($_SERVER['PHP_SELF']) === 'chatbot.php';
   .zalo-fab {
     position: fixed;
     right: 24px;
-    bottom: 95px;
+    bottom: 24px;
     z-index: 9999;
     width: 58px;
     height: 58px;
@@ -40,7 +40,7 @@ $isChatbotPage = basename($_SERVER['PHP_SELF']) === 'chatbot.php';
     display: none;
     position: fixed;
     right: 94px;
-    bottom: 95px;
+    bottom: 24px;
     z-index: 10000;
     background: #fff;
     border-radius: 14px;
