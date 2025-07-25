@@ -1,12 +1,14 @@
 <?php
-$pageTitle = 'Lớp thiền hỗ trợ tâm lí đặc biệt dành riêng cho người Ukraine bị ảnh hưởng bởi chiến tranh';
+$pageTitle = 'Lớp Thiền Ukraine';
+$metaDescription = 'Đây là Lớp thiền đặc biệt miễn phí dành cho người Ukraine bị ảnh hưởng bởi chiến tranh';
 require_once 'header.php';
 ?>
 
 <div class="relative bg-cover bg-center py-12" style="background-image: url('ukraine.png');">
-    <div class="absolute inset-0 bg-black/50"></div>
+    <div class="absolute inset-0 bg-black/70"></div>
     <div class="relative max-w-xl mx-auto p-6 text-white">
-        <h1 class="text-3xl font-bold text-center mb-4 font-heading">Lớp thiền hỗ trợ tâm lí đặc biệt dành riêng cho người Ukraine bị ảnh hưởng bởi chiến tranh</h1>
+        <h1 class="text-3xl font-bold text-center mb-4 font-heading">Lớp Thiền Ukraine</h1>
+        <p class="mb-4 text-center text-lg">Đây là Lớp thiền đặc biệt miễn phí dành cho người Ukraine bị ảnh hưởng bởi chiến tranh.</p>
         <p class="mb-6 text-center text-lg leading-relaxed">Xuất phát từ sự đồng cảm sâu sắc và thấu hiểu những vết thương lòng mà chiến tranh để lại, Tiến sĩ Võ Trọng Nghĩa đã quyết định mở một lớp thiền đặc biệt dành riêng cho người dân cũng như những người lính Ukraine. Với mong muốn được san sẻ, đồng hành và góp phần xoa dịu những nỗi đau, mất mát mà họ đang phải gánh chịu, lớp học này là một không gian an toàn, nơi mỗi người có thể tìm lại sự bình yên, sự nâng đỡ tinh thần và quá trình chữa lành từ sâu bên trong. Dưới sự hướng dẫn ân cần và tận tâm của thầy, lớp thiền mong muốn mang lại hy vọng, sự vững chãi và năng lượng mới để mỗi người vượt qua thử thách, từng bước kiến tạo lại cuộc sống từ những đổ vỡ của chiến tranh.</p>
         <div id="form-message" class="hidden mb-4 text-center text-sm"></div>
         <form id="google-form" class="space-y-4" novalidate>
