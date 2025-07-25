@@ -199,31 +199,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <h2 class="text-xl font-semibold mb-4">Thêm bài viết</h2>
     <form method="post" enctype="multipart/form-data" id="article-form" class="space-y-4">
       <input type="hidden" name="action" value="add_article">
-      <input type="text" id="article-title" name="title" class="w-full border rounded px-3 py-2" placeholder="Tiêu đề" required>
-      <input type="url" id="article-link" name="link" class="w-full border rounded px-3 py-2" placeholder="Link bài viết" required>
-      <textarea id="article-desc" name="description" class="w-full border rounded px-3 py-2" placeholder="Mô tả"></textarea>
-      <input type="url" id="article-image" name="image" class="w-full border rounded px-3 py-2" placeholder="Ảnh bìa (tuỳ chọn)">
+      <input type="text" id="article-title" name="title" class="w-full border rounded px-3 py-2" placeholder="<?= __('placeholder_title') ?>" required>
+      <input type="url" id="article-link" name="link" class="w-full border rounded px-3 py-2" placeholder="<?= __('placeholder_article_link') ?>" required>
+      <textarea id="article-desc" name="description" class="w-full border rounded px-3 py-2" placeholder="<?= __('placeholder_description') ?>"></textarea>
+      <input type="url" id="article-image" name="image" class="w-full border rounded px-3 py-2" placeholder="<?= __('placeholder_image') ?>">
       <input type="file" id="thumbnail-upload" name="thumbnail" class="hidden">
       <p id="thumb-msg" class="text-red-600 text-sm hidden"><?= __('thumb_not_found') ?></p>
       <div class="flex gap-2">
-        <button type="button" id="fetch-meta" class="border px-4 py-2 rounded">Lấy dữ liệu</button>
-        <button type="submit" class="bg-teal-600 text-white px-4 py-2 rounded">Thêm bài viết</button>
+        <button type="button" id="fetch-meta" class="border px-4 py-2 rounded"><?= __('button_fetch') ?></button>
+        <button type="submit" class="bg-teal-600 text-white px-4 py-2 rounded"><?= __('button_add_article') ?></button>
       </div>
     </form>
   </section>
 
   <section class="mb-8">
-    <h2 class="text-xl font-semibold mb-4">Thêm video</h2>
+    <h2 class="text-xl font-semibold mb-4"><?= __('button_add_video') ?></h2>
     <form method="post" class="space-y-4">
       <input type="hidden" name="action" value="add_video">
-      <input type="text" name="video_title" class="w-full border rounded px-3 py-2" placeholder="Tiêu đề" required>
-      <input type="url" name="youtube_url" class="w-full border rounded px-3 py-2" placeholder="URL YouTube" required>
-      <button type="submit" class="bg-teal-600 text-white px-4 py-2 rounded">Thêm video</button>
+      <input type="text" name="video_title" class="w-full border rounded px-3 py-2" placeholder="<?= __('placeholder_title') ?>" required>
+      <input type="url" name="youtube_url" class="w-full border rounded px-3 py-2" placeholder="<?= __('placeholder_youtube') ?>" required>
+      <button type="submit" class="bg-teal-600 text-white px-4 py-2 rounded"><?= __('button_add_video') ?></button>
     </form>
   </section>
 
   <section class="mb-8">
-    <h2 class="text-xl font-semibold mb-4">Thêm tài liệu</h2>
+    <h2 class="text-xl font-semibold mb-4"><?= __('button_add_doc') ?></h2>
     <form method="post" class="space-y-4">
       <input type="hidden" name="action" value="add_doc">
       <select name="category" class="w-full border rounded px-3 py-2" required>
@@ -231,16 +231,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <option value="chanting"><?= __('home_docs_chant') ?></option>
         <option value="reference"><?= __('home_docs_reference') ?></option>
       </select>
-      <input type="text" name="doc_title" class="w-full border rounded px-3 py-2" placeholder="Tiêu đề" required>
-      <input type="url" name="doc_link" class="w-full border rounded px-3 py-2" placeholder="Link tài liệu" required>
-      <button type="submit" class="bg-teal-600 text-white px-4 py-2 rounded">Thêm tài liệu</button>
+      <input type="text" name="doc_title" class="w-full border rounded px-3 py-2" placeholder="<?= __('placeholder_title') ?>" required>
+      <input type="url" name="doc_link" class="w-full border rounded px-3 py-2" placeholder="<?= __('placeholder_doc_link') ?>" required>
+      <button type="submit" class="bg-teal-600 text-white px-4 py-2 rounded"><?= __('button_add_doc') ?></button>
     </form>
   </section>
 
   <section class="mb-8">
     <h2 class="text-xl font-semibold mb-2"><?= __('home_docs_prayer') ?></h2>
     <?php if (empty($docs['prayers'])): ?>
-      <p class="text-gray-500">Chưa có tài liệu.</p>
+      <p class="text-gray-500"><?= __('no_docs') ?></p>
     <?php else: ?>
       <ul class="divide-y">
         <?php foreach ($docs['prayers'] as $i => $d): ?>
@@ -283,7 +283,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <section class="mb-8">
     <h2 class="text-xl font-semibold mb-2"><?= __('home_docs_chant') ?></h2>
     <?php if (empty($docs['chanting'])): ?>
-      <p class="text-gray-500">Chưa có tài liệu.</p>
+      <p class="text-gray-500"><?= __('no_docs') ?></p>
     <?php else: ?>
       <ul class="divide-y">
         <?php foreach ($docs['chanting'] as $i => $d): ?>
@@ -326,7 +326,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <section class="mb-8">
     <h2 class="text-xl font-semibold mb-2"><?= __('home_docs_reference') ?></h2>
     <?php if (empty($docs['reference'])): ?>
-      <p class="text-gray-500">Chưa có tài liệu.</p>
+      <p class="text-gray-500"><?= __('no_docs') ?></p>
     <?php else: ?>
       <ul class="divide-y">
         <?php foreach ($docs['reference'] as $i => $d): ?>
@@ -369,7 +369,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <section class="mb-8">
     <h2 class="text-xl font-semibold mb-2">Danh sách bài viết</h2>
     <?php if (empty($articles)): ?>
-      <p class="text-gray-500">Chưa có bài viết nào.</p>
+      <p class="text-gray-500"><?= __('no_articles') ?></p>
     <?php else: ?>
       <ul class="divide-y">
         <?php foreach ($articles as $i => $a): ?>
@@ -407,7 +407,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <section>
     <h2 class="text-xl font-semibold mb-2">Danh sách video</h2>
     <?php if (empty($videos)): ?>
-      <p class="text-gray-500">Chưa có video nào.</p>
+      <p class="text-gray-500"><?= __('no_videos') ?></p>
     <?php else: ?>
       <ul class="divide-y">
         <?php foreach ($videos as $i => $v): ?>
