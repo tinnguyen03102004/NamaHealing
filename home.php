@@ -177,9 +177,9 @@ require 'config.php';
                 <?= __('home_nav_docs') ?>
               </a>
               <ul class="absolute left-0 top-full mt-1 hidden group-hover:block bg-slate-800 text-white rounded shadow-md whitespace-nowrap z-20">
-                <li><a href="docs/prayers.php" class="block px-3 py-1 hover:bg-gray-100"><?= __('home_docs_prayer') ?></a></li>
-                <li><a href="docs/chanting.php" class="block px-3 py-1 hover:bg-gray-100"><?= __('home_docs_chant') ?></a></li>
-                <li><a href="docs/reference.php" class="block px-3 py-1 hover:bg-gray-100"><?= __('home_docs_reference') ?></a></li>
+                <li><a href="prayers.php" class="block px-3 py-1 hover:bg-gray-100"><?= __('home_docs_prayer') ?></a></li>
+                <li><a href="chanting.php" class="block px-3 py-1 hover:bg-gray-100"><?= __('home_docs_chant') ?></a></li>
+                <li><a href="reference.php" class="block px-3 py-1 hover:bg-gray-100"><?= __('home_docs_reference') ?></a></li>
               </ul>
             </li>
             <li><a href="https://zalo.me/0839269501" target="_blank" rel="noopener"><?= __('home_nav_contact') ?></a></li>
