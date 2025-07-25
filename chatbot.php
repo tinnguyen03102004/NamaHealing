@@ -19,6 +19,18 @@ include 'header.php';
     </button>
   </form>
 </main>
+<style>
+  .typing { display:flex; gap:4px; }
+  .typing span {
+    width:6px; height:6px;
+    background:#6b7280;
+    border-radius:50%;
+    animation: bounce 1s infinite;
+  }
+  .typing span:nth-child(2) { animation-delay: .2s; }
+  .typing span:nth-child(3) { animation-delay: .4s; }
+  @keyframes bounce { 0%,80%,100%{transform:translateY(0);} 40%{transform:translateY(-6px);} }
+</style>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -55,14 +67,14 @@ document.addEventListener('DOMContentLoaded', () => {
     log.appendChild(userWrap);
     log.scrollTop = log.scrollHeight;
 
-    const indicator = document.createElement('div');
-    indicator.className = 'flex justify-start';
-    indicator.innerHTML =
-      `<div class="bg-gray-200 px-3 py-2 rounded-lg flex space-x-1">
-         <span class="h-2 w-2 bg-gray-500 rounded-full animate-[wave_1.2s_infinite]"></span>
-         <span class="h-2 w-2 bg-gray-500 rounded-full animate-[wave_1.2s_infinite] delay-200"></span>
-         <span class="h-2 w-2 bg-gray-500 rounded-full animate-[wave_1.2s_infinite] delay-400"></span>
-       </div>`;
+  const indicator = document.createElement('div');
+  indicator.className = 'flex justify-start';
+  indicator.innerHTML =
+    `<div class="bg-gray-200 px-3 py-2 rounded-lg">
+       <div class="typing">
+         <span></span><span></span><span></span>
+       </div>
+     </div>`;
     log.appendChild(indicator);
     log.scrollTop = log.scrollHeight;
 
