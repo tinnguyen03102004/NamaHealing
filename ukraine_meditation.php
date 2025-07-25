@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/i18n.php';
 $pageTitle = __('ukraine_title');
 $metaDescription = __('ukraine_meta_desc');
 require_once 'header.php';
