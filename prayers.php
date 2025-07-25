@@ -14,7 +14,7 @@ include 'header.php';
 <main class="max-w-3xl mx-auto px-4 py-6">
   <h1 class="text-2xl font-semibold mb-6"><?= __('home_docs_prayer') ?></h1>
   <?php if (empty($docs)): ?>
-    <p>Chưa có tài liệu.</p>
+    <p><?= __('no_docs') ?></p>
   <?php else: ?>
     <div class="grid gap-4 sm:grid-cols-2">
       <?php foreach ($docs as $d): ?>
