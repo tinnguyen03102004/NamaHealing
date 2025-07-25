@@ -32,9 +32,9 @@ require_once __DIR__ . '/i18n.php';
     }
   </style>
 </head>
-<body class="bg-[#f9fafb] text-[#374151] pt-16">
+<body class="bg-[#f9fafb] text-[#374151] pt-24 sm:pt-16">
   <!-- Header bar -->
-  <header class="w-full fixed top-0 left-0 z-10 header-bar h-16 bg-transparent backdrop-blur-[10px]">
+  <header class="w-full fixed top-0 left-0 z-10 header-bar py-4 sm:h-16 sm:py-0 bg-transparent backdrop-blur-[10px]">
     <div class="max-w-7xl mx-auto px-6 w-full flex flex-col sm:flex-row items-center sm:justify-between h-full">
       <div class="flex items-center justify-between w-full">
         <a href="home.php" class="flex items-center gap-2 text-xl text-[#374151] logo-text">
