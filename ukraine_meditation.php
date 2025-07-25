@@ -4,7 +4,7 @@ $metaDescription = 'Đây là Lớp thiền đặc biệt miễn phí dành cho 
 require_once 'header.php';
 ?>
 
-<div class="relative bg-cover bg-center py-12" style="background-image: url('ukraine.png');">
+<div class="relative bg-cover bg-center py-4" style="background-image: url('ukraine.png');">
     <div class="absolute inset-0 bg-black/70"></div>
     <div class="relative max-w-xl mx-auto p-6 text-white">
         <h1 class="text-3xl font-bold text-center mb-4 font-heading">Lớp Thiền Ukraine</h1>
