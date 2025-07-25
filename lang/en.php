@@ -122,4 +122,13 @@ return [
     'no_docs' => 'No documents yet.',
     'no_articles' => 'No articles yet.',
     'no_videos' => 'No videos yet.',
+    'ukraine_title' => 'Ukraine Meditation Class',
+    'ukraine_meta_desc' => 'This is a special free meditation class for Ukrainians affected by the war',
+    'ukraine_intro' => 'This is a special free meditation class for Ukrainians affected by the war.',
+    'ukraine_desc' => 'Born from deep empathy for the wounds of war, Dr. Vo Trong Nghia opened this class for Ukrainian civilians and soldiers. It offers a safe space to share and heal, hoping to bring peace, stability and new energy so everyone can rebuild their lives.',
+    'ukraine_submit' => 'Submit registration',
+    'ukraine_sending' => 'Submitting...',
+    'ukraine_success' => 'Your information has been submitted successfully.',
+    'ukraine_error' => 'An error occurred. Please try again.',
+    'ukraine_config_error' => 'Configuration error: please update the Google Form URL and entry IDs in ukraine_meditation.php',
 ];
