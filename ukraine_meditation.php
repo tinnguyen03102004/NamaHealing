@@ -33,10 +33,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // --- THAY THẾ THÔNG TIN CỦA BẠN VÀO ĐÂY ---
         // Hướng dẫn lấy các giá trị này có trong file Hướng dẫn.
-        const formActionURL = 'YOUR_FORM_ACTION_URL'; // Dán link action của Google Form vào đây
-        const entryIdName = 'ENTRY_ID_FOR_NAME';       // Dán entry ID cho trường "Họ Tên"
-        const entryIdEmail = 'ENTRY_ID_FOR_EMAIL';     // Dán entry ID cho trường "Email"
-        const entryIdState = 'ENTRY_ID_FOR_STATE';     // Dán entry ID cho trường "Tình trạng tâm lí hiện tại"
+        const formActionURL = 'https://docs.google.com/forms/u/2/d/e/1FAIpQLSdpq_JlCCBl4LZT5XNGAgh-Ff7o1JrfhYZQYYMj_MzyMXmhUA/formResponse';
+        const entryIdName  = 'entry.1048243103';
+        const entryIdEmail = 'entry.1537684843';
+        const entryIdState = 'entry.733207508';
         // --- KẾT THÚC PHẦN THAY THẾ ---
 
         // Kiểm tra xem người dùng đã điền thông tin chưa
