@@ -7,7 +7,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt = $db->prepare("SELECT * FROM users WHERE email = ?");
     $stmt->execute([$email]);
     $u = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($u && hash_equals($u['password'], hash('sha256', $pass))) {
+    if ($u && password_verify($pass, $u['password'])) {
+        session_regenerate_id(true);
         $_SESSION['uid'] = $u['id'];
         $_SESSION['role'] = $u['role'];
         header('Location: ' . ($u['role'] === 'admin' ? 'admin.php' : 'dashboard.php'));

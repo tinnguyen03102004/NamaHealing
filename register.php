@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($stmt->fetch()) {
             $err = __('err_email_exists');
         } else {
-            $hash = hash('sha256', $pass);
+            $hash = password_hash($pass, PASSWORD_DEFAULT);
             $stmt = $db->prepare("INSERT INTO users (role,full_name,email,password,remaining) VALUES ('student',?,?,?,?)");
             $stmt->execute([$name, $email, $hash, $remain]);
             header('Location: admin.php'); exit;
