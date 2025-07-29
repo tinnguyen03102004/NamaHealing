@@ -5,7 +5,11 @@ if (!isset($_SESSION['uid']) || $_SESSION['role'] !== 'admin') {
     exit;
 }
 
-$id = intval($_GET['id'] ?? 0);
+$id = 0;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_check($_POST['csrf_token'] ?? null);
+    $id = intval($_POST['id'] ?? 0);
+}
 if ($id) {
     // 1) Xóa trước tất cả lịch sử sessions của user này
     $db->prepare("DELETE FROM sessions WHERE user_id = ?")->execute([$id]);

@@ -96,6 +96,7 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
           <td class="px-2 sm:px-3 py-2 text-center flex flex-wrap gap-2 justify-center items-center">
             <!-- CỘNG BUỔI -->
             <form method="post" action="add_sessions.php" class="flex gap-1 items-center">
+              <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
               <input type="hidden" name="uid" value="<?= $row['id'] ?>">
               <input type="number" name="add" value="1" min="1"
                 class="w-14 rounded border border-mint px-2 py-1 text-sm focus:border-mint-dark focus:ring-mint" />
@@ -104,11 +105,13 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
               </button>
             </form>
             <!-- XÓA -->
-            <a href="delete_user.php?id=<?= $row['id'] ?>"
-               class="rounded bg-red-100 text-red-700 px-3 py-1 text-xs font-semibold shadow hover:bg-red-400 hover:text-white transition"
-               onclick="return confirm('<?= __('confirm_delete_student') ?>');" title="<?= __('delete') ?> học viên">
-              <?= __('delete') ?>
-            </a>
+            <form method="post" action="delete_user.php" onsubmit="return confirm('<?= __('confirm_delete_student') ?>');" style="display:inline-block">
+              <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
+              <input type="hidden" name="id" value="<?= $row['id'] ?>">
+              <button class="rounded bg-red-100 text-red-700 px-3 py-1 text-xs font-semibold shadow hover:bg-red-400 hover:text-white transition" title="<?= __('delete') ?> học viên">
+                <?= __('delete') ?>
+              </button>
+            </form>
             <!-- LỊCH SỬ -->
             <a href="history.php?id=<?= $row['id'] ?>"
                class="rounded bg-blue-100 text-blue-700 px-3 py-1 text-xs font-semibold shadow hover:bg-blue-400 hover:text-white transition"

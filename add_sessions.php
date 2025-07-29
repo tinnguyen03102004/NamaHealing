@@ -7,6 +7,7 @@ if (!isset($_SESSION['uid']) || $_SESSION['role'] !== 'admin') {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_check($_POST['csrf_token'] ?? null);
     $uid = intval($_POST['uid'] ?? 0);
     $add = intval($_POST['add'] ?? 0);
 
