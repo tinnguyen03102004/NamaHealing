@@ -1,4 +1,6 @@
 <?php
+namespace NamaHealing\Helpers;
+
 class MetaFetcher {
     public static function fetchMetaFromUrl(string $url): array {
         $context = stream_context_create([
@@ -54,4 +56,5 @@ class MetaFetcher {
         ];
     }
 }
+
 

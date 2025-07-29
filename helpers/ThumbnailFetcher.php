@@ -1,4 +1,5 @@
 <?php
+namespace NamaHealing\Helpers;
 
 class ThumbnailFetcher {
     public static function get($url) {
@@ -33,3 +34,4 @@ class ThumbnailFetcher {
         return 'https://image.thum.io/get/cover/' . urlencode($url);
     }
 }
+
