@@ -2,6 +2,7 @@
 require 'config.php';
 $err = "";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    csrf_check($_POST['csrf_token'] ?? null);
     $email = $_POST['email'] ?? '';
     $pass = $_POST['password'] ?? '';
     $stmt = $db->prepare("SELECT * FROM users WHERE email = ?");
@@ -27,6 +28,7 @@ include 'header.php';
       <div class="bg-red-50 border border-red-300 text-red-700 rounded-md px-3 py-2 text-sm mb-4 text-center"><?= htmlspecialchars($err) ?></div>
     <?php endif; ?>
     <form method="post" autocomplete="off" class="space-y-5">
+      <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
       <div>
         <label class="block text-sm font-medium text-[#285F57] mb-1"><?= __('email_label') ?></label>
         <input name="email" type="text" required autofocus

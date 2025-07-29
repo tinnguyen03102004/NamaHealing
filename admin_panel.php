@@ -34,6 +34,7 @@ $videos   = is_array($videos)   ? $videos   : [];
 $docs = is_array($docs) && isset($docs['prayers']) ? $docs : ['prayers'=>[], 'chanting'=>[], 'reference'=>[]];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_check($_POST['csrf_token'] ?? null);
     $action = $_POST['action'] ?? '';
     if ($action === 'add_article') {
         $title = trim($_POST['title'] ?? '');
@@ -198,6 +199,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <section class="mb-8">
     <h2 class="text-xl font-semibold mb-4">Thêm bài viết</h2>
     <form method="post" enctype="multipart/form-data" id="article-form" class="space-y-4">
+      <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
       <input type="hidden" name="action" value="add_article">
       <input type="text" id="article-title" name="title" class="w-full border rounded px-3 py-2" placeholder="<?= __('placeholder_title') ?>" required>
       <input type="url" id="article-link" name="link" class="w-full border rounded px-3 py-2" placeholder="<?= __('placeholder_article_link') ?>" required>
@@ -215,6 +217,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <section class="mb-8">
     <h2 class="text-xl font-semibold mb-4"><?= __('button_add_video') ?></h2>
     <form method="post" class="space-y-4">
+      <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
       <input type="hidden" name="action" value="add_video">
       <input type="text" name="video_title" class="w-full border rounded px-3 py-2" placeholder="<?= __('placeholder_title') ?>" required>
       <input type="url" name="youtube_url" class="w-full border rounded px-3 py-2" placeholder="<?= __('placeholder_youtube') ?>" required>
@@ -225,6 +228,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <section class="mb-8">
     <h2 class="text-xl font-semibold mb-4"><?= __('button_add_doc') ?></h2>
     <form method="post" class="space-y-4">
+      <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
       <input type="hidden" name="action" value="add_doc">
       <select name="category" class="w-full border rounded px-3 py-2" required>
         <option value="prayers"><?= __('home_docs_prayer') ?></option>
@@ -251,6 +255,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="flex items-center gap-2">
               <?php if ($i > 0): ?>
                 <form method="post">
+                  <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
                   <input type="hidden" name="action" value="move_doc">
                   <input type="hidden" name="category" value="prayers">
                   <input type="hidden" name="dir" value="up">
@@ -260,6 +265,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <?php endif; ?>
               <?php if ($i < count($docs['prayers']) - 1): ?>
                 <form method="post">
+                  <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
                   <input type="hidden" name="action" value="move_doc">
                   <input type="hidden" name="category" value="prayers">
                   <input type="hidden" name="dir" value="down">
@@ -268,6 +274,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </form>
               <?php endif; ?>
               <form method="post" onsubmit="return confirm('<?= __('confirm_delete_doc') ?>');">
+                <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
                 <input type="hidden" name="action" value="delete_doc">
                 <input type="hidden" name="category" value="prayers">
                 <input type="hidden" name="index" value="<?= $i ?>">
@@ -294,6 +301,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="flex items-center gap-2">
               <?php if ($i > 0): ?>
                 <form method="post">
+                  <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
                   <input type="hidden" name="action" value="move_doc">
                   <input type="hidden" name="category" value="chanting">
                   <input type="hidden" name="dir" value="up">
@@ -303,6 +311,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <?php endif; ?>
               <?php if ($i < count($docs['chanting']) - 1): ?>
                 <form method="post">
+                  <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
                   <input type="hidden" name="action" value="move_doc">
                   <input type="hidden" name="category" value="chanting">
                   <input type="hidden" name="dir" value="down">
@@ -311,6 +320,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </form>
               <?php endif; ?>
               <form method="post" onsubmit="return confirm('<?= __('confirm_delete_doc') ?>');">
+                <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
                 <input type="hidden" name="action" value="delete_doc">
                 <input type="hidden" name="category" value="chanting">
                 <input type="hidden" name="index" value="<?= $i ?>">
@@ -337,6 +347,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="flex items-center gap-2">
               <?php if ($i > 0): ?>
                 <form method="post">
+                  <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
                   <input type="hidden" name="action" value="move_doc">
                   <input type="hidden" name="category" value="reference">
                   <input type="hidden" name="dir" value="up">
@@ -346,6 +357,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <?php endif; ?>
               <?php if ($i < count($docs['reference']) - 1): ?>
                 <form method="post">
+                  <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
                   <input type="hidden" name="action" value="move_doc">
                   <input type="hidden" name="category" value="reference">
                   <input type="hidden" name="dir" value="down">
@@ -354,6 +366,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </form>
               <?php endif; ?>
               <form method="post" onsubmit="return confirm('<?= __('confirm_delete_doc') ?>');">
+                <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
                 <input type="hidden" name="action" value="delete_doc">
                 <input type="hidden" name="category" value="reference">
                 <input type="hidden" name="index" value="<?= $i ?>">
@@ -378,6 +391,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="flex items-center gap-2">
               <?php if ($i > 0): ?>
                 <form method="post">
+                  <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
                   <input type="hidden" name="action" value="move_article">
                   <input type="hidden" name="dir" value="up">
                   <input type="hidden" name="index" value="<?= $i ?>">
@@ -386,6 +400,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <?php endif; ?>
               <?php if ($i < count($articles) - 1): ?>
                 <form method="post">
+                  <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
                   <input type="hidden" name="action" value="move_article">
                   <input type="hidden" name="dir" value="down">
                   <input type="hidden" name="index" value="<?= $i ?>">
@@ -393,6 +408,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </form>
               <?php endif; ?>
               <form method="post" onsubmit="return confirm('<?= __('confirm_delete_article') ?>');">
+                <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
                 <input type="hidden" name="action" value="delete_article">
                 <input type="hidden" name="index" value="<?= $i ?>">
                 <button class="text-red-600 hover:underline"><?= __('delete') ?></button>
@@ -416,6 +432,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="flex items-center gap-2">
               <?php if ($i > 0): ?>
                 <form method="post">
+                  <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
                   <input type="hidden" name="action" value="move_video">
                   <input type="hidden" name="dir" value="up">
                   <input type="hidden" name="index" value="<?= $i ?>">
@@ -424,6 +441,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <?php endif; ?>
               <?php if ($i < count($videos) - 1): ?>
                 <form method="post">
+                  <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
                   <input type="hidden" name="action" value="move_video">
                   <input type="hidden" name="dir" value="down">
                   <input type="hidden" name="index" value="<?= $i ?>">
@@ -431,6 +449,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </form>
               <?php endif; ?>
               <form method="post" onsubmit="return confirm('<?= __('confirm_delete_video') ?>');">
+                <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
                 <input type="hidden" name="action" value="delete_video">
                 <input type="hidden" name="index" value="<?= $i ?>">
                 <button class="text-red-600 hover:underline"><?= __('delete') ?></button>

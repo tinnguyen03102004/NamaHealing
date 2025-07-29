@@ -34,6 +34,18 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// CSRF token utilities
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
+function csrf_check(?string $token): void {
+    if (!isset($_SESSION['csrf_token']) || !is_string($token) || !hash_equals($_SESSION['csrf_token'], $token)) {
+        http_response_code(400);
+        exit('Invalid CSRF token');
+    }
+}
+
 // Nạp file đa ngôn ngữ (nếu có)
 require_once __DIR__ . '/i18n.php';
 

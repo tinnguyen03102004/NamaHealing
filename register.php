@@ -6,6 +6,7 @@ if (!isset($_SESSION['uid']) || $_SESSION['role'] !== 'admin') {
 
 $err = "";
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_check($_POST['csrf_token'] ?? null);
     $name  = trim($_POST['full_name'] ?? '');
     $email = trim($_POST['email'] ?? '');
     $pass  = $_POST['password'] ?? '';
@@ -40,6 +41,7 @@ require 'header.php';
       </div>
     <?php endif; ?>
     <form method="post" class="space-y-4">
+      <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
       <div>
         <label class="block text-sm font-medium text-mint-text mb-1"><?= __('name_label') ?></label>
         <input type="text" name="full_name" class="w-full px-3 py-2 border border-mint rounded-lg bg-gray-50 text-gray-800 focus:outline-none focus:border-mint-dark focus:bg-white transition" required>
