@@ -1,5 +1,7 @@
 <?php
-require_once __DIR__ . '/helpers/MetaFetcher.php';
+require 'config.php';
+
+use NamaHealing\Helpers\MetaFetcher;
 header('Content-Type: application/json; charset=utf-8');
 $url = $_GET['url'] ?? '';
 if ($url === '' || !filter_var($url, FILTER_VALIDATE_URL)) {

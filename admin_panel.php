@@ -1,11 +1,9 @@
 <?php
 define('REQUIRE_LOGIN', true);
 require 'config.php';
-if (file_exists(__DIR__ . '/vendor/autoload.php')) {
-    require __DIR__ . '/vendor/autoload.php';
-}
-require_once __DIR__ . '/helpers/ThumbnailFetcher.php';
-require_once __DIR__ . '/helpers/MetaFetcher.php';
+
+use NamaHealing\Helpers\ThumbnailFetcher;
+use NamaHealing\Helpers\MetaFetcher;
 if (!isset($_SESSION['uid']) || $_SESSION['role'] !== 'admin') {
     header('Location: login.php');
     exit;
