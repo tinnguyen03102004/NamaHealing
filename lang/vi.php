@@ -124,7 +124,7 @@ return [
     'no_videos' => 'Chưa có video nào.',
     'ukraine_title' => 'Lớp Thiền Ukraine',
     'ukraine_meta_desc' => 'Đây là Lớp thiền đặc biệt miễn phí dành cho người Ukraine bị ảnh hưởng bởi chiến tranh',
-    'ukraine_intro' => 'Đây là Lớp thiền đặc biệt miễn phí dành cho người Ukraine bị ảnh hưởng bởi chiến tranh.',
+    'ukraine_intro' => 'Lớp Thiền Đặc Biệt Miễn Phí Cho Người Ukraine Ảnh Hưởng Bởi Chiến Tranh<br>Đồng tổ chức bởi Đại sứ quán Ukraine tại Việt Nam và Tiến sĩ Võ Trọng Nghĩa',
     'ukraine_desc' => 'Xuất phát từ sự đồng cảm sâu sắc và thấu hiểu những vết thương lòng mà chiến tranh để lại, Tiến sĩ Võ Trọng Nghĩa đã quyết định mở một lớp thiền đặc biệt dành riêng cho người dân cũng như những người lính Ukraine. Với mong muốn được san sẻ, đồng hành và góp phần xoa dịu những nỗi đau, mất mát mà họ đang phải gánh chịu, lớp học này là một không gian an toàn, nơi mỗi người có thể tìm lại sự bình yên, sự nâng đỡ tinh thần và quá trình chữa lành từ sâu bên trong. Dưới sự hướng dẫn ân cần và tận tâm của thầy, lớp thiền mong muốn mang lại hy vọng, sự vững chãi và năng lượng mới để mỗi người vượt qua thử thách, từng bước kiến tạo lại cuộc sống từ những đổ vỡ của chiến tranh.',
     'ukraine_submit' => 'Gửi đăng ký',
     'ukraine_sending' => 'Đang gửi...',
