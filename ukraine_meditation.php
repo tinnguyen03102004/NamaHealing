@@ -7,10 +7,16 @@ require_once 'header.php';
 
 <div class="relative bg-cover bg-center py-4" style="background-image: url('ukraine.png');">
     <div class="absolute inset-0 bg-black/60"></div>
-    <div class="relative max-w-xl mx-auto p-6 text-white bg-black/50 backdrop-blur-[2px] rounded">
-        <h1 class="text-3xl font-bold text-center mb-4 font-heading"><?= __('ukraine_title') ?></h1>
-        <p class="mb-4 text-center text-lg"><?= __('ukraine_intro') ?></p>
-        <p class="mb-6 text-center text-lg leading-relaxed"><?= __('ukraine_desc') ?></p>
+    <div class="relative max-w-xl mx-auto p-6 text-white" style="font-family: Arial, Helvetica, sans-serif;">
+        <h1 class="text-3xl sm:text-4xl font-bold text-center mb-4">
+            <?= __('ukraine_title') ?>
+        </h1>
+        <p class="mb-4 text-center text-lg sm:text-xl">
+            <?= __('ukraine_intro') ?>
+        </p>
+        <p class="mb-6 text-center text-base sm:text-lg leading-relaxed">
+            <?= __('ukraine_desc') ?>
+        </p>
         <div id="form-message" class="hidden mb-4 text-center text-sm"></div>
         <form id="google-form" class="space-y-4" novalidate>
             <input type="text" name="name" id="name" required placeholder="<?= __('placeholder_name') ?>" class="w-full border px-3 py-2 rounded text-black" />
