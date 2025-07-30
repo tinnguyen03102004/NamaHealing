@@ -5,20 +5,29 @@ $metaDescription = __('ukraine_meta_desc');
 require_once 'header.php';
 ?>
 
-<div class="relative bg-cover bg-center py-4" style="background-image: url('ukraine.png');">
-    <div class="relative max-w-xl mx-auto p-6 bg-white/90 text-[#374151] backdrop-blur-[2px] rounded shadow">
-        <h1 class="text-3xl sm:text-4xl font-bold text-center mb-4 font-heading"><?= __('ukraine_title') ?></h1>
-        <p class="mb-4 text-center text-lg sm:text-xl font-semibold font-serif italic">
+<!-- Page-specific fonts to correctly render Vietnamese -->
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&display=swap&subset=vietnamese');
+  body { font-family: 'Noto Sans', Arial, sans-serif; }
+  .font-heading { font-family: 'Noto Sans', Arial, sans-serif; }
+  .font-serif { font-family: 'Noto Serif', serif; }
+
+</style>
+
+<div class="relative bg-cover bg-center bg-black/70 bg-blend-overlay py-8 min-h-screen flex items-center justify-center text-white" style="background-image: url('ukraine.png');">
+    <div class="relative max-w-xl mx-auto p-6">
+        <h1 class="text-3xl sm:text-4xl font-bold text-center mb-4 font-heading text-white"><?= __('ukraine_title') ?></h1>
+        <p class="mb-4 text-center text-lg sm:text-xl font-semibold font-serif italic text-white">
             <?= __('ukraine_intro') ?>
         </p>
-        <p class="mb-6 text-center text-base sm:text-lg leading-relaxed font-light">
+        <p class="mb-6 text-center text-base sm:text-lg leading-relaxed font-light text-white">
             <?= __('ukraine_desc') ?>
         </p>
         <div id="form-message" class="hidden mb-4 text-center text-sm"></div>
         <form id="google-form" class="space-y-4" novalidate>
-            <input type="text" name="name" id="name" required placeholder="<?= __('placeholder_name') ?>" class="w-full border px-3 py-2 rounded text-black" />
-            <input type="email" name="email" id="email" required placeholder="<?= __('placeholder_email') ?>" class="w-full border px-3 py-2 rounded text-black" />
-            <textarea name="state" id="state" rows="3" required placeholder="<?= __('placeholder_state') ?>" class="w-full border px-3 py-2 rounded text-black"></textarea>
+            <input type="text" name="name" id="name" required placeholder="<?= __('placeholder_name') ?>" class="w-full border px-3 py-2 rounded bg-white text-black" />
+            <input type="email" name="email" id="email" required placeholder="<?= __('placeholder_email') ?>" class="w-full border px-3 py-2 rounded bg-white text-black" />
+            <textarea name="state" id="state" rows="3" required placeholder="<?= __('placeholder_state') ?>" class="w-full border px-3 py-2 rounded bg-white text-black"></textarea>
             <button type="submit" id="submit-button" class="w-full bg-indigo-600 text-white py-2 rounded"><?= __('ukraine_submit') ?></button>
         </form>
     </div>
