@@ -8,7 +8,7 @@ Lớp do Tiến Sĩ, kiến trúc sư Võ Trọng Nghĩa hướng dẫn và họ
 Người bình thường có thể đến chùa hoặc thiền viện để thực hành miễn phí.
 Yêu cầu bắt buộc: phải bật camera và mic trong suốt buổi học khi tham gia lớp học để thầy có thể quan sát và hướng dẫn.
 Thời gian: sáng 6:00–6:40 (Thứ 2–Chủ nhật) và tối 20:45–21:30 (Thứ 2–Chủ nhật).
-Học phí trọn khóa 20 buổi là 8.000.000 VND (học phí cho người bình thường), hỗ trợ còn 5.000.000 VND cho học viên có điều kiện tài chính khó khăn (học phí cho người nghèo) đang sinh sống tại Việt Nam.
+Lưu ý quan trọng: Học phí trọn khóa 20 buổi là 8.000.000 VND (học phí cho người bình thường), chỉ hỗ trợ còn 5.000.000 VND cho học viên có điều kiện "tài chính" khó khăn (học phí cho người nghèo) đang sinh sống tại Việt Nam.
 Bạn có 20 buổi học để sử dụng trong vòng 2 tháng, và có thể tự do chọn các ca trong lịch cố định mà không phải tham gia liên tiếp.
 Chuyển khoản đăng ký cho Trần Thị Mai Ly (Vietcombank 0371000429939), ghi họ tên và số điện thoại.
 Sau khi chuyển khoản, điền form đăng ký và gửi biên lai qua Zalo 0839269501 để được xác nhận tài khoản.
