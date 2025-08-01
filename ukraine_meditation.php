@@ -29,62 +29,66 @@ require_once 'header.php';
             <input type="email" name="email" id="email" required placeholder="<?= __('placeholder_email') ?>" class="w-full border px-3 py-2 rounded bg-white text-black" />
             <textarea name="state" id="state" rows="3" required placeholder="<?= __('placeholder_state') ?>" class="w-full border px-3 py-2 rounded bg-white text-black"></textarea>
 
+            <div class="font-semibold mt-4 mb-2">
+                <?= __('survey_questions_title') ?>
+            </div>
+
             <div class="mb-4">
-                <p class="mb-2">4. <?= __('question_sadness') ?></p>
+                <p class="mb-2">1. <?= __('question_sadness') ?></p>
                 <label class="mr-4"><input type="radio" name="q_sadness" value="Yes" required> <?= __('yes_label') ?></label>
                 <label><input type="radio" name="q_sadness" value="No"> <?= __('no_label') ?></label>
             </div>
 
             <div class="mb-4">
-                <p class="mb-2">5. <?= __('question_irritability') ?></p>
+                <p class="mb-2">2. <?= __('question_irritability') ?></p>
                 <label class="mr-4"><input type="radio" name="q_irritability" value="Yes" required> <?= __('yes_label') ?></label>
                 <label><input type="radio" name="q_irritability" value="No"> <?= __('no_label') ?></label>
             </div>
 
             <div class="mb-4">
-                <p class="mb-2">6. <?= __('question_interest') ?></p>
+                <p class="mb-2">3. <?= __('question_interest') ?></p>
                 <label class="mr-4"><input type="radio" name="q_interest" value="Yes" required> <?= __('yes_label') ?></label>
                 <label><input type="radio" name="q_interest" value="No"> <?= __('no_label') ?></label>
             </div>
 
             <div class="mb-4">
-                <p class="mb-2">7. <?= __('question_sleep') ?></p>
+                <p class="mb-2">4. <?= __('question_sleep') ?></p>
                 <label class="mr-4"><input type="radio" name="q_sleep" value="Yes" required> <?= __('yes_label') ?></label>
                 <label><input type="radio" name="q_sleep" value="No"> <?= __('no_label') ?></label>
             </div>
 
             <div class="mb-4">
-                <p class="mb-2">8. <?= __('question_energy') ?></p>
+                <p class="mb-2">5. <?= __('question_energy') ?></p>
                 <label class="mr-4"><input type="radio" name="q_energy" value="Yes" required> <?= __('yes_label') ?></label>
                 <label><input type="radio" name="q_energy" value="No"> <?= __('no_label') ?></label>
             </div>
 
             <div class="mb-4">
-                <p class="mb-2">9. <?= __('question_appetite') ?></p>
+                <p class="mb-2">6. <?= __('question_appetite') ?></p>
                 <label class="mr-4"><input type="radio" name="q_appetite" value="Yes" required> <?= __('yes_label') ?></label>
                 <label><input type="radio" name="q_appetite" value="No"> <?= __('no_label') ?></label>
             </div>
 
             <div class="mb-4">
-                <p class="mb-2">10. <?= __('question_anxiety') ?></p>
+                <p class="mb-2">7. <?= __('question_anxiety') ?></p>
                 <label class="mr-4"><input type="radio" name="q_anxiety" value="Yes" required> <?= __('yes_label') ?></label>
                 <label><input type="radio" name="q_anxiety" value="No"> <?= __('no_label') ?></label>
             </div>
 
             <div class="mb-4">
-                <p class="mb-2">11. <?= __('question_slowing') ?></p>
+                <p class="mb-2">8. <?= __('question_slowing') ?></p>
                 <label class="mr-4"><input type="radio" name="q_slowing" value="Yes" required> <?= __('yes_label') ?></label>
                 <label><input type="radio" name="q_slowing" value="No"> <?= __('no_label') ?></label>
             </div>
 
             <div class="mb-4">
-                <p class="mb-2">12. <?= __('question_worthless') ?></p>
+                <p class="mb-2">9. <?= __('question_worthless') ?></p>
                 <label class="mr-4"><input type="radio" name="q_worthless" value="Yes" required> <?= __('yes_label') ?></label>
                 <label><input type="radio" name="q_worthless" value="No"> <?= __('no_label') ?></label>
             </div>
 
             <div class="mb-4">
-                <p class="mb-2">13. <?= __('question_concentrate') ?></p>
+                <p class="mb-2">10. <?= __('question_concentrate') ?></p>
                 <label class="mr-4"><input type="radio" name="q_concentrate" value="Yes" required> <?= __('yes_label') ?></label>
                 <label><input type="radio" name="q_concentrate" value="No"> <?= __('no_label') ?></label>
             </div>

@@ -131,6 +131,7 @@ return [
     'ukraine_success' => 'Вашу інформацію успішно надіслано.',
     'ukraine_error' => 'Сталася помилка. Спробуйте ще раз.',
     'ukraine_config_error' => 'Помилка конфігурації: оновіть URL і ідентифікатори Google Форми в ukraine_meditation.php',
+    'survey_questions_title' => 'Опитувальні запитання',
     'yes_label' => 'Так',
     'no_label' => 'Ні',
     'question_sadness' => 'Ви часто відчуваєте смуток, спустошення чи безнадію протягом більшості днів?',
