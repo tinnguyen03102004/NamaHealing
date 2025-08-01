@@ -30,63 +30,63 @@ require_once 'header.php';
             <textarea name="state" id="state" rows="3" required placeholder="<?= __('placeholder_state') ?>" class="w-full border px-3 py-2 rounded bg-white text-black"></textarea>
 
             <div class="mb-4">
-                <p class="mb-2">4. Do you often feel sadness, emptiness, or hopelessness most days?</p>
-                <label class="mr-4"><input type="radio" name="q_sadness" value="Yes" required> Yes</label>
-                <label><input type="radio" name="q_sadness" value="No"> No</label>
+                <p class="mb-2">4. <?= __('question_sadness') ?></p>
+                <label class="mr-4"><input type="radio" name="q_sadness" value="Yes" required> <?= __('yes_label') ?></label>
+                <label><input type="radio" name="q_sadness" value="No"> <?= __('no_label') ?></label>
             </div>
 
             <div class="mb-4">
-                <p class="mb-2">5. Do you often get irritable or easily frustrated, even over small matters?</p>
-                <label class="mr-4"><input type="radio" name="q_irritability" value="Yes" required> Yes</label>
-                <label><input type="radio" name="q_irritability" value="No"> No</label>
+                <p class="mb-2">5. <?= __('question_irritability') ?></p>
+                <label class="mr-4"><input type="radio" name="q_irritability" value="Yes" required> <?= __('yes_label') ?></label>
+                <label><input type="radio" name="q_irritability" value="No"> <?= __('no_label') ?></label>
             </div>
 
             <div class="mb-4">
-                <p class="mb-2">6. Have you lost interest or no longer take pleasure in most of your normal activities (work, study, hobbies)?</p>
-                <label class="mr-4"><input type="radio" name="q_interest" value="Yes" required> Yes</label>
-                <label><input type="radio" name="q_interest" value="No"> No</label>
+                <p class="mb-2">6. <?= __('question_interest') ?></p>
+                <label class="mr-4"><input type="radio" name="q_interest" value="Yes" required> <?= __('yes_label') ?></label>
+                <label><input type="radio" name="q_interest" value="No"> <?= __('no_label') ?></label>
             </div>
 
             <div class="mb-4">
-                <p class="mb-2">7. Do you have sleep disturbances (insomnia or sleeping too much)?</p>
-                <label class="mr-4"><input type="radio" name="q_sleep" value="Yes" required> Yes</label>
-                <label><input type="radio" name="q_sleep" value="No"> No</label>
+                <p class="mb-2">7. <?= __('question_sleep') ?></p>
+                <label class="mr-4"><input type="radio" name="q_sleep" value="Yes" required> <?= __('yes_label') ?></label>
+                <label><input type="radio" name="q_sleep" value="No"> <?= __('no_label') ?></label>
             </div>
 
             <div class="mb-4">
-                <p class="mb-2">8. Do you often feel tired or lack energy?</p>
-                <label class="mr-4"><input type="radio" name="q_energy" value="Yes" required> Yes</label>
-                <label><input type="radio" name="q_energy" value="No"> No</label>
+                <p class="mb-2">8. <?= __('question_energy') ?></p>
+                <label class="mr-4"><input type="radio" name="q_energy" value="Yes" required> <?= __('yes_label') ?></label>
+                <label><input type="radio" name="q_energy" value="No"> <?= __('no_label') ?></label>
             </div>
 
             <div class="mb-4">
-                <p class="mb-2">9. Have you experienced changes in appetite or weight (loss of appetite and weight loss, or increased cravings and weight gain)?</p>
-                <label class="mr-4"><input type="radio" name="q_appetite" value="Yes" required> Yes</label>
-                <label><input type="radio" name="q_appetite" value="No"> No</label>
+                <p class="mb-2">9. <?= __('question_appetite') ?></p>
+                <label class="mr-4"><input type="radio" name="q_appetite" value="Yes" required> <?= __('yes_label') ?></label>
+                <label><input type="radio" name="q_appetite" value="No"> <?= __('no_label') ?></label>
             </div>
 
             <div class="mb-4">
-                <p class="mb-2">10. Do you feel anxious, restless, or on edge?</p>
-                <label class="mr-4"><input type="radio" name="q_anxiety" value="Yes" required> Yes</label>
-                <label><input type="radio" name="q_anxiety" value="No"> No</label>
+                <p class="mb-2">10. <?= __('question_anxiety') ?></p>
+                <label class="mr-4"><input type="radio" name="q_anxiety" value="Yes" required> <?= __('yes_label') ?></label>
+                <label><input type="radio" name="q_anxiety" value="No"> <?= __('no_label') ?></label>
             </div>
 
             <div class="mb-4">
-                <p class="mb-2">11. Do you feel that your thinking, speech, or movements have slowed down?</p>
-                <label class="mr-4"><input type="radio" name="q_slowing" value="Yes" required> Yes</label>
-                <label><input type="radio" name="q_slowing" value="No"> No</label>
+                <p class="mb-2">11. <?= __('question_slowing') ?></p>
+                <label class="mr-4"><input type="radio" name="q_slowing" value="Yes" required> <?= __('yes_label') ?></label>
+                <label><input type="radio" name="q_slowing" value="No"> <?= __('no_label') ?></label>
             </div>
 
             <div class="mb-4">
-                <p class="mb-2">12. Do you feel worthless or guilty, or blame yourself?</p>
-                <label class="mr-4"><input type="radio" name="q_worthless" value="Yes" required> Yes</label>
-                <label><input type="radio" name="q_worthless" value="No"> No</label>
+                <p class="mb-2">12. <?= __('question_worthless') ?></p>
+                <label class="mr-4"><input type="radio" name="q_worthless" value="Yes" required> <?= __('yes_label') ?></label>
+                <label><input type="radio" name="q_worthless" value="No"> <?= __('no_label') ?></label>
             </div>
 
             <div class="mb-4">
-                <p class="mb-2">13. Do you have trouble concentrating, making decisions, or remembering things?</p>
-                <label class="mr-4"><input type="radio" name="q_concentrate" value="Yes" required> Yes</label>
-                <label><input type="radio" name="q_concentrate" value="No"> No</label>
+                <p class="mb-2">13. <?= __('question_concentrate') ?></p>
+                <label class="mr-4"><input type="radio" name="q_concentrate" value="Yes" required> <?= __('yes_label') ?></label>
+                <label><input type="radio" name="q_concentrate" value="No"> <?= __('no_label') ?></label>
             </div>
 
             <button type="submit" id="submit-button" class="w-full bg-indigo-600 text-white py-2 rounded"><?= __('ukraine_submit') ?></button>
