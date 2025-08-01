@@ -131,6 +131,7 @@ return [
     'ukraine_success' => 'Thông tin của bạn đã được gửi thành công.',
     'ukraine_error' => 'Có lỗi xảy ra. Vui lòng thử lại.',
     'ukraine_config_error' => 'Lỗi cấu hình: Vui lòng cập nhật URL và Entry ID của Google Form trong file ukraine_meditation.php',
+    'survey_questions_title' => 'Các Câu Hỏi Khảo Sát',
     'yes_label' => 'Có',
     'no_label' => 'Không',
     'question_sadness' => 'Bạn có thường xuyên cảm thấy buồn bã, trống rỗng hoặc tuyệt vọng hầu hết các ngày không?',

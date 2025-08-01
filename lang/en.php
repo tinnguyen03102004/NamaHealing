@@ -131,6 +131,7 @@ return [
     'ukraine_success' => 'Your information has been submitted successfully.',
     'ukraine_error' => 'An error occurred. Please try again.',
     'ukraine_config_error' => 'Configuration error: please update the Google Form URL and entry IDs in ukraine_meditation.php',
+    'survey_questions_title' => 'Survey Questions',
     'yes_label' => 'Yes',
     'no_label' => 'No',
     'question_sadness' => 'Do you often feel sadness, emptiness, or hopelessness most days?',
