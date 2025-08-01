@@ -28,6 +28,67 @@ require_once 'header.php';
             <input type="text" name="name" id="name" required placeholder="<?= __('placeholder_name') ?>" class="w-full border px-3 py-2 rounded bg-white text-black" />
             <input type="email" name="email" id="email" required placeholder="<?= __('placeholder_email') ?>" class="w-full border px-3 py-2 rounded bg-white text-black" />
             <textarea name="state" id="state" rows="3" required placeholder="<?= __('placeholder_state') ?>" class="w-full border px-3 py-2 rounded bg-white text-black"></textarea>
+
+            <div class="mb-4">
+                <p class="mb-2">4. Do you often feel sadness, emptiness, or hopelessness most days?</p>
+                <label class="mr-4"><input type="radio" name="q_sadness" value="Yes" required> Yes</label>
+                <label><input type="radio" name="q_sadness" value="No"> No</label>
+            </div>
+
+            <div class="mb-4">
+                <p class="mb-2">5. Do you often get irritable or easily frustrated, even over small matters?</p>
+                <label class="mr-4"><input type="radio" name="q_irritability" value="Yes" required> Yes</label>
+                <label><input type="radio" name="q_irritability" value="No"> No</label>
+            </div>
+
+            <div class="mb-4">
+                <p class="mb-2">6. Have you lost interest or no longer take pleasure in most of your normal activities (work, study, hobbies)?</p>
+                <label class="mr-4"><input type="radio" name="q_interest" value="Yes" required> Yes</label>
+                <label><input type="radio" name="q_interest" value="No"> No</label>
+            </div>
+
+            <div class="mb-4">
+                <p class="mb-2">7. Do you have sleep disturbances (insomnia or sleeping too much)?</p>
+                <label class="mr-4"><input type="radio" name="q_sleep" value="Yes" required> Yes</label>
+                <label><input type="radio" name="q_sleep" value="No"> No</label>
+            </div>
+
+            <div class="mb-4">
+                <p class="mb-2">8. Do you often feel tired or lack energy?</p>
+                <label class="mr-4"><input type="radio" name="q_energy" value="Yes" required> Yes</label>
+                <label><input type="radio" name="q_energy" value="No"> No</label>
+            </div>
+
+            <div class="mb-4">
+                <p class="mb-2">9. Have you experienced changes in appetite or weight (loss of appetite and weight loss, or increased cravings and weight gain)?</p>
+                <label class="mr-4"><input type="radio" name="q_appetite" value="Yes" required> Yes</label>
+                <label><input type="radio" name="q_appetite" value="No"> No</label>
+            </div>
+
+            <div class="mb-4">
+                <p class="mb-2">10. Do you feel anxious, restless, or on edge?</p>
+                <label class="mr-4"><input type="radio" name="q_anxiety" value="Yes" required> Yes</label>
+                <label><input type="radio" name="q_anxiety" value="No"> No</label>
+            </div>
+
+            <div class="mb-4">
+                <p class="mb-2">11. Do you feel that your thinking, speech, or movements have slowed down?</p>
+                <label class="mr-4"><input type="radio" name="q_slowing" value="Yes" required> Yes</label>
+                <label><input type="radio" name="q_slowing" value="No"> No</label>
+            </div>
+
+            <div class="mb-4">
+                <p class="mb-2">12. Do you feel worthless or guilty, or blame yourself?</p>
+                <label class="mr-4"><input type="radio" name="q_worthless" value="Yes" required> Yes</label>
+                <label><input type="radio" name="q_worthless" value="No"> No</label>
+            </div>
+
+            <div class="mb-4">
+                <p class="mb-2">13. Do you have trouble concentrating, making decisions, or remembering things?</p>
+                <label class="mr-4"><input type="radio" name="q_concentrate" value="Yes" required> Yes</label>
+                <label><input type="radio" name="q_concentrate" value="No"> No</label>
+            </div>
+
             <button type="submit" id="submit-button" class="w-full bg-indigo-600 text-white py-2 rounded"><?= __('ukraine_submit') ?></button>
         </form>
     </div>
@@ -61,12 +122,33 @@ document.addEventListener('DOMContentLoaded', function() {
         const nameValue = document.getElementById('name').value;
         const emailValue = document.getElementById('email').value;
         const stateValue = document.getElementById('state').value;
+
+        const sadnessValue      = document.querySelector('input[name="q_sadness"]:checked').value;
+        const irritabilityValue = document.querySelector('input[name="q_irritability"]:checked').value;
+        const interestValue     = document.querySelector('input[name="q_interest"]:checked').value;
+        const sleepValue        = document.querySelector('input[name="q_sleep"]:checked').value;
+        const energyValue       = document.querySelector('input[name="q_energy"]:checked').value;
+        const appetiteValue     = document.querySelector('input[name="q_appetite"]:checked').value;
+        const anxietyValue      = document.querySelector('input[name="q_anxiety"]:checked').value;
+        const slowingValue      = document.querySelector('input[name="q_slowing"]:checked').value;
+        const worthlessValue    = document.querySelector('input[name="q_worthless"]:checked').value;
+        const concentrateValue  = document.querySelector('input[name="q_concentrate"]:checked').value;
         
         // Tạo đối tượng FormData để gửi đi
         const formData = new FormData();
         formData.append(entryIdName, nameValue);
         formData.append(entryIdEmail, emailValue);
         formData.append(entryIdState, stateValue);
+        formData.append('entry.646261214', sadnessValue);
+        formData.append('entry.562184968', irritabilityValue);
+        formData.append('entry.2134551142', interestValue);
+        formData.append('entry.1423448482', sleepValue);
+        formData.append('entry.1661659713', energyValue);
+        formData.append('entry.1726162741', appetiteValue);
+        formData.append('entry.113509213', anxietyValue);
+        formData.append('entry.679098488', slowingValue);
+        formData.append('entry.408000858', worthlessValue);
+        formData.append('entry.1000541278', concentrateValue);
         
         // Vô hiệu hóa nút gửi và hiển thị trạng thái đang gửi
         submitButton.disabled = true;
