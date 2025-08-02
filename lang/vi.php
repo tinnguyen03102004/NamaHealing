@@ -144,4 +144,5 @@ return [
     'question_slowing' => 'Bạn có cảm thấy suy nghĩ, lời nói hoặc cử động của mình chậm chạp không?',
     'question_worthless' => 'Bạn có cảm thấy mình vô dụng hoặc tội lỗi, hay tự trách bản thân không?',
     'question_concentrate' => 'Bạn có khó tập trung, khó đưa ra quyết định hoặc hay quên không?',
+    'question_self_harm' => 'Bạn có suy nghĩ muốn tự làm hại mình hoặc tự tử không?',
 ];
