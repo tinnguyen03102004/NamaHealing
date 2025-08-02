@@ -2,6 +2,7 @@
 require_once __DIR__ . '/i18n.php';
 $pageTitle = __('ukraine_title');
 $metaDescription = __('ukraine_meta_desc');
+$metaImage = 'https://namahealing.com/ukraine.png';
 require_once 'header.php';
 ?>
 
