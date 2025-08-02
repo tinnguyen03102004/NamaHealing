@@ -93,6 +93,12 @@ require_once 'header.php';
                 <label><input type="radio" name="q_concentrate" value="No"> <?= __('no_label') ?></label>
             </div>
 
+            <div class="mb-4">
+                <p class="mb-2">11. <?= __('question_self_harm') ?></p>
+                <label class="mr-4"><input type="radio" name="q_self_harm" value="Yes" required> <?= __('yes_label') ?></label>
+                <label><input type="radio" name="q_self_harm" value="No"> <?= __('no_label') ?></label>
+            </div>
+
             <button type="submit" id="submit-button" class="w-full bg-indigo-600 text-white py-2 rounded"><?= __('ukraine_submit') ?></button>
         </form>
     </div>
@@ -137,6 +143,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const slowingValue      = document.querySelector('input[name="q_slowing"]:checked').value;
         const worthlessValue    = document.querySelector('input[name="q_worthless"]:checked').value;
         const concentrateValue  = document.querySelector('input[name="q_concentrate"]:checked').value;
+        const selfHarmValue     = document.querySelector('input[name="q_self_harm"]:checked').value;
         
         // Tạo đối tượng FormData để gửi đi
         const formData = new FormData();
@@ -153,6 +160,7 @@ document.addEventListener('DOMContentLoaded', function() {
         formData.append('entry.679098488', slowingValue);
         formData.append('entry.408000858', worthlessValue);
         formData.append('entry.1000541278', concentrateValue);
+        formData.append('entry.REPLACE_WITH_SELF_HARM_ENTRY_ID', selfHarmValue);
         
         // Vô hiệu hóa nút gửi và hiển thị trạng thái đang gửi
         submitButton.disabled = true;

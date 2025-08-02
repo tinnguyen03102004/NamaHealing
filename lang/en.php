@@ -144,4 +144,5 @@ return [
     'question_slowing' => 'Do you feel that your thinking, speech, or movements have slowed down?',
     'question_worthless' => 'Do you feel worthless or guilty, or blame yourself?',
     'question_concentrate' => 'Do you have trouble concentrating, making decisions, or remembering things?',
+    'question_self_harm' => 'Have you had thoughts of harming yourself or suicide?',
 ];
