@@ -5,6 +5,13 @@ require_once __DIR__ . '/i18n.php';
 <!DOCTYPE html>
 <html lang="<?= $_SESSION['lang'] ?? 'vi' ?>">
 <head>
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-MZ695946');</script>
+  <!-- End Google Tag Manager -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Google tag (gtag.js) -->
@@ -42,6 +49,10 @@ require_once __DIR__ . '/i18n.php';
   </style>
 </head>
 <body class="bg-[#f9fafb] text-[#374151] pt-20 sm:pt-16">
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZ695946"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
   <!-- Header bar -->
   <header class="w-full fixed top-0 left-0 z-10 header-bar py-2 sm:h-16 sm:py-0 bg-transparent backdrop-blur-[10px]">
     <div class="max-w-7xl mx-auto px-6 w-full flex flex-col sm:flex-row items-center sm:justify-between h-full">
