@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pay_vnpay'])) {
         'vnp_CurrCode'  => 'VND',
         'vnp_IpAddr'    => $_SERVER['REMOTE_ADDR'],
         'vnp_Locale'    => 'vn',
-        'vnp_OrderInfo' => 'Thanh toan khoa thien NamaHealing',
+        'vnp_OrderInfo' => 'Thanh toan khoa thien NamaHealing - ' . $order['full_name'] . ' - ' . $order['phone'],
         'vnp_OrderType' => 'billpayment',
         'vnp_ReturnUrl' => $vnp_Returnurl,
         'vnp_TxnRef'    => $order['txnRef'],
@@ -47,11 +47,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pay_vnpay'])) {
 // Step 1: handle form submission and show confirmation
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_order'])) {
     csrf_check($_POST['csrf_token'] ?? null);
-    $name     = trim($_POST['full_name'] ?? '');
-    $email    = trim($_POST['email'] ?? '');
-    $sessions = max(1, (int)($_POST['sessions'] ?? 0));
-    $pricePer = (int)($_ENV['SESSION_PRICE'] ?? 100000); // VND per session
-    $amount   = $sessions * $pricePer;
+    $name   = trim($_POST['full_name'] ?? '');
+    $email  = trim($_POST['email'] ?? '');
+    $phone  = trim($_POST['phone'] ?? '');
+    $mental = isset($_POST['mental_health']);
+    $aid    = isset($_POST['financial_aid']);
+    if (!$mental) {
+        $error = 'Lớp thiền chỉ dành cho người mắc các triệu chứng tâm lí, người bình thường có thể đến chùa, thiền viện để thực hành.';
+        include __DIR__ . '/views/signup_form.php';
+        exit;
+    }
+
+    $sessions = 20;
+    $amount   = $aid ? 5000000 : 8000000;
     $txnRef   = (string)time();
 
     $model = new OrderModel($db);
@@ -61,6 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_order'])) {
         'txnRef'   => $txnRef,
         'full_name'=> $name,
         'email'    => $email,
+        'phone'    => $phone,
         'sessions' => $sessions,
         'amount'   => $amount,
     ];
