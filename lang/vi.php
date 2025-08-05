@@ -156,4 +156,9 @@ return [
     'question_worthless' => 'Bạn có cảm thấy mình vô dụng hoặc tội lỗi, hay tự trách bản thân không?',
     'question_concentrate' => 'Bạn có khó tập trung, khó đưa ra quyết định hoặc hay quên không?',
     'question_self_harm' => 'Bạn có suy nghĩ muốn tự làm hại mình hoặc tự tử không?',
+    'notifications' => 'Thông báo',
+    'no_notifications' => 'Không có thông báo.',
+    'send_notification' => 'Gửi thông báo',
+    'notification_placeholder' => 'Nhập nội dung thông báo...',
+    'notification_sent' => 'Đã gửi thông báo.',
 ];

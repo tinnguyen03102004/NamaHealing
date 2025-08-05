@@ -4,6 +4,23 @@ require 'config.php';
 if (!isset($_SESSION['uid']) || $_SESSION['role'] !== 'admin') {
     header('Location: login.php'); exit;
 }
+
+$notifySuccess = false;
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_message'])) {
+    csrf_check($_POST['csrf_token'] ?? null);
+    $msg = trim($_POST['notify_message']);
+    if ($msg !== '') {
+        $db->exec("CREATE TABLE IF NOT EXISTS notifications (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            message TEXT NOT NULL,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )");
+        $stmt = $db->prepare("INSERT INTO notifications (message) VALUES (?)");
+        $stmt->execute([$msg]);
+        $notifySuccess = true;
+    }
+}
+
 require 'header.php';
 
 // --- XỬ LÝ LỌC ---
@@ -51,6 +68,17 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
          href="admin.php"><?= __('clear_filter') ?></a>
     </div>
   </div>
+
+  <?php if ($notifySuccess): ?>
+    <div class="mb-4 p-3 rounded bg-green-100 text-green-700 text-sm"><?= __('notification_sent') ?></div>
+  <?php endif; ?>
+
+  <form method="post" class="mb-6 bg-white/95 rounded-xl shadow px-4 py-3 flex flex-col gap-3">
+    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
+    <label for="notify" class="font-semibold text-mint-text"><?= __('send_notification') ?></label>
+    <textarea id="notify" name="notify_message" class="border border-mint rounded p-2" placeholder="<?= __('notification_placeholder') ?>" required></textarea>
+    <button class="self-start rounded-lg bg-mint text-mint-text font-semibold px-4 py-2 text-sm shadow hover:bg-mint-dark hover:text-white transition"><?= __('send_notification') ?></button>
+  </form>
 
   <!-- FORM LỌC -->
   <form class="mb-5 flex flex-col sm:flex-row items-center gap-3" method="get">
