@@ -4,6 +4,7 @@ return [
     'logout_button' => 'Đăng xuất',
     'login_heading' => 'Đăng nhập lớp học',
     'email_label' => 'Email / Số điện thoại',
+    'phone_label' => 'Số điện thoại',
     'password_label' => 'Mật khẩu',
     'email_placeholder' => 'Nhập email hoặc SĐT...',
     'password_placeholder' => 'Nhập mật khẩu...',

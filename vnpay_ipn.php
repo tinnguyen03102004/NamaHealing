@@ -36,13 +36,13 @@ if ($checkHash === $secureHash) {
         $order = $orderModel->markPaid($orderId);
         if ($order && $order['status'] === 'paid') {
             $userModel = new UserModel($db);
-            $user = $userModel->findByEmail($order['email']);
+            $user = $userModel->findByEmailOrPhone($order['email']);
             if ($user) {
                 $stmt = $db->prepare('UPDATE users SET remaining = remaining + ? WHERE id = ?');
                 $stmt->execute([$order['sessions'], $user['id']]);
             } else {
                 $pass = bin2hex(random_bytes(4));
-                $userModel->createStudent($order['full_name'], $order['email'], $pass, $order['sessions']);
+                $userModel->createStudent($order['full_name'], $order['email'], $order['phone'] ?? '', $pass, $order['sessions']);
             }
             // send email
             $body = 'Cảm ơn bạn đã đăng ký lớp học. Đăng nhập tại ' . ($_ENV['APP_URL'] ?? '') . '/login.php';

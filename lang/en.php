@@ -4,6 +4,7 @@ return [
     'logout_button' => 'Logout',
     'login_heading' => 'Class Login',
     'email_label' => 'Email / Phone',
+    'phone_label' => 'Phone',
     'password_label' => 'Password',
     'email_placeholder' => 'Enter email or phone...',
     'password_placeholder' => 'Enter password...',
