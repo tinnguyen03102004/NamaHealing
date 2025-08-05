@@ -13,21 +13,21 @@ class SelfRegisterController {
 
     public function handle(): void {
         $err = "";
-        $done = false;
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             csrf_check($_POST['csrf_token'] ?? null);
             $name  = trim($_POST['full_name'] ?? '');
-            $email = trim($_POST['email'] ?? '');
+            $phone = trim($_POST['phone'] ?? '');
             $pass  = $_POST['password'] ?? '';
-            if (!$name || !$email || !$pass) {
+            if (!$name || !$phone || !$pass) {
                 $err = 'Vui lòng nhập đầy đủ thông tin';
             } else {
                 $model = new UserModel($this->db);
-                if ($model->findByEmail($email)) {
-                    $err = 'Email đã được sử dụng';
+                if ($model->findByEmail($phone)) {
+                    $err = 'Số điện thoại đã được sử dụng';
                 } else {
-                    $model->createStudent($name, $email, $pass);
-                    $done = true;
+                    $model->createStudent($name, $phone, $pass);
+                    header('Location: welcome.php');
+                    exit;
                 }
             }
         }

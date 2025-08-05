@@ -15,15 +15,23 @@ class LoginController {
         $err = "";
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             csrf_check($_POST['csrf_token'] ?? null);
-            $email = $_POST['email'] ?? '';
+            $phone = $_POST['phone'] ?? '';
             $pass  = $_POST['password'] ?? '';
             $model = new UserModel($this->db);
-            $user  = $model->findByEmail($email);
+            $user  = $model->findByEmail($phone);
             if ($user && password_verify($pass, $user['password'])) {
                 session_regenerate_id(true);
                 $_SESSION['uid']  = $user['id'];
                 $_SESSION['role'] = $user['role'];
-                header('Location: ' . ($user['role'] === 'admin' ? 'admin.php' : 'dashboard.php'));
+                if ($user['role'] === 'admin') {
+                    header('Location: admin.php');
+                } else {
+                    if (($user['remaining'] ?? 0) > 0) {
+                        header('Location: dashboard.php');
+                    } else {
+                        header('Location: welcome.php');
+                    }
+                }
                 exit;
             }
             $err = __('login_error');

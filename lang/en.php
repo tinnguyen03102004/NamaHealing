@@ -8,6 +8,7 @@ return [
     'password_label' => 'Password',
     'email_placeholder' => 'Enter email or phone...',
     'password_placeholder' => 'Enter password...',
+    'phone_placeholder' => 'Enter phone number...',
     'no_account' => "Don't have an account?",
     'register_link' => 'Sign up',
     'login_error' => 'Incorrect email or password!',

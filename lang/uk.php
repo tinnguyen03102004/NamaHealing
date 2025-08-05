@@ -8,6 +8,7 @@ return [
     'password_label' => 'Пароль',
     'email_placeholder' => 'Введіть email або телефон...',
     'password_placeholder' => 'Введіть пароль...',
+    'phone_placeholder' => 'Введіть номер телефону...',
     'no_account' => 'Немає акаунта?',
     'register_link' => 'Зареєструватися',
     'login_error' => 'Невірний email або пароль!',

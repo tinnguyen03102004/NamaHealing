@@ -11,6 +11,10 @@ $stmt = $db->prepare("SELECT full_name, remaining FROM users WHERE id=?");
 $stmt->execute([$uid]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 $remain = $user['remaining'] ?? 0;
+if ($remain <= 0) {
+    header('Location: welcome.php');
+    exit;
+}
 
 // Lấy lịch sử
 $stmt = $db->prepare("SELECT session, created_at FROM sessions WHERE user_id=? ORDER BY created_at DESC LIMIT 5");
@@ -40,7 +44,6 @@ require 'header.php';
     <div class="text-center mb-6 text-lg font-semibold text-green-700 flex flex-col items-center">
       🌿 <span><?= sprintf(__('remaining_sessions'), $remain) ?></span>
     </div>
-    <?php if ($remain > 0): ?>
     <div class="flex flex-col md:flex-row gap-4 mb-6">
       <div class="flex-1 bg-white/90 rounded-xl shadow p-4 flex flex-col items-center border border-mint/30">
         <div class="mb-2 font-semibold text-base text-mint-text"><?= __('morning_class') ?> <span class="text-gray-400 text-sm">06:00-06:40</span></div>
@@ -67,16 +70,6 @@ require 'header.php';
         </a>
       </div>
     </div>
-    <?php else: ?>
-    <div class="flex flex-col md:flex-row gap-4 mb-6">
-      <a href="checkout.php?plan=20" class="flex-1 rounded-xl bg-gradient-to-tr from-[#b6f0de] to-[#9dcfc3] text-[#285F57] font-bold py-3 text-center shadow-lg hover:scale-[1.03] hover:shadow-xl transition focus:ring-2 focus:ring-mint-dark outline-none">
-        <?= __('buy_plan20') ?>
-      </a>
-      <a href="bill.php" class="flex-1 rounded-xl bg-gradient-to-tr from-[#b6f0de] to-[#9dcfc3] text-[#285F57] font-bold py-3 text-center shadow-lg hover:scale-[1.03] hover:shadow-xl transition focus:ring-2 focus:ring-mint-dark outline-none">
-        <?= __('bill_button') ?>
-      </a>
-    </div>
-    <?php endif; ?>
     <h5 class="text-center text-base font-semibold text-mint-text mt-2 mb-3"><?= __('recent_history') ?></h5>
     <div class="overflow-x-auto">
       <table class="w-full text-sm bg-white border border-gray-100 rounded-lg">
