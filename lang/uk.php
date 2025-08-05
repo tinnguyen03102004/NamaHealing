@@ -4,6 +4,7 @@ return [
     'logout_button' => 'Вийти',
     'login_heading' => 'Вхід до класу',
     'email_label' => 'Email / Телефон',
+    'phone_label' => 'Телефон',
     'password_label' => 'Пароль',
     'email_placeholder' => 'Введіть email або телефон...',
     'password_placeholder' => 'Введіть пароль...',
