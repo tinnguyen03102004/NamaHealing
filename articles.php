@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/i18n.php';
 $pageTitle = 'Bài viết';
 $metaDescription = 'Tổng hợp các bài viết chia sẻ kiến thức thiền định, yoga và tự chữa lành từ NamaHealing.';
 
@@ -11,8 +12,8 @@ if (file_exists($file)) {
         $articles = $data;
     }
 }
+include 'header.php';
 ?>
-<?php include 'header.php'; ?>
 <main class="max-w-3xl mx-auto px-4 py-6">
   <h1 class="text-2xl font-semibold mb-6">Bài viết</h1>
   <?php foreach ($articles as $article): ?>

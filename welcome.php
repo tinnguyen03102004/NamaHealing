@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/i18n.php';
 $pageTitle = 'Chào mừng';
 include 'header.php';
 ?>
