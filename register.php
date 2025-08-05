@@ -1,7 +1,7 @@
 <?php
 require 'config.php';
 
-use NamaHealing\Controllers\RegisterController;
+use NamaHealing\Controllers\SelfRegisterController;
 
-$controller = new RegisterController($db);
+$controller = new SelfRegisterController($db);
 $controller->handle();

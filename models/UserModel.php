@@ -17,9 +17,18 @@ class UserModel {
         return $row ?: null;
     }
 
-    public function createStudent(string $name, string $email, string $pass, int $remain): void {
+    public function createStudent(
+        string $name,
+        string $email,
+        string $pass,
+        int $remain = 0,
+        int $verified = 0,
+        ?string $token = null
+    ): void {
         $hash = password_hash($pass, PASSWORD_DEFAULT);
-        $stmt = $this->db->prepare("INSERT INTO users (role,full_name,email,password,remaining) VALUES ('student',?,?,?,?)");
-        $stmt->execute([$name, $email, $hash, $remain]);
+        $stmt = $this->db->prepare(
+            "INSERT INTO users (role,full_name,email,password,remaining,verified,verify_token) VALUES ('student',?,?,?,?,?,?)"
+        );
+        $stmt->execute([$name, $email, $hash, $remain, $verified, $token]);
     }
 }
