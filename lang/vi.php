@@ -8,6 +8,7 @@ return [
     'password_label' => 'Mật khẩu',
     'email_placeholder' => 'Nhập email hoặc SĐT...',
     'password_placeholder' => 'Nhập mật khẩu...',
+    'phone_placeholder' => 'Nhập số điện thoại...',
     'no_account' => 'Chưa có tài khoản?',
     'register_link' => 'Đăng ký',
     'login_error' => 'Sai tài khoản hoặc mật khẩu!',
