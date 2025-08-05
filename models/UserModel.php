@@ -25,9 +25,10 @@ class UserModel {
         int $remain = 0
     ): void {
         $hash = password_hash($pass, PASSWORD_DEFAULT);
-        $stmt = $this->db->prepare(
-            "INSERT INTO users (role,full_name,email,phone,password,remaining,verified,verify_token) VALUES ('student',?,?,?,?,?,1,NULL)"
-        );
+        $sql = "INSERT INTO users (role,full_name,email,phone,password,remaining,verified,verify_token) "
+             . "VALUES ('student', ?, ?, ?, ?, ?, 1, NULL)";
+        $stmt = $this->db->prepare($sql);
         $stmt->execute([$name, $email, $phone, $hash, $remain]);
     }
 }
+
