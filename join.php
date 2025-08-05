@@ -28,7 +28,18 @@ if ($remain > 0) {
     $stmt = $db->prepare("SELECT url FROM zoom_links WHERE session=?");
     $stmt->execute([$session]);
     $url = $stmt->fetchColumn();
-    header("Location: $url"); exit;
+    // Chuyển hướng tự động tới ứng dụng Zoom trên mọi thiết bị
+    $app_url = preg_replace('#^https?://#', 'zoommtg://', $url);
+    if (stripos($app_url, 'zoommtg://') !== 0 && stripos($app_url, 'zoomus://') !== 0) {
+        $app_url = $url;
+    }
+    $fallback_url = preg_replace('#^zoommtg://#', 'https://', $app_url);
+    $fallback_url = preg_replace('#^zoomus://#', 'https://', $fallback_url);
+    echo "<!DOCTYPE html><html><head><meta charset='utf-8'><title>Redirecting...</title>";
+    echo "<script>window.location.href=" . json_encode($app_url) . ";";
+    echo "setTimeout(function(){window.location.href=" . json_encode($fallback_url) . ";},2000);";
+    echo "</script></head><body><p>Redirecting to Zoom...</p></body></html>";
+    exit;
 }
 
 // Định dạng link Zalo chuẩn
