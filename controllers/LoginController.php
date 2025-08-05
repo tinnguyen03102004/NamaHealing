@@ -16,9 +16,10 @@ class LoginController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             csrf_check($_POST['csrf_token'] ?? null);
             $phone = $_POST['phone'] ?? '';
+            // Phone or email identifier stored in users.email
             $pass  = $_POST['password'] ?? '';
             $model = new UserModel($this->db);
-            $user  = $model->findByEmail($phone);
+            $user  = $model->findByIdentifier($phone);
             if ($user && password_verify($pass, $user['password'])) {
                 session_regenerate_id(true);
                 $_SESSION['uid']  = $user['id'];
