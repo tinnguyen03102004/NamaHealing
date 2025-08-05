@@ -8,15 +8,19 @@
     <form method="post" class="space-y-4">
       <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
       <div>
-        <label class="block mb-1">Họ tên</label>
+        <label class="block mb-1"><?= __('name_label') ?></label>
         <input type="text" name="full_name" required class="w-full px-4 py-2 border rounded-lg" />
       </div>
       <div>
-        <label class="block mb-1">Số điện thoại</label>
+        <label class="block mb-1"><?= __('email_label') ?></label>
+        <input type="email" name="email" required class="w-full px-4 py-2 border rounded-lg" />
+      </div>
+      <div>
+        <label class="block mb-1"><?= __('phone_label') ?></label>
         <input type="text" name="phone" required class="w-full px-4 py-2 border rounded-lg" />
       </div>
       <div>
-        <label class="block mb-1">Mật khẩu</label>
+        <label class="block mb-1"><?= __('password_label') ?></label>
         <input type="password" name="password" required class="w-full px-4 py-2 border rounded-lg" />
       </div>
       <button class="w-full bg-[#9dcfc3] text-[#285F57] font-semibold py-2 rounded-lg">Đăng ký</button>

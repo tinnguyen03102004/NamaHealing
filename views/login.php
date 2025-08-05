@@ -8,10 +8,10 @@
     <form method="post" autocomplete="off" class="space-y-5">
       <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
       <div>
-        <label class="block text-sm font-medium text-[#285F57] mb-1"><?= __('phone_label') ?></label>
-        <input name="phone" type="text" required autofocus
+        <label class="block text-sm font-medium text-[#285F57] mb-1"><?= __('identifier_label') ?></label>
+        <input name="identifier" type="text" required autofocus
           class="w-full px-4 py-2 border-2 border-[#9dcfc3] rounded-lg bg-gray-50 text-[#374151] focus:outline-none focus:border-[#76a89e] focus:bg-white transition"
-          placeholder="<?= __('phone_placeholder') ?>" />
+          placeholder="<?= __('identifier_placeholder') ?>" />
       </div>
       <div>
         <label class="block text-sm font-medium text-[#285F57] mb-1"><?= __('password_label') ?></label>
