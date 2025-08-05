@@ -69,20 +69,44 @@ $isChatbotPage = basename($_SERVER['PHP_SELF']) === 'chatbot.php';
   }
 <?php endif; ?>
 </style>
-<script>
-function initFooter() {
-  const zaloFab = document.getElementById('zalo-fab');
-  const zaloBox = document.getElementById('zalo-branch');
-  if (!zaloFab || !zaloBox) return;
-  zaloFab.addEventListener('click', e => {
-    zaloBox.classList.toggle('show');
-    e.stopPropagation();
+  <script>
+  function initFooter() {
+    const zaloFab = document.getElementById('zalo-fab');
+    const zaloBox = document.getElementById('zalo-branch');
+    if (zaloFab && zaloBox) {
+      zaloFab.addEventListener('click', e => {
+        zaloBox.classList.toggle('show');
+        e.stopPropagation();
+      });
+      zaloFab.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') zaloFab.click(); });
+      zaloBox.addEventListener('click', e => e.stopPropagation());
+      document.addEventListener('click', () => zaloBox.classList.remove('show'));
+    }
+  }
+
+  function initNotifications() {
+    const btn = document.getElementById('notif-btn');
+    const list = document.getElementById('notif-list');
+    const count = document.getElementById('notif-count');
+    if (!btn || !list) return;
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      list.classList.toggle('hidden');
+      if (!list.classList.contains('hidden')) {
+        fetch('notifications_mark.php', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+          body: 'csrf_token=' + encodeURIComponent(btn.dataset.csrf)
+        }).then(() => { if (count) count.remove(); });
+      }
+    });
+    document.addEventListener('click', () => list.classList.add('hidden'));
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    initFooter();
+    initNotifications();
   });
-  zaloFab.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') zaloFab.click(); });
-  zaloBox.addEventListener('click', e => e.stopPropagation());
-  document.addEventListener('click', () => zaloBox.classList.remove('show'));
-}
-document.addEventListener('DOMContentLoaded', initFooter);
-</script>
-</body>
-</html>
+  </script>
+  </body>
+  </html>

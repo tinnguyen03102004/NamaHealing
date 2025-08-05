@@ -154,4 +154,9 @@ return [
     'question_worthless' => 'Do you feel worthless or guilty, or blame yourself?',
     'question_concentrate' => 'Do you have trouble concentrating, making decisions, or remembering things?',
     'question_self_harm' => 'Have you had thoughts of harming yourself or suicide?',
+    'notifications' => 'Notifications',
+    'no_notifications' => 'No notifications.',
+    'send_notification' => 'Send notification',
+    'notification_placeholder' => 'Enter notification content...',
+    'notification_sent' => 'Notification sent.',
 ];

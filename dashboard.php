@@ -23,6 +23,26 @@ $history = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $has_history = count($history) > 0;
 
+// Thông báo
+$db->exec("CREATE TABLE IF NOT EXISTS notifications (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    message TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+)");
+$db->exec("CREATE TABLE IF NOT EXISTS notification_reads (
+    notification_id INT NOT NULL,
+    user_id INT NOT NULL,
+    read_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (notification_id, user_id)
+)");
+
+$stmt = $db->query("SELECT id, message, created_at FROM notifications ORDER BY created_at DESC");
+$notifications = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$stmt = $db->prepare("SELECT COUNT(*) FROM notifications n LEFT JOIN notification_reads r ON n.id = r.notification_id AND r.user_id = ? WHERE r.notification_id IS NULL");
+$stmt->execute([$uid]);
+$unreadCount = (int)$stmt->fetchColumn();
+
 // Kiểm tra giờ hiện tại có nằm trong khung giờ lớp sáng/chiều không
 function is_morning_time() {
     $now = date('H:i');
