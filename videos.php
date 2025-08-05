@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/i18n.php';
 $pageTitle = 'Video';
 $metaDescription = 'Video hướng dẫn thiền, yoga và chữa lành từ NamaHealing giúp bạn thư giãn, cân bằng cuộc sống.';
 
@@ -11,8 +12,8 @@ if (file_exists($file)) {
         $videos = $data;
     }
 }
+include 'header.php';
 ?>
-<?php include 'header.php'; ?>
 <main class="max-w-6xl mx-auto px-4 py-8">
   <h1 class="text-2xl font-semibold mb-8">Video</h1>
   <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
