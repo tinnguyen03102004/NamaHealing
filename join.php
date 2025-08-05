@@ -28,13 +28,27 @@ if ($remain > 0) {
     $stmt = $db->prepare("SELECT url FROM zoom_links WHERE session=?");
     $stmt->execute([$session]);
     $url = $stmt->fetchColumn();
-    // Chuyển hướng tự động tới ứng dụng Zoom trên mọi thiết bị
-    $app_url = preg_replace('#^https?://#', 'zoommtg://', $url);
-    if (stripos($app_url, 'zoommtg://') !== 0 && stripos($app_url, 'zoomus://') !== 0) {
+    // Chuyển hướng tự động tới ứng dụng Zoom phù hợp với từng thiết bị
+    $ua = strtolower($_SERVER['HTTP_USER_AGENT'] ?? '');
+    $parsed = parse_url($url);
+    $queryParams = [];
+    if (!empty($parsed['query'])) parse_str($parsed['query'], $queryParams);
+    $meetingId = null;
+    if (isset($parsed['path']) && preg_match('/\/j\/(\d+)/', $parsed['path'], $m)) {
+        $meetingId = $m[1];
+    }
+    $pwd = $queryParams['pwd'] ?? '';
+    if (strpos($ua, 'iphone') !== false || strpos($ua, 'ipad') !== false || strpos($ua, 'ipod') !== false) {
+        $app_url = "zoomus://zoom.us/join?confno={$meetingId}" . ($pwd ? "&pwd={$pwd}" : '');
+    } elseif (strpos($ua, 'android') !== false) {
+        $app_url = "zoomus://zoom.us/wc/join/{$meetingId}" . ($pwd ? "?pwd={$pwd}" : '');
+    } else {
+        $app_url = "zoommtg://zoom.us/join?confno={$meetingId}" . ($pwd ? "&pwd={$pwd}" : '');
+    }
+    if (!$meetingId) {
         $app_url = $url;
     }
-    $fallback_url = preg_replace('#^zoommtg://#', 'https://', $app_url);
-    $fallback_url = preg_replace('#^zoomus://#', 'https://', $fallback_url);
+    $fallback_url = $url;
     echo "<!DOCTYPE html><html><head><meta charset='utf-8'><title>Redirecting...</title>";
     echo "<script>window.location.href=" . json_encode($app_url) . ";";
     echo "setTimeout(function(){window.location.href=" . json_encode($fallback_url) . ";},2000);";
