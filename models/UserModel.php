@@ -10,9 +10,9 @@ class UserModel {
         $this->db = $db;
     }
 
-    public function findByEmailOrPhone(string $identifier): ?array {
-        $stmt = $this->db->prepare('SELECT * FROM users WHERE email = ? OR phone = ?');
-        $stmt->execute([$identifier, $identifier]);
+    public function findByEmail(string $email): ?array {
+        $stmt = $this->db->prepare('SELECT * FROM users WHERE email = ?');
+        $stmt->execute([$email]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return $row ?: null;
     }
@@ -20,15 +20,13 @@ class UserModel {
     public function createStudent(
         string $name,
         string $email,
-        string $phone,
-        string $pass,
-        int $remain = 0
+        string $pass
     ): void {
         $hash = password_hash($pass, PASSWORD_DEFAULT);
-        $sql = "INSERT INTO users (role,full_name,email,phone,password,remaining,verified,verify_token) "
-             . "VALUES ('student', ?, ?, ?, ?, ?, 1, NULL)";
+        $sql = "INSERT INTO users (role, full_name, email, password) "
+             . "VALUES ('student', ?, ?, ?)";
         $stmt = $this->db->prepare($sql);
-        $stmt->execute([$name, $email, $phone, $hash, $remain]);
+        $stmt->execute([$name, $email, $hash]);
     }
 }
 

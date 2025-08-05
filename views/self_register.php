@@ -19,10 +19,6 @@
         <input type="email" name="email" required class="w-full px-4 py-2 border rounded-lg" />
       </div>
       <div>
-        <label class="block mb-1">Số điện thoại</label>
-        <input type="tel" name="phone" required class="w-full px-4 py-2 border rounded-lg" />
-      </div>
-      <div>
         <label class="block mb-1">Mật khẩu</label>
         <input type="password" name="password" required class="w-full px-4 py-2 border rounded-lg" />
       </div>
