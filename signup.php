@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_order'])) {
     $txnRef   = (string)time();
 
     $model = new OrderModel($db);
-    $model->create($txnRef, $name, $email, $sessions, $amount);
+    $model->create($txnRef, $name, $email, $phone, $sessions, $amount);
 
     $_SESSION['order'] = $order = [
         'txnRef'   => $txnRef,

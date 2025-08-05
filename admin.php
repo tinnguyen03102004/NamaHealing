@@ -14,8 +14,9 @@ $status  = $_GET['status'] ?? 'all';
 $where = ["role = 'student'"];
 $params = [];
 if ($keyword !== '') {
-    $where[] = "(full_name LIKE ? OR email LIKE ?)";
+    $where[] = "(full_name LIKE ? OR email LIKE ? OR phone LIKE ?)";
     $like = "%{$keyword}%";
+    $params[] = $like;
     $params[] = $like;
     $params[] = $like;
 }
@@ -76,6 +77,7 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
           <th class="py-2 px-2 sm:px-3 rounded-tl-xl whitespace-nowrap"><?= __('tbl_id') ?></th>
           <th class="py-2 px-2 sm:px-3 whitespace-nowrap"><?= __('tbl_name') ?></th>
           <th class="py-2 px-2 sm:px-3 whitespace-nowrap"><?= __('tbl_email') ?></th>
+          <th class="py-2 px-2 sm:px-3 whitespace-nowrap"><?= __('tbl_phone') ?></th>
           <th class="py-2 px-2 sm:px-3 text-center whitespace-nowrap"><?= __('tbl_remaining') ?></th>
           <th class="py-2 px-2 sm:px-3 rounded-tr-xl text-center whitespace-nowrap"><?= __('tbl_actions') ?></th>
         </tr>
@@ -83,13 +85,14 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
       <tbody>
       <?php if (empty($students)): ?>
         <tr>
-          <td colspan="5" class="py-5 text-center text-gray-400"><?= __('not_found') ?></td>
+          <td colspan="6" class="py-5 text-center text-gray-400"><?= __('not_found') ?></td>
         </tr>
       <?php else: foreach ($students as $row): ?>
         <tr class="hover:bg-mint/5 transition">
           <td class="px-2 sm:px-3 py-2"><?= $row['id'] ?></td>
           <td class="px-2 sm:px-3 py-2"><?= htmlspecialchars($row['full_name']) ?></td>
           <td class="px-2 sm:px-3 py-2"><?= htmlspecialchars($row['email']) ?></td>
+          <td class="px-2 sm:px-3 py-2"><?= htmlspecialchars($row['phone']) ?></td>
           <td class="px-2 sm:px-3 py-2 text-center font-semibold <?= $row['remaining'] == 0 ? 'text-red-600' : 'text-mint-text' ?>">
             <?= $row['remaining'] ?>
           </td>

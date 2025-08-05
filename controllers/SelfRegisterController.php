@@ -16,16 +16,17 @@ class SelfRegisterController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             csrf_check($_POST['csrf_token'] ?? null);
             $name  = trim($_POST['full_name'] ?? '');
-            $phone = trim($_POST['phone'] ?? ''); // stored in users.email
+            $email = trim($_POST['email'] ?? '');
+            $phone = trim($_POST['phone'] ?? '');
             $pass  = $_POST['password'] ?? '';
-            if (!$name || !$phone || !$pass) {
-                $err = 'Vui lòng nhập đầy đủ thông tin';
+            if (!$name || !$email || !$phone || !$pass) {
+                $err = __('err_required_fields');
             } else {
                 $model = new UserModel($this->db);
-                if ($model->findByIdentifier($phone)) {
-                    $err = 'Số điện thoại đã được sử dụng';
+                if ($model->findByIdentifier($phone) || $model->findByIdentifier($email)) {
+                    $err = __('err_email_exists');
                 } else {
-                    $model->createStudent($name, $phone, $pass); // phone stored in email column
+                    $model->createStudent($name, $email, $phone, $pass);
                     header('Location: welcome.php');
                     exit;
                 }

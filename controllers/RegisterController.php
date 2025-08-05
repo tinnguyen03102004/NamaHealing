@@ -20,16 +20,17 @@ class RegisterController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             csrf_check($_POST['csrf_token'] ?? null);
             $name  = trim($_POST['full_name'] ?? '');
-            $email = trim($_POST['email'] ?? ''); // email or phone
+            $email = trim($_POST['email'] ?? '');
+            $phone = trim($_POST['phone'] ?? '');
             $pass  = $_POST['password'] ?? '';
-            if (!$name || !$email || !$pass) {
+            if (!$name || !$email || !$phone || !$pass) {
                 $err = __('err_required_fields');
             } else {
                 $model = new UserModel($this->db);
-                if ($model->findByIdentifier($email)) {
+                if ($model->findByIdentifier($email) || $model->findByIdentifier($phone)) {
                     $err = __('err_email_exists');
                 } else {
-                    $model->createStudent($name, $email, $pass); // identifier stored in email column
+                    $model->createStudent($name, $email, $phone, $pass);
                     header('Location: admin.php');
                     exit;
                 }

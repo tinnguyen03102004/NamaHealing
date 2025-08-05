@@ -17,12 +17,12 @@ class OrderModel {
     /**
      * Create a pending order before redirecting to VNPay.
      */
-    public function create(string $txnRef, string $name, string $email, int $sessions, int $amount): void {
+    public function create(string $txnRef, string $name, string $email, string $phone, int $sessions, int $amount): void {
         $stmt = $this->db->prepare(
-            "INSERT INTO orders (txn_ref, full_name, email, sessions, amount, status, created_at)
-             VALUES (?,?,?,?,?,'pending',NOW())"
+            "INSERT INTO orders (txn_ref, full_name, email, phone, sessions, amount, status, created_at)
+             VALUES (?,?,?,?,?,?,'pending',NOW())"
         );
-        $stmt->execute([$txnRef, $name, $email, $sessions, $amount]);
+        $stmt->execute([$txnRef, $name, $email, $phone, $sessions, $amount]);
     }
 
     /**
