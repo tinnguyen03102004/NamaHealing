@@ -18,16 +18,8 @@
         <input type="text" name="email" class="w-full px-3 py-2 border border-mint rounded-lg bg-gray-50 text-gray-800 focus:outline-none focus:border-mint-dark focus:bg-white transition" required>
       </div>
       <div>
-        <label class="block text-sm font-medium text-mint-text mb-1"><?= __('phone_label') ?></label>
-        <input type="tel" name="phone" class="w-full px-3 py-2 border border-mint rounded-lg bg-gray-50 text-gray-800 focus:outline-none focus:border-mint-dark focus:bg-white transition" required>
-      </div>
-      <div>
         <label class="block text-sm font-medium text-mint-text mb-1"><?= __('password_label') ?></label>
         <input type="password" name="password" class="w-full px-3 py-2 border border-mint rounded-lg bg-gray-50 text-gray-800 focus:outline-none focus:border-mint-dark focus:bg-white transition" required>
-      </div>
-      <div>
-        <label class="block text-sm font-medium text-mint-text mb-1"><?= __('initial_sessions') ?></label>
-        <input type="number" name="remaining" min="0" value="20" class="w-full px-3 py-2 border border-mint rounded-lg bg-gray-50 text-gray-800 focus:outline-none focus:border-mint-dark focus:bg-white transition">
       </div>
       <div class="flex justify-between items-center mt-6 gap-2">
         <a class="rounded-lg border border-mint text-mint-text px-4 py-2 text-sm font-medium hover:bg-mint hover:text-white transition text-center" href="admin.php">

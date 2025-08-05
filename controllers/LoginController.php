@@ -15,10 +15,10 @@ class LoginController {
         $err = "";
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             csrf_check($_POST['csrf_token'] ?? null);
-            $identifier = $_POST['email'] ?? '';
-            $pass       = $_POST['password'] ?? '';
-            $model      = new UserModel($this->db);
-            $user       = $model->findByEmailOrPhone($identifier);
+            $email = $_POST['email'] ?? '';
+            $pass  = $_POST['password'] ?? '';
+            $model = new UserModel($this->db);
+            $user  = $model->findByEmail($email);
             if ($user && password_verify($pass, $user['password'])) {
                 session_regenerate_id(true);
                 $_SESSION['uid']  = $user['id'];
