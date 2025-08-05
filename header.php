@@ -70,27 +70,6 @@ require_once __DIR__ . '/i18n.php';
           <span class="logo-text">NamaHealing</span>
         </a>
           <div class="flex items-center gap-3 sm:gap-6">
-            <?php if (isset($_SESSION['uid']) && $_SESSION['role'] === 'student' && isset($notifications)): ?>
-              <div class="relative">
-                <button id="notif-btn" data-csrf="<?= $_SESSION['csrf_token']; ?>" class="relative p-2">
-                  <span class="text-2xl">🔔</span>
-                  <?php if ($unreadCount > 0): ?>
-                    <span id="notif-count" class="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs rounded-full px-1"><?= $unreadCount ?></span>
-                  <?php endif; ?>
-                </button>
-                <div id="notif-list" class="hidden absolute right-0 mt-2 w-72 bg-white border border-gray-200 rounded shadow-lg max-h-80 overflow-y-auto text-sm">
-                  <div class="px-4 py-2 font-semibold border-b"><?= __('notifications') ?></div>
-                  <?php if (!empty($notifications)): foreach ($notifications as $n): ?>
-                    <div class="px-4 py-2 border-b last:border-0">
-                      <div><?= htmlspecialchars($n['message']) ?></div>
-                      <div class="text-xs text-gray-400"><?= date('H:i d/m/Y', strtotime($n['created_at'])) ?></div>
-                    </div>
-                  <?php endforeach; else: ?>
-                    <div class="px-4 py-2 text-gray-500"><?= __('no_notifications') ?></div>
-                  <?php endif; ?>
-                </div>
-              </div>
-            <?php endif; ?>
             <?php if (!isset($_SESSION['uid'])): ?>
               <a href="login.php" class="px-4 py-2 min-h-[40px] text-base rounded-full border border-[#9dcfc3] hover:bg-[#9dcfc3] hover:text-white transition flex items-center justify-center">
                 <?= __('login_button') ?>
@@ -118,4 +97,26 @@ require_once __DIR__ . '/i18n.php';
       </div>
     </div>
   </header>
-  
+  <?php if (isset($_SESSION['uid']) && $_SESSION['role'] === 'student' && isset($notifications)): ?>
+    <div class="fixed top-20 right-4 z-50">
+      <div class="relative">
+        <button id="notif-btn" data-csrf="<?= $_SESSION['csrf_token']; ?>" class="relative p-2 bg-white rounded-full shadow">
+          <span class="text-2xl">🔔</span>
+          <?php if ($unreadCount > 0): ?>
+            <span id="notif-count" class="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs rounded-full px-1"><?= $unreadCount ?></span>
+          <?php endif; ?>
+        </button>
+        <div id="notif-list" class="hidden absolute right-0 mt-2 w-72 max-w-[90vw] bg-white border border-gray-200 rounded shadow-lg max-h-[80vh] overflow-y-auto text-sm">
+          <div class="px-4 py-2 font-semibold border-b"><?= __('notifications') ?></div>
+          <?php if (!empty($notifications)): foreach ($notifications as $n): ?>
+            <div class="px-4 py-2 border-b last:border-0">
+              <div><?= htmlspecialchars($n['message']) ?></div>
+              <div class="text-xs text-gray-400"><?= date('H:i d/m/Y', strtotime($n['created_at'])) ?></div>
+            </div>
+          <?php endforeach; else: ?>
+            <div class="px-4 py-2 text-gray-500"><?= __('no_notifications') ?></div>
+          <?php endif; ?>
+        </div>
+      </div>
+    </div>
+  <?php endif; ?>
