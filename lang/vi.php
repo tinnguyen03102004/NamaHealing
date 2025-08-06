@@ -25,6 +25,7 @@ return [
     'morning' => 'Sáng',
     'evening' => 'Chiều',
     'no_history' => 'Chưa có lịch sử',
+    'not_class_time' => 'Hiện chưa đến giờ học, vui lòng quay lại sau',
     'admin_title' => 'Quản trị viên – Danh sách học viên',
     'admin_subtitle' => 'Quản lý, cộng buổi, xem lịch sử từng học viên',
     'add_student' => '+ Thêm học viên mới',

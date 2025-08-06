@@ -21,8 +21,6 @@ $stmt = $db->prepare("SELECT session, created_at FROM sessions WHERE user_id=? O
 $stmt->execute([$uid]);
 $history = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$has_history = count($history) > 0;
-
 // Thông báo
 $db->exec("CREATE TABLE IF NOT EXISTS notifications (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -43,14 +41,14 @@ $stmt = $db->prepare("SELECT COUNT(*) FROM notifications n LEFT JOIN notificatio
 $stmt->execute([$uid]);
 $unreadCount = (int)$stmt->fetchColumn();
 
-// Kiểm tra giờ hiện tại có nằm trong khung giờ lớp sáng/chiều không
+// Kiểm tra giờ hiện tại có nằm trong khung giờ vào lớp (ẩn)
 function is_morning_time() {
     $now = date('H:i');
-    return ($now >= '06:00' && $now <= '06:40');
+    return ($now >= '05:55' && $now <= '06:40');
 }
 function is_evening_time() {
     $now = date('H:i');
-    return ($now >= '20:45' && $now <= '21:25');
+    return ($now >= '20:40' && $now <= '21:30');
 }
 
 require 'header.php';
@@ -75,14 +73,14 @@ require 'header.php';
                       focus:ring-2 focus:ring-mint-dark outline-none
                       disabled:opacity-50 disabled:pointer-events-none"
                <?php
-                   if (!$remain || (!$has_history && is_morning_time())) echo 'disabled';
+                   if (!$remain || !is_morning_time()) echo 'disabled';
                ?>>
                <?= __('join_morning') ?>
             </button>
           </form>
         </div>
         <div class="flex-1 bg-white/90 rounded-xl shadow p-4 flex flex-col items-center border border-mint/30">
-          <div class="mb-2 font-semibold text-base text-mint-text"><?= __('evening_class') ?> <span class="text-gray-400 text-sm">20:45-21:25</span></div>
+          <div class="mb-2 font-semibold text-base text-mint-text"><?= __('evening_class') ?> <span class="text-gray-400 text-sm">20:45-21:30</span></div>
           <form method="post" action="join.php" class="w-full">
             <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
             <input type="hidden" name="session" value="evening">
@@ -91,7 +89,7 @@ require 'header.php';
                       focus:ring-2 focus:ring-mint-dark outline-none
                       disabled:opacity-50 disabled:pointer-events-none"
                <?php
-                   if (!$remain || (!$has_history && is_evening_time())) echo 'disabled';
+                   if (!$remain || !is_evening_time()) echo 'disabled';
                ?>>
                <?= __('join_evening') ?>
             </button>

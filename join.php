@@ -16,6 +16,21 @@ $uid = $_SESSION['uid'];
 $session = ($_POST['session'] ?? 'morning');
 if (!in_array($session, ['morning', 'evening'])) $session = 'morning';
 
+// Kiểm tra khung giờ cho phép vào lớp
+$now = date('H:i');
+$allowed = false;
+if ($session === 'morning') {
+    $allowed = ($now >= '05:55' && $now <= '06:40');
+} else {
+    $allowed = ($now >= '20:40' && $now <= '21:30');
+}
+
+if (!$allowed) {
+    $title = $session === 'morning' ? __('join_morning') : __('join_evening');
+    echo "<!DOCTYPE html><html><head><meta charset='utf-8'><title>{$title}</title></head><body><p>" . __('not_class_time') . "</p></body></html>";
+    exit;
+}
+
 // Kiểm tra số buổi còn lại
 $stmt = $db->prepare("SELECT remaining FROM users WHERE id=?");
 $stmt->execute([$uid]);
