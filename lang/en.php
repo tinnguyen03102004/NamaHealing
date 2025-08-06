@@ -25,6 +25,7 @@ return [
     'morning' => 'Morning',
     'evening' => 'Evening',
     'no_history' => 'No history',
+    'not_class_time' => 'It is not class time yet, please come back later',
     'admin_title' => 'Admin – Student list',
     'admin_subtitle' => 'Manage, add sessions and view history',
     'add_student' => 'Add new student',
