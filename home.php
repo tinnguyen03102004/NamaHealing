@@ -5,13 +5,6 @@ require 'config.php';
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-TKVRCQPT');</script>
-  <!-- End Google Tag Manager -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Google tag (gtag.js) -->
@@ -132,17 +125,24 @@ require 'config.php';
         font-size: 1.3rem;
         font-weight: 500;
       }
-      .cta-button {
-        text-align: center;
-        margin-bottom: 2.5rem;
-      }
+  .cta-button {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
 
   </style>
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-PNFMJD34');</script>
+  <!-- End Google Tag Manager -->
 </head>
 
 <body class="overflow-x-hidden">
   <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TKVRCQPT"
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PNFMJD34"
   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
   <!-- Thanh header trong suốt hoàn toàn -->
