@@ -51,6 +51,10 @@ function is_evening_time() {
     return ($now >= '20:40' && $now <= '21:30');
 }
 
+// xác định có đang trong giờ học hay không
+$allowMorning = is_morning_time();
+$allowEvening = is_evening_time();
+
 require 'header.php';
 ?>
 
@@ -69,12 +73,8 @@ require 'header.php';
             <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
             <input type="hidden" name="session" value="morning">
             <button type="submit"
-               class="w-full rounded-xl bg-gradient-to-tr from-[#b6f0de] to-[#9dcfc3] text-[#285F57] font-bold py-2 text-center mt-3 shadow-lg hover:scale-[1.03] hover:shadow-xl transition
-                      focus:ring-2 focus:ring-mint-dark outline-none
-                      disabled:opacity-50 disabled:pointer-events-none"
-               <?php
-                   if (!$remain || !is_morning_time()) echo 'disabled';
-               ?>>
+               data-allowed="<?= $allowMorning ? '1' : '0' ?>"
+               class="w-full rounded-xl bg-gradient-to-tr from-[#b6f0de] to-[#9dcfc3] text-[#285F57] font-bold py-2 text-center mt-3 shadow-lg hover:scale-[1.03] hover:shadow-xl transition focus:ring-2 focus:ring-mint-dark outline-none <?= $allowMorning ? '' : 'opacity-50 cursor-not-allowed' ?>">
                <?= __('join_morning') ?>
             </button>
           </form>
@@ -85,12 +85,8 @@ require 'header.php';
             <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
             <input type="hidden" name="session" value="evening">
             <button type="submit"
-               class="w-full rounded-xl bg-gradient-to-tr from-[#b6f0de] to-[#9dcfc3] text-[#285F57] font-bold py-2 text-center mt-3 shadow-lg hover:scale-[1.03] hover:shadow-xl transition
-                      focus:ring-2 focus:ring-mint-dark outline-none
-                      disabled:opacity-50 disabled:pointer-events-none"
-               <?php
-                   if (!$remain || !is_evening_time()) echo 'disabled';
-               ?>>
+               data-allowed="<?= $allowEvening ? '1' : '0' ?>"
+               class="w-full rounded-xl bg-gradient-to-tr from-[#b6f0de] to-[#9dcfc3] text-[#285F57] font-bold py-2 text-center mt-3 shadow-lg hover:scale-[1.03] hover:shadow-xl transition focus:ring-2 focus:ring-mint-dark outline-none <?= $allowEvening ? '' : 'opacity-50 cursor-not-allowed' ?>">
                <?= __('join_evening') ?>
             </button>
           </form>
@@ -121,5 +117,16 @@ require 'header.php';
     </div>
   </div>
 </main>
+
+<script>
+document.querySelectorAll('button[data-allowed]').forEach(btn => {
+  btn.addEventListener('click', function(e) {
+    if (this.dataset.allowed !== '1') {
+      e.preventDefault();
+      alert(<?= json_encode(__('not_class_time')) ?>);
+    }
+  });
+});
+</script>
 
 <?php include 'footer.php'; ?>
