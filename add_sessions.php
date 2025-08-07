@@ -11,8 +11,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $uid = intval($_POST['uid'] ?? 0);
     $add = intval($_POST['add'] ?? 0);
 
-    if ($uid > 0 && $add > 0) {
-        // Cộng thêm số buổi
+    if ($uid > 0 && $add != 0) {
+        // Cập nhật số buổi (có thể âm để trừ)
         $stmt = $db->prepare("UPDATE users SET remaining = remaining + ? WHERE id = ?");
         $stmt->execute([$add, $uid]);
     }

@@ -129,7 +129,7 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <form method="post" action="add_sessions.php" class="flex gap-1 items-center">
               <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
               <input type="hidden" name="uid" value="<?= $row['id'] ?>">
-              <input type="number" name="add" value="1" min="1"
+              <input type="number" name="add" value="1"
                 class="w-14 rounded border border-mint px-2 py-1 text-sm focus:border-mint-dark focus:ring-mint" />
               <button class="rounded bg-mint/90 text-mint-text px-2 py-1 text-xs font-semibold shadow hover:bg-mint-dark hover:text-white transition" title="<?= __('add_sessions') ?> buổi">
                 <?= __('add_sessions') ?>
