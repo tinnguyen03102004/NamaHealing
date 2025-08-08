@@ -40,20 +40,25 @@ require 'header.php';
     </div>
     <button type="submit" class="bg-[#9dcfc3] text-white px-4 py-2 rounded">Gửi</button>
   </form>
-  <div class="space-y-4">
-    <?php foreach ($journals as $j): ?>
-      <div class="bg-white p-4 rounded shadow">
-        <div class="text-sm text-gray-500 mb-2">
-          <?= date('d/m/Y H:i', strtotime($j['meditation_at'])) ?>
-        </div>
-        <div class="whitespace-pre-line mb-2"><?= htmlspecialchars($j['content']) ?></div>
-        <?php if ($j['teacher_reply']): ?>
-          <div class="mt-2 p-2 bg-gray-50 border-l-4 border-green-400">
-            <strong>Phản hồi:</strong> <?= htmlspecialchars($j['teacher_reply']) ?>
+  <?php if ($journals): ?>
+    <section id="journal-history" class="bg-white p-4 rounded shadow">
+      <h2 class="text-lg font-semibold mb-3">Lịch sử báo thiền</h2>
+      <div class="space-y-4 max-h-96 overflow-y-auto">
+        <?php foreach ($journals as $j): ?>
+          <div class="border-b pb-4 last:border-b-0 last:pb-0">
+            <div class="text-sm text-gray-500 mb-2">
+              <?= date('d/m/Y H:i', strtotime($j['meditation_at'])) ?>
+            </div>
+            <div class="whitespace-pre-line mb-2"><?= htmlspecialchars($j['content']) ?></div>
+            <?php if ($j['teacher_reply']): ?>
+              <div class="mt-2 p-2 bg-gray-50 border-l-4 border-green-400">
+                <strong>Phản hồi:</strong> <?= htmlspecialchars($j['teacher_reply']) ?>
+              </div>
+            <?php endif; ?>
           </div>
-        <?php endif; ?>
+        <?php endforeach; ?>
       </div>
-    <?php endforeach; ?>
-  </div>
+    </section>
+  <?php endif; ?>
 </main>
 <?php include 'footer.php'; ?>
