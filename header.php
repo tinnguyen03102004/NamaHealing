@@ -74,9 +74,6 @@ require_once __DIR__ . '/i18n.php';
                 <a href="login.php" class="px-4 py-2 min-h-[40px] text-base rounded-full border border-[#9dcfc3] hover:bg-[#9dcfc3] hover:text-white transition flex items-center justify-center">
                   <?= __('login_button') ?>
                 </a>
-                <a href="teacher_login.php" class="px-4 py-2 min-h-[40px] text-base rounded-full border border-[#9dcfc3] hover:bg-[#9dcfc3] hover:text-white transition flex items-center justify-center">
-                  Teacher
-                </a>
               <?php else: ?>
                 <?php if (($_SESSION['role'] ?? '') === 'student'): ?>
                   <a href="student_journal.php" class="px-4 py-2 min-h-[40px] text-base rounded-full border border-[#9dcfc3] hover:bg-[#9dcfc3] hover:text-white transition flex items-center justify-center">

@@ -1,7 +1,8 @@
 <?php
+define('REQUIRE_LOGIN', true);
 require 'config.php';
 if (($_SESSION['role'] ?? '') !== 'teacher') {
-    header('Location: teacher_login.php');
+    header('Location: login.php');
     exit;
 }
 
