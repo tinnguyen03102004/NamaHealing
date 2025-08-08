@@ -26,6 +26,8 @@ class LoginController {
                 $_SESSION['role'] = $user['role'];
                 if ($user['role'] === 'admin') {
                     header('Location: admin.php');
+                } elseif ($user['role'] === 'teacher') {
+                    header('Location: teacher_dashboard.php');
                 } else {
                     if (($user['remaining'] ?? 0) > 0) {
                         header('Location: dashboard.php');
