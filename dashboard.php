@@ -115,8 +115,9 @@ require 'header.php';
         </tbody>
       </table>
     </div>
-    <div class="text-center mt-4">
+    <div class="text-center mt-4 space-x-4">
       <a href="change_password.php" class="text-sm text-blue-600 underline"><?= __('change_password') ?></a>
+      <a href="student_journal.php" class="text-sm text-blue-600 underline">Nhật ký thiền</a>
     </div>
   </div>
 </main>
