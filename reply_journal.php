@@ -1,5 +1,4 @@
 <?php
-define('REQUIRE_LOGIN', true);
 require 'config.php';
 if (($_SESSION['role'] ?? '') !== 'teacher') {
     header('Location: teacher_login.php');
@@ -19,3 +18,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 header('Location: teacher_dashboard.php');
+exit;
