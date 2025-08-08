@@ -69,17 +69,29 @@ require_once __DIR__ . '/i18n.php';
           <img src="logoNama.png" alt="NamaHealing logo" class="w-8 h-8" />
           <span class="logo-text">NamaHealing</span>
         </a>
-          <div class="flex items-center gap-3 sm:gap-6">
-            <?php if (!isset($_SESSION['uid'])): ?>
-              <a href="login.php" class="px-4 py-2 min-h-[40px] text-base rounded-full border border-[#9dcfc3] hover:bg-[#9dcfc3] hover:text-white transition flex items-center justify-center">
-                <?= __('login_button') ?>
-              </a>
-            <?php else: ?>
-              <a href="logout.php" class="px-4 py-2 min-h-[40px] text-base rounded-full border border-[#9dcfc3] hover:bg-[#9dcfc3] hover:text-white transition flex items-center justify-center">
-                <?= __('logout_button') ?>
-              </a>
-            <?php endif; ?>
-            <span class="hidden sm:block">
+                      <div class="flex items-center gap-3 sm:gap-6">
+              <?php if (!isset($_SESSION['uid'])): ?>
+                <a href="login.php" class="px-4 py-2 min-h-[40px] text-base rounded-full border border-[#9dcfc3] hover:bg-[#9dcfc3] hover:text-white transition flex items-center justify-center">
+                  <?= __('login_button') ?>
+                </a>
+                <a href="teacher_login.php" class="px-4 py-2 min-h-[40px] text-base rounded-full border border-[#9dcfc3] hover:bg-[#9dcfc3] hover:text-white transition flex items-center justify-center">
+                  Teacher
+                </a>
+              <?php else: ?>
+                <?php if (($_SESSION['role'] ?? '') === 'student'): ?>
+                  <a href="student_journal.php" class="px-4 py-2 min-h-[40px] text-base rounded-full border border-[#9dcfc3] hover:bg-[#9dcfc3] hover:text-white transition flex items-center justify-center">
+                    Nhật ký
+                  </a>
+                <?php elseif (($_SESSION['role'] ?? '') === 'teacher'): ?>
+                  <a href="teacher_dashboard.php" class="px-4 py-2 min-h-[40px] text-base rounded-full border border-[#9dcfc3] hover:bg-[#9dcfc3] hover:text-white transition flex items-center justify-center">
+                    Teacher
+                  </a>
+                <?php endif; ?>
+                <a href="logout.php" class="px-4 py-2 min-h-[40px] text-base rounded-full border border-[#9dcfc3] hover:bg-[#9dcfc3] hover:text-white transition flex items-center justify-center">
+                  <?= __('logout_button') ?>
+                </a>
+              <?php endif; ?>
+              <span class="hidden sm:block">
               <a href="?lang=vi" class="text-sm country-code <?= ($_SESSION['lang'] ?? 'vi') === 'vi' ? 'font-bold' : '' ?>" aria-label="<?= __('language_vi') ?>">vn</a>
               |
               <a href="?lang=en" class="text-sm country-code <?= ($_SESSION['lang'] ?? 'vi') === 'en' ? 'font-bold' : '' ?>" aria-label="<?= __('language_en') ?>">en</a>
