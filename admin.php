@@ -106,7 +106,6 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
           <th class="py-2 px-2 sm:px-3 whitespace-nowrap"><?= __('tbl_name') ?></th>
           <th class="py-2 px-2 sm:px-3 whitespace-nowrap"><?= __('tbl_email') ?></th>
           <th class="py-2 px-2 sm:px-3 whitespace-nowrap"><?= __('tbl_phone') ?></th>
-          <th class="py-2 px-2 sm:px-3 whitespace-nowrap"><?= __('tbl_password') ?></th>
           <th class="py-2 px-2 sm:px-3 text-center whitespace-nowrap"><?= __('tbl_remaining') ?></th>
           <th class="py-2 px-2 sm:px-3 rounded-tr-xl text-center whitespace-nowrap"><?= __('tbl_actions') ?></th>
         </tr>
@@ -114,7 +113,7 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
       <tbody>
       <?php if (empty($students)): ?>
         <tr>
-          <td colspan="7" class="py-5 text-center text-gray-400"><?= __('not_found') ?></td>
+          <td colspan="6" class="py-5 text-center text-gray-400"><?= __('not_found') ?></td>
         </tr>
       <?php else: foreach ($students as $row): ?>
         <tr class="hover:bg-mint/5 transition">
@@ -122,7 +121,6 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
           <td class="px-2 sm:px-3 py-2"><?= htmlspecialchars($row['full_name']) ?></td>
           <td class="px-2 sm:px-3 py-2"><?= htmlspecialchars($row['email']) ?></td>
           <td class="px-2 sm:px-3 py-2"><?= htmlspecialchars($row['phone']) ?></td>
-          <td class="px-2 sm:px-3 py-2 break-all"><?= htmlspecialchars($row['password']) ?></td>
           <td class="px-2 sm:px-3 py-2 text-center font-semibold <?= $row['remaining'] == 0 ? 'text-red-600' : 'text-mint-text' ?>">
             <?= $row['remaining'] ?>
           </td>
