@@ -42,7 +42,14 @@ require 'header.php';
 ?>
 <main class="p-4 max-w-5xl mx-auto">
   <h2 class="text-2xl font-bold mb-4">Danh sách học viên</h2>
-  <input type="text" id="student-filter" placeholder="Lọc theo tên học viên" class="mb-4 p-2 border rounded w-full max-w-sm" />
+  <div class="flex gap-2 mb-4">
+    <select id="filter-type" class="p-2 border rounded">
+      <option value="name">Tên</option>
+      <option value="journal">Báo thiền mới nhất</option>
+      <option value="id">ID</option>
+    </select>
+    <input type="text" id="student-filter" placeholder="Nhập từ khóa" class="p-2 border rounded flex-1 max-w-sm" />
+  </div>
   <div class="overflow-x-auto">
     <table class="w-full table-auto bg-white shadow rounded">
       <thead class="bg-gray-100">
@@ -55,7 +62,7 @@ require 'header.php';
       </thead>
       <tbody>
       <?php foreach ($students as $s): ?>
-        <tr class="border-t student-row" data-name="<?= htmlspecialchars((function_exists('mb_strtolower') ? mb_strtolower($s['full_name'] ?? '') : strtolower($s['full_name'] ?? ''))) ?>" data-id="<?= (int)$s['id'] ?>">
+        <tr class="border-t student-row" data-name="<?= htmlspecialchars((function_exists('mb_strtolower') ? mb_strtolower($s['full_name'] ?? '') : strtolower($s['full_name'] ?? ''))) ?>" data-id="<?= (int)$s['id'] ?>" data-journal="<?= htmlspecialchars((function_exists('mb_strtolower') ? mb_strtolower($s['last_journal'] ?? '') : strtolower($s['last_journal'] ?? ''))) ?>">
           <td class="p-2">
             <?= htmlspecialchars($s['full_name'] ?? '') ?>
           </td>
@@ -119,23 +126,38 @@ document.querySelectorAll('.toggle-journal').forEach(btn=>{
   btn.addEventListener('click',()=>{
     const id=btn.dataset.id;
     const row=document.getElementById('journal-row-'+id);
-    row.classList.toggle('hidden');
-    if(!row.dataset.loaded){
-      loadJournals(id, row.querySelector('.journal-messages'));
-      row.dataset.loaded='1';
+    const isHidden=row.classList.contains('hidden');
+    document.querySelectorAll('.journal-row').forEach(r=>{if(r!==row) r.classList.add('hidden');});
+    if(isHidden){
+      row.classList.remove('hidden');
+      if(!row.dataset.loaded){
+        loadJournals(id, row.querySelector('.journal-messages'));
+        row.dataset.loaded='1';
+      }
+    } else {
+      row.classList.add('hidden');
     }
   });
 });
 
-document.getElementById('student-filter').addEventListener('input', e=>{
-  const term=e.target.value.toLowerCase();
+const filterInput=document.getElementById('student-filter');
+const filterType=document.getElementById('filter-type');
+function applyFilter(){
+  const term=filterInput.value.toLowerCase();
+  const type=filterType.value;
   document.querySelectorAll('.student-row').forEach(r=>{
-    const match=(r.dataset.name||'').includes(term);
+    let value='';
+    if(type==='name') value=r.dataset.name||'';
+    else if(type==='journal') value=r.dataset.journal||'';
+    else if(type==='id') value=r.dataset.id||'';
+    const match=value.includes(term);
     r.classList.toggle('hidden', !match);
     const jr=document.getElementById('journal-row-'+r.dataset.id);
     if(jr) jr.classList.toggle('hidden', !match);
   });
-});
+}
+filterInput.addEventListener('input', applyFilter);
+filterType.addEventListener('change', applyFilter);
 
 document.querySelectorAll('.reply-form').forEach(frm=>{
   frm.addEventListener('submit',e=>{

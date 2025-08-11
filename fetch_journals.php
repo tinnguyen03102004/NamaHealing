@@ -15,7 +15,8 @@ if ($user_id <= 0) {
 }
 
 try {
-    $stmt = $db->prepare('SELECT id, meditation_at, content, teacher_reply, replied_at FROM journals WHERE user_id = ? ORDER BY meditation_at ASC');
+    // Hiển thị lịch sử báo thiền theo thứ tự mới nhất trước
+    $stmt = $db->prepare('SELECT id, meditation_at, content, teacher_reply, replied_at FROM journals WHERE user_id = ? ORDER BY meditation_at DESC');
     $stmt->execute([$user_id]);
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     echo json_encode(['journals' => $rows], JSON_UNESCAPED_UNICODE);
