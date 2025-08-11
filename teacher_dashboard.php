@@ -19,7 +19,7 @@ try {
             COUNT(DISTINCT s.id) AS session_count,
             COUNT(j.id) AS journal_count,
             (
-                SELECT DATE_FORMAT(j2.meditation_at, '%d/%m/%Y %H:%i')
+                SELECT DATE_FORMAT(j2.meditation_at, '%d/%m/%Y')
                 FROM journals j2
                 WHERE j2.user_id = u.id
                 ORDER BY j2.created_at DESC

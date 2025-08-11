@@ -38,7 +38,7 @@ require 'header.php';
   <div class="space-y-6">
       <?php foreach ($journals as $j): ?>
         <div class="bg-white p-4 rounded shadow space-y-2">
-          <div><?= date('d/m/Y H:i', strtotime($j['meditation_at'])) ?>: <?= htmlspecialchars($j['content']) ?></div>
+          <div><?= date('d/m/Y', strtotime($j['meditation_at'])) ?>: <?= htmlspecialchars($j['content']) ?></div>
           <?php if ($j['teacher_reply']): ?>
             <div><?= date('d/m/Y H:i', strtotime($j['replied_at'])) ?>: Giáo viên phản hồi: <?= htmlspecialchars($j['teacher_reply']) ?></div>
           <?php else: ?>
