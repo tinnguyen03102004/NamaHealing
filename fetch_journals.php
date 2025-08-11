@@ -15,11 +15,28 @@ if ($user_id <= 0) {
 }
 
 try {
-    // Hiển thị lịch sử báo thiền theo thứ tự mới nhất trước
-    $stmt = $db->prepare('SELECT id, meditation_at, content, teacher_reply, replied_at FROM journals WHERE user_id = ? ORDER BY meditation_at DESC');
+    $stmt = $db->prepare('SELECT meditation_at, content, teacher_reply, replied_at FROM journals WHERE user_id = ?');
     $stmt->execute([$user_id]);
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    echo json_encode(['journals' => $rows], JSON_UNESCAPED_UNICODE);
+
+    $messages = [];
+    foreach ($rows as $r) {
+        $messages[] = [
+            'created_at' => $r['meditation_at'],
+            'role' => 'student',
+            'content' => $r['content'],
+        ];
+        if (!empty($r['teacher_reply'])) {
+            $messages[] = [
+                'created_at' => $r['replied_at'],
+                'role' => 'teacher',
+                'content' => $r['teacher_reply'],
+            ];
+        }
+    }
+    usort($messages, fn($a, $b) => strtotime($a['created_at']) <=> strtotime($b['created_at']));
+
+    echo json_encode(['messages' => $messages], JSON_UNESCAPED_UNICODE);
 } catch (Throwable $e) {
     echo json_encode(['error' => 'db_error']);
 }
