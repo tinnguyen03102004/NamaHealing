@@ -19,12 +19,19 @@ try {
             COUNT(DISTINCT s.id) AS session_count,
             COUNT(j.id) AS journal_count,
             (
-                SELECT CONCAT(DATE_FORMAT(j2.meditation_at, '%d/%m/%Y %H:%i'), ': ', j2.content)
+                SELECT DATE_FORMAT(j2.meditation_at, '%d/%m/%Y %H:%i')
                 FROM journals j2
                 WHERE j2.user_id = u.id
                 ORDER BY j2.created_at DESC
                 LIMIT 1
-            ) AS last_journal
+            ) AS last_journal_time,
+            (
+                SELECT j2.content
+                FROM journals j2
+                WHERE j2.user_id = u.id
+                ORDER BY j2.created_at DESC
+                LIMIT 1
+            ) AS last_journal_content
         FROM users u
         LEFT JOIN sessions s ON s.user_id = u.id
         LEFT JOIN journals j ON j.user_id = u.id
@@ -63,19 +70,24 @@ require 'header.php';
       </thead>
       <tbody>
       <?php foreach ($students as $s): ?>
-        <tr class="border-t student-row" data-name="<?= htmlspecialchars((function_exists('mb_strtolower') ? mb_strtolower($s['full_name'] ?? '') : strtolower($s['full_name'] ?? ''))) ?>" data-id="<?= (int)$s['id'] ?>" data-journal="<?= htmlspecialchars((function_exists('mb_strtolower') ? mb_strtolower($s['last_journal'] ?? '') : strtolower($s['last_journal'] ?? ''))) ?>">
+        <tr class="border-t student-row" data-name="<?= htmlspecialchars((function_exists('mb_strtolower') ? mb_strtolower($s['full_name'] ?? '') : strtolower($s['full_name'] ?? ''))) ?>" data-id="<?= (int)$s['id'] ?>" data-journal="<?= htmlspecialchars((function_exists('mb_strtolower') ? mb_strtolower(trim(($s['last_journal_time'] ?? '') . ' ' . ($s['last_journal_content'] ?? ''))) : strtolower(trim(($s['last_journal_time'] ?? '') . ' ' . ($s['last_journal_content'] ?? ''))))) ?>">
           <td class="p-2">
             <?= htmlspecialchars($s['full_name'] ?? '') ?>
           </td>
           <td class="p-2 text-center"><?= (int)($s['session_count'] ?? 0) ?></td>
           <td class="p-2 text-left">
-            <?= htmlspecialchars($s['last_journal'] ?? '') ?>
+            <div class="text-gray-600 text-sm">
+              <?= htmlspecialchars($s['last_journal_time'] ?? '') ?>
+            </div>
+            <div>
+              <?= nl2br(htmlspecialchars($s['last_journal_content'] ?? '')) ?>
+            </div>
           </td>
           <td class="p-2 text-center">
             <button class="text-blue-600 underline toggle-journal" data-id="<?= (int)$s['id'] ?>">Xem báo thiền</button>
           </td>
         </tr>
-        <tr id="journal-row-<?= (int)$s['id'] ?>" class="border-t hidden journal-row" data-parent="<?= (int)$s['id'] ?>">
+      <tr id="journal-row-<?= (int)$s['id'] ?>" class="border-t hidden journal-row" data-parent="<?= (int)$s['id'] ?>">
           <td colspan="4" class="p-4 bg-gray-50">
             <div class="journal-messages space-y-2 mb-4 max-h-96 overflow-y-auto" data-stick="1"></div>
             <form class="reply-form space-y-2" data-id="<?= (int)$s['id'] ?>">
