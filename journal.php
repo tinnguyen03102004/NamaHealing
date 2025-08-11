@@ -26,28 +26,23 @@ if (!$student) {
 }
 
 // Fetch journals
-$stmt = $db->prepare("SELECT id, meditation_at, content, teacher_reply FROM journals WHERE user_id = ? ORDER BY meditation_at DESC");
+$stmt = $db->prepare("SELECT id, meditation_at, content, teacher_reply, replied_at FROM journals WHERE user_id = ? ORDER BY meditation_at DESC");
 $stmt->execute([$student_id]);
 $journals = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$pageTitle = 'Nhật ký: ' . $student['full_name'];
+$pageTitle = 'Báo Thiền: ' . $student['full_name'];
 require 'header.php';
 ?>
 <main class="max-w-3xl mx-auto p-4">
-  <h2 class="text-2xl font-bold mb-4">Nhật ký của <?= htmlspecialchars($student['full_name']) ?></h2>
+  <h2 class="text-2xl font-bold mb-4">Báo Thiền của <?= htmlspecialchars($student['full_name']) ?></h2>
   <div class="space-y-6">
     <?php foreach ($journals as $j): ?>
-      <div class="bg-white p-4 rounded shadow">
-        <div class="text-sm text-gray-500 mb-2">
-          <?= date('d/m/Y H:i', strtotime($j['meditation_at'])) ?>
-        </div>
-        <div class="whitespace-pre-line mb-2"><?= htmlspecialchars($j['content']) ?></div>
+      <div class="bg-white p-4 rounded shadow space-y-2">
+        <div><?= date('d/m/Y', strtotime($j['meditation_at'])) ?>: <?= htmlspecialchars($j['content']) ?></div>
         <?php if ($j['teacher_reply']): ?>
-          <div class="mt-2 p-2 bg-gray-50 border-l-4 border-green-400">
-            <strong>Phản hồi:</strong> <?= htmlspecialchars($j['teacher_reply']) ?>
-          </div>
+          <div><?= date('d/m/Y', strtotime($j['replied_at'])) ?>: Giáo viên phản hồi: <?= htmlspecialchars($j['teacher_reply']) ?></div>
         <?php else: ?>
-          <form method="post" action="reply_journal.php" class="mt-2 space-y-2">
+          <form method="post" action="reply_journal.php" class="space-y-2">
             <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
             <input type="hidden" name="journal_id" value="<?= $j['id'] ?>">
             <input type="hidden" name="student_id" value="<?= $student_id ?>">

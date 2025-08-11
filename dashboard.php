@@ -66,7 +66,7 @@ require 'header.php';
     <div class="text-center mb-6 text-lg font-semibold text-green-700 flex flex-col items-center">
       🌿 <span><?= sprintf(__('remaining_sessions'), $remain) ?></span>
     </div>
-    <div class="flex flex-col md:flex-row gap-4 mb-6">
+    <div class="flex flex-col md:flex-row gap-4 mb-4">
         <div class="flex-1 bg-white/90 rounded-xl shadow p-4 flex flex-col items-center border border-mint/30">
           <div class="mb-2 font-semibold text-base text-mint-text"><?= __('morning_class') ?> <span class="text-gray-400 text-sm">06:00-06:40</span></div>
           <form method="post" action="join.php" class="w-full">
@@ -92,6 +92,12 @@ require 'header.php';
           </form>
         </div>
     </div>
+    <div class="mb-6">
+      <a href="student_journal.php"
+         class="block w-full rounded-xl bg-gradient-to-tr from-[#b6f0de] to-[#9dcfc3] text-[#285F57] font-bold py-2 text-center shadow-lg hover:scale-[1.03] hover:shadow-xl transition focus:ring-2 focus:ring-mint-dark outline-none">
+         Báo Thiền
+      </a>
+    </div>
     <h5 class="text-center text-base font-semibold text-mint-text mt-2 mb-3"><?= __('recent_history') ?></h5>
     <div class="overflow-x-auto">
       <table class="w-full text-sm bg-white border border-gray-100 rounded-lg">
@@ -115,9 +121,8 @@ require 'header.php';
         </tbody>
       </table>
     </div>
-    <div class="text-center mt-4 space-x-4">
+    <div class="text-center mt-4">
       <a href="change_password.php" class="text-sm text-blue-600 underline"><?= __('change_password') ?></a>
-      <a href="student_journal.php" class="text-sm text-blue-600 underline">Nhật ký thiền</a>
     </div>
   </div>
 </main>

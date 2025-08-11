@@ -11,8 +11,11 @@ $uid = $_SESSION['uid'];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_check($_POST['csrf_token'] ?? null);
     $meditation_at = $_POST['meditation_at'] ?? '';
-    $content = trim($_POST['content'] ?? '');
-    if ($meditation_at && $content !== '') {
+    $times = trim($_POST['times'] ?? '');
+    $minutes = trim($_POST['minutes'] ?? '');
+    $status = trim($_POST['status'] ?? '');
+    if ($meditation_at && $times !== '' && $minutes !== '' && $status !== '') {
+        $content = "Học viên đã có {$times} thời thiền, mỗi thời {$minutes} phút. Tình trạng tâm lí của học viên: {$status}";
         $stmt = $db->prepare("INSERT INTO journals (user_id, meditation_at, content) VALUES (?, ?, ?)");
         $stmt->execute([$uid, $meditation_at, $content]);
     }
@@ -20,11 +23,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-$stmt = $db->prepare("SELECT meditation_at, content, teacher_reply FROM journals WHERE user_id = ? ORDER BY meditation_at DESC");
+$stmt = $db->prepare("SELECT meditation_at, content, teacher_reply, replied_at FROM journals WHERE user_id = ? ORDER BY meditation_at DESC");
 $stmt->execute([$uid]);
 $journals = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$pageTitle = 'Nhật ký thiền';
+$pageTitle = 'Báo Thiền';
 require 'header.php';
 ?>
 <main class="max-w-3xl mx-auto p-4 space-y-6">
@@ -35,8 +38,16 @@ require 'header.php';
       <input type="datetime-local" name="meditation_at" class="w-full border px-3 py-2 rounded" required>
     </div>
     <div>
-      <label class="block mb-1">Nội dung</label>
-      <textarea name="content" class="w-full border px-3 py-2 rounded" required></textarea>
+      <label class="block mb-1">Số thời thiền</label>
+      <input type="number" name="times" class="w-full border px-3 py-2 rounded" required>
+    </div>
+    <div>
+      <label class="block mb-1">Mỗi thời bao nhiêu phút</label>
+      <input type="number" name="minutes" class="w-full border px-3 py-2 rounded" required>
+    </div>
+    <div>
+      <label class="block mb-1">Tình trạng hiện nay (đã cải thiện thế nào, còn vấn đề nào ,...)</label>
+      <textarea name="status" class="w-full border px-3 py-2 rounded" required></textarea>
     </div>
     <button type="submit" class="bg-[#9dcfc3] text-white px-4 py-2 rounded">Gửi</button>
   </form>
@@ -45,15 +56,10 @@ require 'header.php';
       <h2 class="text-lg font-semibold mb-3">Lịch sử báo thiền</h2>
       <div class="space-y-4 max-h-96 overflow-y-auto">
         <?php foreach ($journals as $j): ?>
-          <div class="border-b pb-4 last:border-b-0 last:pb-0">
-            <div class="text-sm text-gray-500 mb-2">
-              <?= date('d/m/Y H:i', strtotime($j['meditation_at'])) ?>
-            </div>
-            <div class="whitespace-pre-line mb-2"><?= htmlspecialchars($j['content']) ?></div>
+          <div class="border-b pb-4 last:border-b-0 last:pb-0 space-y-2">
+            <div><?= date('d/m/Y', strtotime($j['meditation_at'])) ?>: <?= htmlspecialchars($j['content']) ?></div>
             <?php if ($j['teacher_reply']): ?>
-              <div class="mt-2 p-2 bg-gray-50 border-l-4 border-green-400">
-                <strong>Phản hồi:</strong> <?= htmlspecialchars($j['teacher_reply']) ?>
-              </div>
+              <div><?= date('d/m/Y', strtotime($j['replied_at'])) ?>: Giáo viên phản hồi: <?= htmlspecialchars($j['teacher_reply']) ?></div>
             <?php endif; ?>
           </div>
         <?php endforeach; ?>
