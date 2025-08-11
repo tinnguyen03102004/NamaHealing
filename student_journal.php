@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $minutes = trim($_POST['minutes'] ?? '');
     $status = trim($_POST['status'] ?? '');
     if ($meditation_at && $times !== '' && $minutes !== '' && $status !== '') {
-        $content = "Học viên đã có {$times} thời thiền, mỗi thời {$minutes} phút. Tình trạng tâm lí của học viên: {$status}";
+        $content = "Học viên hôm nay đã có {$times} thời thiền, mỗi thời {$minutes} phút. Tình trạng tâm lí của học viên: {$status}";
         $stmt = $db->prepare("INSERT INTO journals (user_id, meditation_at, content) VALUES (?, ?, ?)");
         $stmt->execute([$uid, $meditation_at, $content]);
     }
@@ -56,10 +56,18 @@ require 'header.php';
       <h2 class="text-lg font-semibold mb-3">Lịch sử báo thiền</h2>
       <div class="space-y-4 max-h-96 overflow-y-auto">
         <?php foreach ($journals as $j): ?>
-          <div class="border-b pb-4 last:border-b-0 last:pb-0 space-y-2">
-            <div><?= date('d/m/Y', strtotime($j['meditation_at'])) ?>: <?= htmlspecialchars($j['content']) ?></div>
+          <div class="space-y-2">
+            <div class="text-left">
+              <div class="inline-block bg-gray-100 p-2 rounded">
+                <?= date('d/m/Y', strtotime($j['meditation_at'])) ?>: <?= htmlspecialchars($j['content']) ?>
+              </div>
+            </div>
             <?php if ($j['teacher_reply']): ?>
-              <div><?= date('d/m/Y', strtotime($j['replied_at'])) ?>: Giáo viên phản hồi: <?= htmlspecialchars($j['teacher_reply']) ?></div>
+              <div class="text-right">
+                <div class="inline-block bg-green-100 p-2 rounded">
+                  <?= date('d/m/Y', strtotime($j['replied_at'])) ?>: <?= htmlspecialchars($j['teacher_reply']) ?>
+                </div>
+              </div>
             <?php endif; ?>
           </div>
         <?php endforeach; ?>
