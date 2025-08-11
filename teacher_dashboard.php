@@ -12,7 +12,20 @@ if (($_SESSION['role'] ?? '') !== 'teacher') {
 }
 
 try {
-    $stmt = $pdo->prepare("\n        SELECT\n            u.id, u.full_name,\n            (SELECT COUNT(*) FROM sessions s WHERE s.user_id = u.id) AS session_count,\n            (SELECT MAX(j.meditation_at) FROM journals j WHERE j.student_id = u.id) AS latest_journal,\n            EXISTS(\n              SELECT 1 FROM journals j\n              WHERE j.student_id = u.id AND j.seen_at IS NULL\n            ) AS has_unseen\n        FROM users u\n        WHERE u.role = 'student'\n        ORDER BY u.full_name\n    ");
+    $stmt = $pdo->prepare("
+        SELECT
+            u.id,
+            u.full_name,
+            COUNT(DISTINCT s.id) AS session_count,
+            MAX(CASE WHEN j.seen_at IS NULL THEN 1 ELSE 0 END) AS has_unseen,
+            MAX(CASE WHEN DATE(j.meditation_at) = CURDATE() THEN 1 ELSE 0 END) AS journal_today
+        FROM users u
+        LEFT JOIN sessions s ON s.user_id = u.id
+        LEFT JOIN journals j ON j.user_id = u.id
+        WHERE u.role = 'student'
+        GROUP BY u.id, u.full_name
+        ORDER BY u.full_name
+    ");
     $stmt->execute();
     $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (Throwable $e) {
@@ -44,8 +57,8 @@ require 'header.php';
             <?php endif; ?>
           </td>
           <td class="p-2 text-center"><?= (int)($s['session_count'] ?? 0) ?></td>
-          <td class="p-2">
-            <?= !empty($s['latest_journal']) ? date('d/m/Y H:i', strtotime($s['latest_journal'])) : '-' ?>
+          <td class="p-2 text-center">
+            <?= (int)($s['journal_today'] ?? 0) ?>
           </td>
           <td class="p-2 text-center">
             <button class="text-blue-600 underline toggle-journal" data-id="<?= (int)$s['id'] ?>">Xem báo thiền</button>
@@ -90,7 +103,7 @@ function renderJournals(container, journals){
 }
 
 function loadJournals(id, container){
-  fetch('fetch_journals.php?student_id='+id)
+  fetch('fetch_journals.php?user_id='+id)
     .then(r=>r.json())
     .then(d=>{renderJournals(container, d.journals || []);});
 }
@@ -113,7 +126,7 @@ document.querySelectorAll('.reply-form').forEach(frm=>{
     const id=frm.dataset.id;
     const textarea=frm.querySelector('textarea');
     const container=frm.parentElement.querySelector('.journal-messages');
-    fetch('teacher_reply.php',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({student_id:id,reply:textarea.value,csrf_token:csrfToken})})
+    fetch('teacher_reply.php',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({user_id:id,reply:textarea.value,csrf_token:csrfToken})})
       .then(r=>r.json())
       .then(d=>{
         if(d.success){
