@@ -1,6 +1,19 @@
 <?php
 define('REQUIRE_LOGIN', true);
 require 'config.php';
+
+$gtm_head = <<<'HTML'
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-PNFMJD34');</script>
+<!-- End Google Tag Manager -->
+HTML;
+
+$gtm_body = <<<'HTML'
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PNFMJD34" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+HTML;
+
 if (!isset($_SESSION['uid']) || $_SESSION['role'] !== 'student') {
     header('Location: login.php'); exit;
 }
@@ -27,7 +40,7 @@ if ($session === 'morning') {
 
 if (!$allowed) {
     $title = $session === 'morning' ? __('join_morning') : __('join_evening');
-    echo "<!DOCTYPE html><html><head><meta charset='utf-8'><title>{$title}</title></head><body><p>" . __('not_class_time') . "</p></body></html>";
+    echo "<!DOCTYPE html><html><head>{$gtm_head}<meta charset='utf-8'><title>{$title}</title></head><body>{$gtm_body}<p>" . __('not_class_time') . "</p></body></html>";
     exit;
 }
 
@@ -64,10 +77,10 @@ if ($remain > 0) {
         $app_url = $url;
     }
     $fallback_url = $url;
-    echo "<!DOCTYPE html><html><head><meta charset='utf-8'><title>Redirecting...</title>";
+    echo "<!DOCTYPE html><html><head>{$gtm_head}<meta charset='utf-8'><title>Redirecting...</title>";
     echo "<script>window.location.href=" . json_encode($app_url) . ";";
     echo "setTimeout(function(){window.location.href=" . json_encode($fallback_url) . ";},2000);";
-    echo "</script></head><body><p>Redirecting to Zoom...</p></body></html>";
+    echo "</script></head><body>{$gtm_body}<p>Redirecting to Zoom...</p></body></html>";
     exit;
 }
 

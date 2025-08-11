@@ -4,17 +4,15 @@ require_once __DIR__ . '/i18n.php';
 <!DOCTYPE html>
 <html lang="<?= $_SESSION['lang'] ?? 'vi' ?>">
 <head>
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-PNFMJD34');</script>
+  <!-- End Google Tag Manager -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-16673835420"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'AW-16673835420');
-  </script>
   <title><?= isset($pageTitle) ? htmlspecialchars($pageTitle) : 'NamaHealing' ?></title>
   <?php if (!empty($metaDescription)): ?>
     <meta name="description" content="<?= htmlspecialchars($metaDescription) ?>">
@@ -48,13 +46,6 @@ require_once __DIR__ . '/i18n.php';
       letter-spacing: .01em;
     }
   </style>
-  <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-PNFMJD34');</script>
-  <!-- End Google Tag Manager -->
 </head>
 <body class="bg-[#f9fafb] text-[#374151] pt-20 sm:pt-16">
   <!-- Google Tag Manager (noscript) -->
