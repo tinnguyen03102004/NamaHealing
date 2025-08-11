@@ -8,15 +8,15 @@ if (($_SESSION['role'] ?? '') !== 'teacher') {
 }
 
 header('Content-Type: application/json; charset=utf-8');
-$student_id = (int)($_GET['student_id'] ?? 0);
-if ($student_id <= 0) {
+$user_id = (int)($_GET['user_id'] ?? 0);
+if ($user_id <= 0) {
     echo json_encode(['error' => 'invalid_id']);
     exit;
 }
 
 try {
-    $stmt = $db->prepare('SELECT id, meditation_at, content, teacher_reply, replied_at FROM journals WHERE student_id = ? ORDER BY meditation_at ASC');
-    $stmt->execute([$student_id]);
+    $stmt = $db->prepare('SELECT id, meditation_at, content, teacher_reply, replied_at FROM journals WHERE user_id = ? ORDER BY meditation_at ASC');
+    $stmt->execute([$user_id]);
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     echo json_encode(['journals' => $rows], JSON_UNESCAPED_UNICODE);
 } catch (Throwable $e) {

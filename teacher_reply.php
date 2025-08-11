@@ -14,23 +14,23 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 csrf_check($_POST['csrf_token'] ?? null);
-$student_id = (int)($_POST['student_id'] ?? 0);
+$user_id = (int)($_POST['user_id'] ?? 0);
 $reply = trim($_POST['reply'] ?? '');
-if ($student_id <= 0 || $reply === '') {
+if ($user_id <= 0 || $reply === '') {
     echo json_encode(['error' => 'invalid_input']);
     exit;
 }
 
 try {
     $db->beginTransaction();
-    $stmt = $db->prepare('SELECT id FROM journals WHERE student_id = ? AND teacher_reply IS NULL ORDER BY meditation_at DESC LIMIT 1');
-    $stmt->execute([$student_id]);
+    $stmt = $db->prepare('SELECT id FROM journals WHERE user_id = ? AND teacher_reply IS NULL ORDER BY meditation_at DESC LIMIT 1');
+    $stmt->execute([$user_id]);
     $journal_id = $stmt->fetchColumn();
     if ($journal_id) {
         $up = $db->prepare('UPDATE journals SET teacher_reply = ?, replied_at = NOW(), seen_at = NOW() WHERE id = ?');
         $up->execute([$reply, $journal_id]);
-        $seen = $db->prepare('UPDATE journals SET seen_at = NOW() WHERE student_id = ? AND seen_at IS NULL');
-        $seen->execute([$student_id]);
+        $seen = $db->prepare('UPDATE journals SET seen_at = NOW() WHERE user_id = ? AND seen_at IS NULL');
+        $seen->execute([$user_id]);
         $db->commit();
         echo json_encode(['success' => true]);
     } else {
