@@ -23,16 +23,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-$stmt = $db->prepare("SELECT meditation_at, content, teacher_reply, replied_at FROM journals WHERE user_id = ? ORDER BY meditation_at ASC");
+$stmt = $db->prepare("SELECT meditation_at, created_at, content, teacher_reply, replied_at FROM journals WHERE user_id = ? ORDER BY created_at ASC");
 $stmt->execute([$uid]);
 $journals = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $messages = [];
 foreach ($journals as $j) {
     $messages[] = [
-        'time' => $j['meditation_at'],
+        'time' => $j['created_at'],
         'role' => 'student',
-        'content' => $j['content'],
+        'content' => date('d/m/Y H:i', strtotime($j['meditation_at'])) . ': ' . $j['content'],
     ];
     if (!empty($j['teacher_reply'])) {
         $messages[] = [

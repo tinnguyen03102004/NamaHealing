@@ -15,16 +15,16 @@ if ($user_id <= 0) {
 }
 
 try {
-    $stmt = $db->prepare('SELECT meditation_at, content, teacher_reply, replied_at FROM journals WHERE user_id = ?');
+    $stmt = $db->prepare('SELECT meditation_at, created_at, content, teacher_reply, replied_at FROM journals WHERE user_id = ?');
     $stmt->execute([$user_id]);
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     $messages = [];
     foreach ($rows as $r) {
         $messages[] = [
-            'created_at' => $r['meditation_at'],
+            'created_at' => $r['created_at'],
             'role' => 'student',
-            'content' => $r['content'],
+            'content' => date('d/m/Y H:i', strtotime($r['meditation_at'])) . ': ' . $r['content'],
         ];
         if (!empty($r['teacher_reply'])) {
             $messages[] = [
