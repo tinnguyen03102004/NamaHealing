@@ -19,9 +19,10 @@ try {
             COUNT(DISTINCT s.id) AS session_count,
             COUNT(j.id) AS journal_count,
             (
-                SELECT content FROM journals j2
+                SELECT CONCAT(DATE_FORMAT(j2.meditation_at, '%d/%m/%Y %H:%i'), ': ', j2.content)
+                FROM journals j2
                 WHERE j2.user_id = u.id
-                ORDER BY j2.meditation_at DESC
+                ORDER BY j2.created_at DESC
                 LIMIT 1
             ) AS last_journal
         FROM users u

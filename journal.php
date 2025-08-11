@@ -26,7 +26,7 @@ if (!$student) {
 }
 
 // Fetch journals
-$stmt = $db->prepare("SELECT id, meditation_at, content, teacher_reply, replied_at FROM journals WHERE user_id = ? ORDER BY meditation_at DESC");
+$stmt = $db->prepare("SELECT id, meditation_at, created_at, content, teacher_reply, replied_at FROM journals WHERE user_id = ? ORDER BY created_at DESC");
 $stmt->execute([$student_id]);
 $journals = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -36,22 +36,22 @@ require 'header.php';
 <main class="max-w-3xl mx-auto p-4">
   <h2 class="text-2xl font-bold mb-4">Báo Thiền của <?= htmlspecialchars($student['full_name']) ?></h2>
   <div class="space-y-6">
-    <?php foreach ($journals as $j): ?>
-      <div class="bg-white p-4 rounded shadow space-y-2">
-        <div><?= date('d/m/Y', strtotime($j['meditation_at'])) ?>: <?= htmlspecialchars($j['content']) ?></div>
-        <?php if ($j['teacher_reply']): ?>
-          <div><?= date('d/m/Y', strtotime($j['replied_at'])) ?>: Giáo viên phản hồi: <?= htmlspecialchars($j['teacher_reply']) ?></div>
-        <?php else: ?>
-          <form method="post" action="reply_journal.php" class="space-y-2">
-            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
-            <input type="hidden" name="journal_id" value="<?= $j['id'] ?>">
-            <input type="hidden" name="student_id" value="<?= $student_id ?>">
-            <textarea name="reply" class="w-full border px-3 py-2 rounded" required></textarea>
-            <button type="submit" class="bg-[#9dcfc3] text-white px-4 py-1 rounded">Gửi phản hồi</button>
-          </form>
-        <?php endif; ?>
-      </div>
-    <?php endforeach; ?>
+      <?php foreach ($journals as $j): ?>
+        <div class="bg-white p-4 rounded shadow space-y-2">
+          <div><?= date('d/m/Y H:i', strtotime($j['meditation_at'])) ?>: <?= htmlspecialchars($j['content']) ?></div>
+          <?php if ($j['teacher_reply']): ?>
+            <div><?= date('d/m/Y H:i', strtotime($j['replied_at'])) ?>: Giáo viên phản hồi: <?= htmlspecialchars($j['teacher_reply']) ?></div>
+          <?php else: ?>
+            <form method="post" action="reply_journal.php" class="space-y-2">
+              <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
+              <input type="hidden" name="journal_id" value="<?= $j['id'] ?>">
+              <input type="hidden" name="student_id" value="<?= $student_id ?>">
+              <textarea name="reply" class="w-full border px-3 py-2 rounded" required></textarea>
+              <button type="submit" class="bg-[#9dcfc3] text-white px-4 py-1 rounded">Gửi phản hồi</button>
+            </form>
+          <?php endif; ?>
+        </div>
+      <?php endforeach; ?>
   </div>
 </main>
 <?php include 'footer.php'; ?>

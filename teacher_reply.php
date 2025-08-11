@@ -23,7 +23,7 @@ if ($user_id <= 0 || $reply === '') {
 
 try {
     $db->beginTransaction();
-    $stmt = $db->prepare('SELECT id FROM journals WHERE user_id = ? AND teacher_reply IS NULL ORDER BY meditation_at DESC LIMIT 1');
+    $stmt = $db->prepare('SELECT id FROM journals WHERE user_id = ? AND teacher_reply IS NULL ORDER BY created_at DESC LIMIT 1');
     $stmt->execute([$user_id]);
     $journal_id = $stmt->fetchColumn();
     if ($journal_id) {
