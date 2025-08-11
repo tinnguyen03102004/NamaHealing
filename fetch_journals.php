@@ -24,7 +24,7 @@ try {
         $messages[] = [
             'created_at' => $r['created_at'],
             'role' => 'student',
-            'content' => date('d/m/Y H:i', strtotime($r['meditation_at'])) . ': ' . $r['content'],
+            'content' => date('d/m/Y', strtotime($r['meditation_at'])) . ': ' . $r['content'],
         ];
         if (!empty($r['teacher_reply'])) {
             $messages[] = [

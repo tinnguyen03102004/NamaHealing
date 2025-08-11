@@ -32,7 +32,7 @@ foreach ($journals as $j) {
     $messages[] = [
         'time' => $j['created_at'],
         'role' => 'student',
-        'content' => date('d/m/Y H:i', strtotime($j['meditation_at'])) . ': ' . $j['content'],
+        'content' => date('d/m/Y', strtotime($j['meditation_at'])) . ': ' . $j['content'],
     ];
     if (!empty($j['teacher_reply'])) {
         $messages[] = [
@@ -51,8 +51,8 @@ require 'header.php';
   <form method="post" class="bg-white p-4 rounded shadow space-y-4">
     <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
     <div>
-      <label class="block mb-1">Thời gian thiền</label>
-      <input type="datetime-local" name="meditation_at" class="w-full border px-3 py-2 rounded" required>
+      <label class="block mb-1">Ngày thiền</label>
+      <input type="date" name="meditation_at" class="w-full border px-3 py-2 rounded" required>
     </div>
     <div>
       <label class="block mb-1">Số thời thiền</label>
