@@ -23,9 +23,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-$stmt = $db->prepare("SELECT meditation_at, content, teacher_reply, replied_at FROM journals WHERE user_id = ? ORDER BY meditation_at DESC");
+$stmt = $db->prepare("SELECT meditation_at, content, teacher_reply, replied_at FROM journals WHERE user_id = ? ORDER BY meditation_at ASC");
 $stmt->execute([$uid]);
 $journals = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$messages = [];
+foreach ($journals as $j) {
+    $messages[] = [
+        'time' => $j['meditation_at'],
+        'role' => 'student',
+        'content' => $j['content'],
+    ];
+    if (!empty($j['teacher_reply'])) {
+        $messages[] = [
+            'time' => $j['replied_at'],
+            'role' => 'teacher',
+            'content' => $j['teacher_reply'],
+        ];
+    }
+}
+usort($messages, fn($a, $b) => strtotime($a['time']) <=> strtotime($b['time']));
 
 $pageTitle = 'Báo Thiền';
 require 'header.php';
@@ -51,28 +68,37 @@ require 'header.php';
     </div>
     <button type="submit" class="bg-[#9dcfc3] text-white px-4 py-2 rounded">Gửi</button>
   </form>
-  <?php if ($journals): ?>
+  <?php if ($messages): ?>
     <section id="journal-history" class="bg-white p-4 rounded shadow">
       <h2 class="text-lg font-semibold mb-3">Lịch sử báo thiền</h2>
-      <div class="space-y-4 max-h-96 overflow-y-auto">
-        <?php foreach ($journals as $j): ?>
-          <div class="space-y-2">
-            <div class="text-left">
-              <div class="inline-block bg-gray-100 p-2 rounded">
-                <?= date('d/m/Y', strtotime($j['meditation_at'])) ?>: <?= htmlspecialchars($j['content']) ?>
-              </div>
-            </div>
-            <?php if ($j['teacher_reply']): ?>
-              <div class="text-right">
-                <div class="inline-block bg-green-100 p-2 rounded">
-                  <?= date('d/m/Y', strtotime($j['replied_at'])) ?>: <?= htmlspecialchars($j['teacher_reply']) ?>
-                </div>
-              </div>
-            <?php endif; ?>
-          </div>
+      <div id="journal-log" class="space-y-2 max-h-96 overflow-y-auto">
+        <?php $curDate = ''; foreach ($messages as $m): ?>
+          <?php $d = date('d/m/Y', strtotime($m['time'])); ?>
+          <?php if ($d !== $curDate): $curDate = $d; ?>
+            <div class="text-center text-xs text-gray-500"><span class="px-2 py-1 bg-gray-200 rounded-full"><?= $d ?></span></div>
+          <?php endif; ?>
+          <?php if ($m['role'] === 'student'): ?>
+            <div class="text-left"><div class="inline-block bg-gray-100 p-2 rounded"><?= htmlspecialchars($m['content']) ?></div></div>
+          <?php else: ?>
+            <div class="text-right"><div class="inline-block bg-green-100 p-2 rounded"><?= htmlspecialchars($m['content']) ?></div></div>
+          <?php endif; ?>
         <?php endforeach; ?>
       </div>
     </section>
   <?php endif; ?>
 </main>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const log = document.getElementById('journal-log');
+  if (!log) return;
+  let stick = true;
+  const scrollBottom = () => { log.scrollTop = log.scrollHeight; };
+  scrollBottom();
+  log.addEventListener('scroll', () => {
+    stick = log.scrollTop + log.clientHeight >= log.scrollHeight - 10;
+  });
+  const observer = new MutationObserver(() => { if (stick) scrollBottom(); });
+  observer.observe(log, { childList: true });
+});
+</script>
 <?php include 'footer.php'; ?>
