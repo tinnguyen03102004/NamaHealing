@@ -76,7 +76,7 @@ require 'header.php';
         </tr>
         <tr id="journal-row-<?= (int)$s['id'] ?>" class="border-t hidden journal-row" data-parent="<?= (int)$s['id'] ?>">
           <td colspan="4" class="p-4 bg-gray-50">
-            <div class="journal-messages space-y-2 mb-4"></div>
+            <div class="journal-messages space-y-2 mb-4 max-h-96 overflow-y-auto" data-stick="1"></div>
             <form class="reply-form space-y-2" data-id="<?= (int)$s['id'] ?>">
               <textarea class="w-full border px-3 py-2 rounded" required></textarea>
               <button type="submit" class="bg-[#9dcfc3] text-white px-4 py-1 rounded">Gửi phản hồi</button>
@@ -91,35 +91,43 @@ require 'header.php';
 <script>
 const csrfToken = '<?= $_SESSION['csrf_token']; ?>';
 
-function escapeHtml(str){
-  const map={'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'};
-  return str.replace(/[&<>"']/g,m=>map[m]);
-}
-
-function formatDate(str){
-  const d=new Date(str);
-  return d.toLocaleDateString('vi-VN');
-}
-function renderJournals(container, journals){
+function renderMessages(container, messages){
+  const stick = container.dataset.stick !== '0';
   container.innerHTML='';
-  journals.forEach(j=>{
-    const stu=document.createElement('div');
-    stu.className='text-left';
-    stu.innerHTML=`<div class="inline-block bg-gray-100 p-2 rounded">${formatDate(j.meditation_at)}: ${escapeHtml(j.content)}</div>`;
-    container.appendChild(stu);
-    if(j.teacher_reply){
-      const tea=document.createElement('div');
-      tea.className='text-right';
-      tea.innerHTML=`<div class="inline-block bg-green-100 p-2 rounded">${formatDate(j.replied_at)}: ${escapeHtml(j.teacher_reply)}</div>`;
-      container.appendChild(tea);
+  let curDate='';
+  messages.forEach(m=>{
+    const d=new Date(m.created_at);
+    const ds=d.toLocaleDateString('vi-VN');
+    if(ds!==curDate){
+      curDate=ds;
+      const sep=document.createElement('div');
+      sep.className='text-center text-xs text-gray-500';
+      sep.innerHTML=`<span class="px-2 py-1 bg-gray-200 rounded-full">${ds}</span>`;
+      container.appendChild(sep);
     }
+    const wrap=document.createElement('div');
+    wrap.className=m.role==='teacher'?'text-right':'text-left';
+    const bubble=document.createElement('div');
+    bubble.className='inline-block p-2 rounded '+(m.role==='teacher'?'bg-green-100':'bg-gray-100');
+    bubble.textContent=m.content;
+    wrap.appendChild(bubble);
+    container.appendChild(wrap);
   });
+  if(stick){
+    container.scrollTop=container.scrollHeight;
+  }
 }
 
 function loadJournals(id, container){
+  if(!container.dataset.init){
+    container.addEventListener('scroll',()=>{
+      container.dataset.stick = (container.scrollTop + container.clientHeight >= container.scrollHeight - 10) ? '1' : '0';
+    });
+    container.dataset.init='1';
+  }
   fetch('fetch_journals.php?user_id='+id)
     .then(r=>r.json())
-    .then(d=>{renderJournals(container, d.journals || []);});
+    .then(d=>{renderMessages(container, d.messages || []);});
 }
 
 document.querySelectorAll('.toggle-journal').forEach(btn=>{
