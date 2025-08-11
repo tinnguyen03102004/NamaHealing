@@ -89,17 +89,21 @@ function escapeHtml(str){
   return str.replace(/[&<>"']/g,m=>map[m]);
 }
 
+function formatDate(str){
+  const d=new Date(str);
+  return d.toLocaleDateString('vi-VN');
+}
 function renderJournals(container, journals){
   container.innerHTML='';
   journals.forEach(j=>{
     const stu=document.createElement('div');
     stu.className='text-left';
-    stu.innerHTML=`<div class="inline-block bg-gray-100 p-2 rounded"><div class="text-xs text-gray-500">${j.meditation_at}</div><div>${escapeHtml(j.content)}</div></div>`;
+    stu.innerHTML=`<div class="inline-block bg-gray-100 p-2 rounded">${formatDate(j.meditation_at)}: ${escapeHtml(j.content)}</div>`;
     container.appendChild(stu);
     if(j.teacher_reply){
       const tea=document.createElement('div');
       tea.className='text-right';
-      tea.innerHTML=`<div class="inline-block bg-green-100 p-2 rounded"><div class="text-xs text-gray-500">${j.replied_at}</div><div>${escapeHtml(j.teacher_reply)}</div></div>`;
+      tea.innerHTML=`<div class="inline-block bg-green-100 p-2 rounded">${formatDate(j.replied_at)}: ${escapeHtml(j.teacher_reply)}</div>`;
       container.appendChild(tea);
     }
   });
