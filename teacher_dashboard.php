@@ -17,14 +17,19 @@ try {
             u.id,
             u.full_name,
             COUNT(DISTINCT s.id) AS session_count,
-            MAX(CASE WHEN j.seen_at IS NULL THEN 1 ELSE 0 END) AS has_unseen,
-            MAX(CASE WHEN DATE(j.meditation_at) = CURDATE() THEN 1 ELSE 0 END) AS journal_today
+            COUNT(j.id) AS journal_count,
+            (
+                SELECT content FROM journals j2
+                WHERE j2.user_id = u.id
+                ORDER BY j2.meditation_at DESC
+                LIMIT 1
+            ) AS last_journal
         FROM users u
         LEFT JOIN sessions s ON s.user_id = u.id
         LEFT JOIN journals j ON j.user_id = u.id
         WHERE u.role = 'student'
         GROUP BY u.id, u.full_name
-        ORDER BY u.full_name
+        ORDER BY journal_count DESC
     ");
     $stmt->execute();
     $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -37,6 +42,7 @@ require 'header.php';
 ?>
 <main class="p-4 max-w-5xl mx-auto">
   <h2 class="text-2xl font-bold mb-4">Danh sách học viên</h2>
+  <input type="text" id="student-filter" placeholder="Lọc theo tên học viên" class="mb-4 p-2 border rounded w-full max-w-sm" />
   <div class="overflow-x-auto">
     <table class="w-full table-auto bg-white shadow rounded">
       <thead class="bg-gray-100">
@@ -49,22 +55,19 @@ require 'header.php';
       </thead>
       <tbody>
       <?php foreach ($students as $s): ?>
-        <tr class="border-t">
+        <tr class="border-t student-row" data-name="<?= htmlspecialchars((function_exists('mb_strtolower') ? mb_strtolower($s['full_name'] ?? '') : strtolower($s['full_name'] ?? ''))) ?>" data-id="<?= (int)$s['id'] ?>">
           <td class="p-2">
             <?= htmlspecialchars($s['full_name'] ?? '') ?>
-            <?php if (!empty($s['has_unseen'])): ?>
-              <span class="ml-2 bg-red-500 text-white text-xs px-2 py-1 rounded badge-<?= (int)$s['id'] ?>">Chưa xem</span>
-            <?php endif; ?>
           </td>
           <td class="p-2 text-center"><?= (int)($s['session_count'] ?? 0) ?></td>
-          <td class="p-2 text-center">
-            <?= (int)($s['journal_today'] ?? 0) ?>
+          <td class="p-2 text-left">
+            <?= htmlspecialchars($s['last_journal'] ?? '') ?>
           </td>
           <td class="p-2 text-center">
             <button class="text-blue-600 underline toggle-journal" data-id="<?= (int)$s['id'] ?>">Xem báo thiền</button>
           </td>
         </tr>
-        <tr id="journal-row-<?= (int)$s['id'] ?>" class="border-t hidden">
+        <tr id="journal-row-<?= (int)$s['id'] ?>" class="border-t hidden journal-row" data-parent="<?= (int)$s['id'] ?>">
           <td colspan="4" class="p-4 bg-gray-50">
             <div class="journal-messages space-y-2 mb-4"></div>
             <form class="reply-form space-y-2" data-id="<?= (int)$s['id'] ?>">
@@ -120,6 +123,16 @@ document.querySelectorAll('.toggle-journal').forEach(btn=>{
   });
 });
 
+document.getElementById('student-filter').addEventListener('input', e=>{
+  const term=e.target.value.toLowerCase();
+  document.querySelectorAll('.student-row').forEach(r=>{
+    const match=(r.dataset.name||'').includes(term);
+    r.classList.toggle('hidden', !match);
+    const jr=document.getElementById('journal-row-'+r.dataset.id);
+    if(jr) jr.classList.toggle('hidden', !match);
+  });
+});
+
 document.querySelectorAll('.reply-form').forEach(frm=>{
   frm.addEventListener('submit',e=>{
     e.preventDefault();
@@ -132,8 +145,6 @@ document.querySelectorAll('.reply-form').forEach(frm=>{
         if(d.success){
           textarea.value='';
           loadJournals(id, container);
-          const badge=document.querySelector('.badge-'+id);
-          if(badge) badge.remove();
         }
       });
   });
