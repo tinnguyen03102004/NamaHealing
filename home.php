@@ -1,6 +1,14 @@
 <?php
 // home.php – trang chủ NAMA HEALING
 require 'config.php';
+
+// Ảnh nền được dùng cho phần hero và thẻ Open Graph
+$heroImage = 'https://images.unsplash.com/photo-1536514498073-50e69d39c6cf?q=80&w=2000&auto=format&fit=crop';
+
+// Mô tả ngắn cho trang và link hiện tại để dùng trong thẻ meta
+$metaDescription = 'Không gian thiền chữa lành cùng NamaHealing.';
+$currentUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' .
+    ($_SERVER['HTTP_HOST'] ?? '') . ($_SERVER['REQUEST_URI'] ?? '');
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -15,6 +23,13 @@ require 'config.php';
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NAMA HEALING – Home</title>
+
+  <meta name="description" content="<?= htmlspecialchars($metaDescription) ?>">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="NAMA HEALING – Home">
+  <meta property="og:description" content="<?= htmlspecialchars($metaDescription) ?>">
+  <meta property="og:url" content="<?= htmlspecialchars($currentUrl) ?>">
+  <meta property="og:image" content="<?= htmlspecialchars($heroImage) ?>">
 
   <!-- TailwindCSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -35,7 +50,7 @@ require 'config.php';
       position: relative;
       min-height: 100vh;
       width: 100%;
-      background: url('https://images.unsplash.com/photo-1536514498073-50e69d39c6cf?q=80&w=2000&auto=format&fit=crop') center/cover no-repeat;
+      background: url('<?= htmlspecialchars($heroImage) ?>') center/cover no-repeat;
       display: flex;
       align-items: center;
       justify-content: center;
