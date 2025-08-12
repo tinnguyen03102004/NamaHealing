@@ -26,7 +26,7 @@ $currentUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' 
 
   <meta name="description" content="<?= htmlspecialchars($metaDescription) ?>">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="NamaHealing – Lớp Thiền Online cho người bệnh tâm lý">
+  <meta property="og:title" content="NamaHealing – Lớp Thiền Online hỗ trợ chữa lành tâm lý">
   <meta property="og:description" content="<?= htmlspecialchars($metaDescription) ?>">
   <meta property="og:url" content="<?= htmlspecialchars($currentUrl) ?>">
   <meta property="og:image" content="<?= htmlspecialchars($heroImage) ?>">
