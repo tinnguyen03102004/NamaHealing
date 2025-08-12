@@ -6,7 +6,7 @@ require 'config.php';
 $heroImage = 'https://images.unsplash.com/photo-1536514498073-50e69d39c6cf?q=80&w=2000&auto=format&fit=crop';
 
 // Mô tả ngắn cho trang và link hiện tại để dùng trong thẻ meta
-$metaDescription = 'Không gian thiền chữa lành cùng NamaHealing.';
+$metaDescription = 'Không gian thiền chữa lành tâm lý cùng thầy Võ Trọng Nghĩa.';
 $currentUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' .
     ($_SERVER['HTTP_HOST'] ?? '') . ($_SERVER['REQUEST_URI'] ?? '');
 ?>
@@ -26,7 +26,7 @@ $currentUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' 
 
   <meta name="description" content="<?= htmlspecialchars($metaDescription) ?>">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="NAMA HEALING – Home">
+  <meta property="og:title" content="NamaHealing – Lớp Thiền Online Chữa Lành dành cho người trầm cảm, mất ngủ, lo âu, stress">
   <meta property="og:description" content="<?= htmlspecialchars($metaDescription) ?>">
   <meta property="og:url" content="<?= htmlspecialchars($currentUrl) ?>">
   <meta property="og:image" content="<?= htmlspecialchars($heroImage) ?>">
