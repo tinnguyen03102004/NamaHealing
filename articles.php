@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/i18n.php';
-$pageTitle = 'Bài Viết – Kiến Thức Thiền & Chữa Lành | NamaHealing';
+$pageTitle = 'Bài Viết';
 $metaDescription = 'Tổng hợp các bài viết chia sẻ kiến thức thiền định, yoga và tự chữa lành từ NamaHealing.';
 
 $file = __DIR__ . '/data/articles.json';
