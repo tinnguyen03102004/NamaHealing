@@ -113,6 +113,8 @@ return [
     'home_docs_chant' => 'Книги мантр',
     'home_docs_reference' => 'Довідкова література',
     'chatbot' => 'Чат-бот',
+    'chatbot_title' => 'NamaHealing Bot',
+    'chatbot_greeting' => 'NamaHealing Bot - Підтримка класу медитації для зцілення',
     'chatbot_placeholder' => 'Введіть ваше питання…',
     'chatbot_send' => 'Надіслати',
     'placeholder_name' => 'ПІБ',

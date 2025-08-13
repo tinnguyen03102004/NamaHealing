@@ -113,6 +113,8 @@ return [
     'home_docs_chant' => 'Sách Kinh Tụng',
     'home_docs_reference' => 'Sách Tham Khảo',
     'chatbot' => 'Chatbot',
+    'chatbot_title' => 'NamaHealing Bot',
+    'chatbot_greeting' => 'NamaHealing Bot - Tư vấn lớp thiền chữa lành tâm lý',
     'chatbot_placeholder' => 'Nhập câu hỏi của bạn…',
     'chatbot_send' => 'Gửi',
     'placeholder_name' => 'Họ và Tên',
