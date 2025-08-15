@@ -9,6 +9,8 @@ return [
     'password_label' => 'Пароль',
     'identifier_placeholder' => 'Введіть email або телефон...',
     'password_placeholder' => 'Введіть пароль...',
+    'forgot_password' => 'Забули пароль?',
+    'forgot_password_instruction' => 'Будь ласка, зв’яжіться з адміністратором, щоб скинути пароль.',
     'phone_placeholder' => 'Введіть номер телефону...',
     'no_account' => 'Немає акаунта?',
     'register_link' => 'Зареєструватися',
