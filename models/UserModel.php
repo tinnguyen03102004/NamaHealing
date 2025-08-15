@@ -29,5 +29,25 @@ class UserModel {
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$name, $email, $phone, $hash]);
     }
+
+    /**
+     * Store a password reset token for a user.
+     */
+    public function createResetToken(int $userId, string $token, string $expiresAt): void {
+        $sql = "INSERT INTO password_resets (user_id, token, expires_at) VALUES (?, ?, ?)";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$userId, $token, $expiresAt]);
+    }
+
+    /**
+     * Find a reset token record if it hasn't expired.
+     */
+    public function findResetToken(string $token): ?array {
+        $sql = "SELECT * FROM password_resets WHERE token = ? AND expires_at > NOW() LIMIT 1";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$token]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ?: null;
+    }
 }
 
