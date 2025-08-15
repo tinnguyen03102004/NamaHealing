@@ -22,6 +22,11 @@
       <button class="w-full mt-2 rounded-lg bg-[#9dcfc3] text-[#285F57] font-semibold py-2 shadow hover:bg-[#76a89e] hover:text-white transition">
         <?= __('login_button') ?>
       </button>
+      <div class="text-center text-sm mt-2">
+        <a href="forgot_password.php" class="text-[#285F57] hover:underline">
+          <?= __('forgot_password') ?>
+        </a>
+      </div>
     </form>
     <div class="mt-5 text-center text-sm text-gray-500">
       <?= __('no_account') ?>
