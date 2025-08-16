@@ -6,6 +6,7 @@ require_once __DIR__ . '/../helpers/Security.php';
 
 // Lấy token đã sinh trong controller (nếu bạn thích để view tự sinh, có thể dùng csrf_generate_token('forgot_password'))
 $token = csrf_peek_token('forgot_password') ?? csrf_generate_token('forgot_password');
+$message = $message ?? '';
 ?>
 <!doctype html>
 <html lang="vi">
@@ -18,7 +19,10 @@ $token = csrf_peek_token('forgot_password') ?? csrf_generate_token('forgot_passw
   <meta http-equiv="Pragma" content="no-cache">
 </head>
 <body>
-  <form method="post" action="/forgot-password">
+  <?php if ($message): ?>
+    <p><?= htmlspecialchars($message, ENT_QUOTES, 'UTF-8') ?></p>
+  <?php endif; ?>
+  <form method="post" action="forgot_password.php">
     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($token, ENT_QUOTES, 'UTF-8') ?>">
     <label>Email</label>
     <input type="email" name="email" required>
