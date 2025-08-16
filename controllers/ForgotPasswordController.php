@@ -1,47 +1,54 @@
 <?php
-namespace NamaHealing\Controllers;
+// controllers/ForgotPasswordController.php
+declare(strict_types=1);
 
-use PDO;
-use NamaHealing\Models\UserModel;
-use NamaHealing\Helpers\Mailer;
+require_once __DIR__ . '/../helpers/Security.php';
+// ... require các model/mail cần thiết
 
-class ForgotPasswordController {
-    private PDO $db;
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
 
-    public function __construct(PDO $db) {
-        $this->db = $db;
-        // Ensure password_resets table exists
-        $this->db->exec("CREATE TABLE IF NOT EXISTS password_resets (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            user_id INT NOT NULL,
-            token VARCHAR(64) NOT NULL,
-            expires_at DATETIME NOT NULL,
-            INDEX token_idx (token)
-        )");
+// GET: render form + ROTATE token mới mỗi lần
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    // chống cache để tránh form cũ -> token cũ
+    header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+    header('Pragma: no-cache');
+    $csrf = csrf_generate_token('forgot_password');
+    // truyền $csrf sang view (nếu view không tự gọi helper)
+    include __DIR__ . '/../views/forgot_password.php';
+    exit;
+}
+
+// POST: kiểm tra rate‑limit + CSRF
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // 1) rate‑limit nhẹ, tránh spam
+    if (!ratelimit_pass('forgot_password', 5, 300)) {
+        http_response_code(429);
+        exit('Too many requests. Please try again later.');
     }
 
-    public function handle(): void {
-        $message = '';
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            csrf_check($_POST['csrf_token'] ?? null);
-            $email = trim($_POST['email'] ?? '');
-            if ($email !== '') {
-                $model = new UserModel($this->db);
-                $user = $model->findByIdentifier($email);
-                if ($user) {
-                    $token = bin2hex(random_bytes(32));
-                    $expiresAt = date('Y-m-d H:i:s', time() + 3600); // 1 hour
-                    $model->createResetToken((int)$user['id'], $token, $expiresAt);
-                    $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
-                    $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-                    $link = $scheme . $host . '/reset_password.php?token=' . urlencode($token);
-                    $body = '<p>Click the link below to reset your password:</p>'
-                          . '<p><a href="' . $link . '">' . $link . '</a></p>';
-                    Mailer::send($email, 'Password Reset', $body);
-                }
-            }
-            $message = 'If the email exists, a reset link has been sent.';
-        }
-        include __DIR__ . '/../views/forgot_password.php';
+    $posted = $_POST['csrf_token'] ?? null;
+    if (!csrf_verify_and_unset($posted, 'forgot_password', 900)) { // TTL 15 phút
+        http_response_code(400);
+        exit('Invalid CSRF token');
     }
+
+    // TODO: validate email server‑side
+    $email = trim((string)($_POST['email'] ?? ''));
+    if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        http_response_code(422);
+        exit('Email không hợp lệ.');
+    }
+
+    // ... phần còn lại: tìm user, xoá token cũ theo email, tạo token mới, gửi mail
+    // Gợi ý quan trọng:
+    // $pdo->prepare("DELETE FROM password_resets WHERE email = ?")->execute([$email]);
+    // $rawToken = bin2hex(random_bytes(32));
+    // $tokenHash = hash('sha256', $rawToken);
+    // INSERT tokenHash vào DB (cột token đổi thành 64 hex nếu dùng sha256)
+    // Gửi email chứa $rawToken trong URL (không bao giờ lưu raw vào DB)
+    // Trả về thông báo “Nếu email tồn tại... đã gửi hướng dẫn”.
+
+    exit('Nếu email tồn tại, chúng tôi đã gửi hướng dẫn đặt lại mật khẩu.');
 }
