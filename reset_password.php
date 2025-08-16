@@ -2,12 +2,13 @@
 require 'config.php';
 
 $token = $_GET['token'] ?? '';
+$tokenHash = $token !== '' ? hash('sha256', $token) : '';
 $valid = false;
 $userId = null;
 
-if ($token) {
+if ($tokenHash) {
     $stmt = $db->prepare('SELECT user_id, expires_at FROM password_resets WHERE token=?');
-    $stmt->execute([$token]);
+    $stmt->execute([$tokenHash]);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($row && strtotime($row['expires_at']) > time()) {
         $valid = true;
@@ -21,9 +22,10 @@ $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_check($_POST['csrf_token'] ?? null);
     $token = $_POST['token'] ?? '';
+    $tokenHash = hash('sha256', $token);
 
     $stmt = $db->prepare('SELECT user_id, expires_at FROM password_resets WHERE token=?');
-    $stmt->execute([$token]);
+    $stmt->execute([$tokenHash]);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$row || strtotime($row['expires_at']) <= time()) {
@@ -36,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             $hash = password_hash($password, PASSWORD_DEFAULT);
             $db->prepare('UPDATE users SET password=? WHERE id=?')->execute([$hash, $row['user_id']]);
-            $db->prepare('DELETE FROM password_resets WHERE token=?')->execute([$token]);
+            $db->prepare('DELETE FROM password_resets WHERE token=?')->execute([$tokenHash]);
             $success = true;
         }
     }
