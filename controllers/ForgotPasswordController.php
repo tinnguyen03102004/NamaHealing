@@ -56,9 +56,12 @@ class ForgotPasswordController
                         $ins->execute([$user['id'], $codeHash, $expires_at]);
                         $body = 'Mã xác thực của bạn là: <strong>' . htmlspecialchars($code, ENT_QUOTES, 'UTF-8') . '</strong>';
                         Mailer::send($email, 'Mã xác thực đặt lại mật khẩu', $body);
+                        $message = 'Mã xác thực đã được gửi.';
+                        $stage   = 'verify';
+                    } else {
+                        $message = 'Email này chưa được đăng ký.';
+                        $stage   = 'request';
                     }
-                    $message = 'Nếu email tồn tại, mã xác thực đã được gửi.';
-                    $stage   = 'verify';
                 } else {
                     $message = 'Email không hợp lệ.';
                 }

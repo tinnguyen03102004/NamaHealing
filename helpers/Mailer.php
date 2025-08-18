@@ -9,6 +9,10 @@ use PHPMailer\PHPMailer\Exception;
  */
 class Mailer {
     public static function send(string $to, string $subject, string $htmlBody): void {
+        if (!class_exists(PHPMailer::class)) {
+            return;
+        }
+
         $mail = new PHPMailer(true);
         try {
             $mail->isSMTP();
