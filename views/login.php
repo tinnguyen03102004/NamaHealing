@@ -23,7 +23,7 @@
         <?= __('login_button') ?>
       </button>
       <div class="text-center text-sm mt-2">
-        <a href="forgot_password.php" class="text-[#285F57] hover:underline">
+        <a href='/forgot-password' class="text-[#285F57] hover:underline">
           <?= __('forgot_password') ?>
         </a>
       </div>
