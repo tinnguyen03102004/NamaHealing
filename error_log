@@ -1,0 +1,16 @@
+[18-Aug-2025 17:36:18 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'NamaHealing\Controllers\ForgotPasswordController' not found in /home/jvubjjzt/public_html/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 13
+[18-Aug-2025 17:36:20 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'NamaHealing\Controllers\ForgotPasswordController' not found in /home/jvubjjzt/public_html/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 13
+[18-Aug-2025 17:36:23 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'NamaHealing\Controllers\ForgotPasswordController' not found in /home/jvubjjzt/public_html/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 13
+[18-Aug-2025 17:41:06 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'NamaHealing\Controllers\ForgotPasswordController' not found in /home/jvubjjzt/public_html/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 13
