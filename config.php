@@ -8,7 +8,15 @@ if (file_exists(__DIR__ . '/vendor/autoload.php')) {
         if (str_starts_with($class, $prefix)) {
             $class = substr($class, strlen($prefix));
         }
-        $file = __DIR__ . '/' . str_replace('\\', '/', $class) . '.php';
+        $path = str_replace('\\', '/', $class);
+        $file = __DIR__ . '/' . $path . '.php';
+        if (!file_exists($file)) {
+            // fall back to lowercase directory names (e.g. controllers/ vs Controllers/)
+            $segments = explode('/', $path);
+            $fileName = array_pop($segments);
+            $segments = array_map('strtolower', $segments);
+            $file = __DIR__ . '/' . implode('/', $segments) . '/' . $fileName . '.php';
+        }
         if (file_exists($file)) {
             require $file;
         }
