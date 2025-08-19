@@ -39,17 +39,17 @@ class UserModel {
      * application. Passwords are hashed and the account is created with the
      * default role of `student` and no remaining sessions.
      */
-    public function createStudent(string $name, string $email, string $phone, string $password): int {
+    public function createStudent(string $fullName, string $email, string $phone, string $password): int {
         $hash = password_hash($password, PASSWORD_DEFAULT);
         $stmt = $this->pdo->prepare(
             "INSERT INTO users (full_name, email, phone, password, role, remaining, created_at) " .
-            "VALUES (:name, :email, :phone, :pass, 'student', 0, NOW())"
+            "VALUES (:full_name, :email, :phone, :pass, 'student', 0, NOW())"
         );
         $stmt->execute([
-            ':name'  => $name,
-            ':email' => $email,
-            ':phone' => $phone,
-            ':pass'  => $hash,
+            ':full_name' => $fullName,
+            ':email'     => $email,
+            ':phone'     => $phone,
+            ':pass'      => $hash,
         ]);
         return (int)$this->pdo->lastInsertId();
     }
