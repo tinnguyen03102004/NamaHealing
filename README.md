@@ -1,20 +1,15 @@
-# NamaHealing
+# NamaHealing Contributor Guide
 
-## Chatbot Feature
+## Dev Environment Tips
+- Run `composer install` to pull in PHP dependencies like `vlucas/phpdotenv`.
+- Create a `.env` file and add `OPENAI_API_KEY=sk-proj-...` so `config.php` can load it.
+- Launch a local server from the project root with `php -S localhost:8000` to preview pages.
+- `chatbot.php` and `chatgptapi.php` will read the API key automatically for OpenAI requests.
 
-Before running the project for the first time, install the PHP dependencies:
+## Testing Instructions
+- Start the local server (`php -S localhost:8000`) in another terminal; route tests expect it.
+- Run all tests with `./vendor/bin/phpunit`.
+- Fix any test failures and extend the suite for any code you modify.
 
-```
-composer install
-```
-
-This installs packages such as `vlucas/phpdotenv` so that `config.php` can load
-the `.env` file and read the `OPENAI_API_KEY` variable.
-
-The chatbot uses the OpenAI API. You can place your API key in a `.env` file:
-
-```
-OPENAI_API_KEY=sk-proj-...
-```
-
-The key will be loaded automatically by `config.php` when using `chatbot.php` or `chatgptapi.php`.
+## PR instructions
+Title format: [NamaHealing] <Title>
