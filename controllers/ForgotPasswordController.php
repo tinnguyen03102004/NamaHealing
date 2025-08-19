@@ -1,12 +1,12 @@
 <?php
-namespace controllers;
+namespace NamaHealing\Controllers;
 
-use helpers\Csrf;
-use helpers\Mailer;
-use helpers\RateLimiter;
-use helpers\Response;
-use models\UserModel;
-use models\PasswordResetModel;
+use NamaHealing\Helpers\Csrf;
+use NamaHealing\Helpers\Mailer;
+use NamaHealing\Helpers\RateLimiter;
+use NamaHealing\Helpers\Response;
+use NamaHealing\Models\UserModel;
+use NamaHealing\Models\PasswordResetModel;
 use PDO;
 
 class ForgotPasswordController {
@@ -27,7 +27,7 @@ class ForgotPasswordController {
 
     public function forgotForm(): void {
         Response::view('auth/forgot_password', [
-            'csrf' => \helpers\Csrf::token(),
+            'csrf' => Csrf::token(),
             'recaptcha_site_key' => getenv('RECAPTCHA_SITE_KEY'),
             'title' => 'Quên mật khẩu - NamaHealing',
             'description' => 'Nhập email để nhận mã OTP đặt lại mật khẩu',
@@ -75,7 +75,7 @@ class ForgotPasswordController {
 
     public function resetForm(): void {
         Response::view('auth/reset_password', [
-            'csrf' => \helpers\Csrf::token(),
+            'csrf' => Csrf::token(),
             'recaptcha_site_key' => getenv('RECAPTCHA_SITE_KEY'),
             'title' => 'Đặt lại mật khẩu - NamaHealing',
             'description' => 'Nhập OTP đã gửi qua email để đặt lại mật khẩu',

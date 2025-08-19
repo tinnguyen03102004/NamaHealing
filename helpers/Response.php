@@ -1,5 +1,5 @@
 <?php
-namespace helpers;
+namespace NamaHealing\Helpers;
 
 class Response {
     public static function view(string $view, array $data = [], int $status = 200): void {

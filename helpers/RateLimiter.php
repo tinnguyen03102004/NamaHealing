@@ -1,5 +1,5 @@
 <?php
-namespace helpers;
+namespace NamaHealing\Helpers;
 
 use PDO;
 

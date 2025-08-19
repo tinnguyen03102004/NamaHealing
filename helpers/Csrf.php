@@ -1,5 +1,5 @@
 <?php
-namespace helpers;
+namespace NamaHealing\Helpers;
 
 class Csrf {
     public static function token(): string {
