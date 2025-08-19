@@ -28,6 +28,8 @@ if (file_exists($composer)) {
     });
 }
 
+require_once BASE_PATH . '/helpers/Response.php';
+
 // Nạp env (nếu có vlucas/phpdotenv)
 if (class_exists(\Dotenv\Dotenv::class)) {
     $dotenv = \Dotenv\Dotenv::createImmutable(BASE_PATH);
@@ -43,6 +45,9 @@ use NamaHealing\Helpers\Response;
 // Router đơn giản
 try {
     switch ($uri) {
+        case '/':
+            require BASE_PATH . '/home.php';
+            break;
         case '/forgot-password':
             (new ForgotPasswordController())->forgotForm();
             break;
