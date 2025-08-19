@@ -10,9 +10,9 @@ RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# Giữ tương thích URL cũ dạng .php (301 sang URL đẹp)
-RewriteRule ^forgot_password\.php$ /forgot-password [R=301,L]
-RewriteRule ^reset_password\.php$ /reset-password [R=301,L]
+# Giữ tương thích URL cũ (301 sang URL đẹp)
+RewriteRule ^forgot_password(?:\.php)?$ /forgot-password [R=301,L]
+RewriteRule ^reset_password(?:\.php)?$ /reset-password [R=301,L]
 
 # Điều phối tất cả vào front controller
 RewriteRule ^ index.php [QSA,L]
