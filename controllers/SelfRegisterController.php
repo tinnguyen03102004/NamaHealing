@@ -18,6 +18,7 @@ class SelfRegisterController {
             $fullName = trim($_POST['full_name'] ?? '');
             $email    = trim($_POST['email'] ?? '');
             $phone    = trim($_POST['phone'] ?? '');
+            $phone    = preg_replace('/\D+/', '', $phone);
             $pass     = $_POST['password'] ?? '';
             if (!$fullName || !$email || !$phone || !$pass) {
                 $err = \__('err_required_fields');

@@ -6,7 +6,19 @@ use PDO;
 const PASSWORD_ALGO = PASSWORD_BCRYPT;
 
 class UserModel {
+    public const ALLOWED_ROLES = ['student', 'teacher', 'admin'];
+
     public function __construct(private PDO $pdo) {}
+
+    private static function cleanPhone(string $phone): string {
+        return preg_replace('/\D+/', '', $phone);
+    }
+
+    private static function assertRole(string $role): void {
+        if (!in_array($role, self::ALLOWED_ROLES, true)) {
+            throw new \InvalidArgumentException('Invalid role');
+        }
+    }
 
     public function findByEmail(string $email): ?array {
         $stmt = $this->pdo->prepare("SELECT * FROM users WHERE email = :email LIMIT 1");
@@ -26,11 +38,17 @@ class UserModel {
      * first matching record.
      */
     public function findByIdentifier(string $identifier): ?array {
+        if (!str_contains($identifier, '@')) {
+            $identifier = self::cleanPhone($identifier);
+        }
         $stmt = $this->pdo->prepare(
             "SELECT * FROM users WHERE email = :id OR phone = :id LIMIT 1"
         );
         $stmt->execute([':id' => $identifier]);
         $u = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($u && !in_array($u['role'], self::ALLOWED_ROLES, true)) {
+            return null;
+        }
         return $u ?: null;
     }
 
@@ -48,6 +66,8 @@ class UserModel {
         string $password,
         int $remaining = 0
     ): int {
+        self::assertRole('student');
+        $phone = self::cleanPhone($phone);
         $hash = password_hash($password, PASSWORD_ALGO);
         $stmt = $this->pdo->prepare(
             "INSERT INTO users (full_name, email, phone, password, role, remaining) " .
