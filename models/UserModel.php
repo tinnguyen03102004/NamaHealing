@@ -3,6 +3,8 @@ namespace NamaHealing\Models;
 
 use PDO;
 
+const PASSWORD_ALGO = PASSWORD_BCRYPT;
+
 class UserModel {
     public function __construct(private PDO $pdo) {}
 
@@ -46,7 +48,7 @@ class UserModel {
         string $password,
         int $remaining = 0
     ): int {
-        $hash = password_hash($password, PASSWORD_DEFAULT);
+        $hash = password_hash($password, PASSWORD_ALGO);
         $stmt = $this->pdo->prepare(
             "INSERT INTO users (full_name, email, phone, password, role, remaining) " .
             "VALUES (:full_name, :email, :phone, :pass, 'student', :remaining)"
@@ -72,7 +74,7 @@ class UserModel {
     }
 
     public function updatePassword(int $userId, string $password): void {
-        $hash = password_hash($password, PASSWORD_DEFAULT);
+        $hash = password_hash($password, PASSWORD_ALGO);
         $stmt = $this->pdo->prepare("UPDATE users SET password = :p WHERE id = :id");
         $stmt->execute([':p' => $hash, ':id' => $userId]);
     }
