@@ -38,6 +38,7 @@ $dbPass = $_ENV['DB_PASS'] ?? '';
 try {
     $dsn = "mysql:host={$dbHost};dbname={$dbName};charset=utf8";
     $db = new PDO($dsn, $dbUser, $dbPass);
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     die("Kết nối DB lỗi: " . $e->getMessage());
 }
