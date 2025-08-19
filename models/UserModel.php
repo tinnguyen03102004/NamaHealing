@@ -35,23 +35,40 @@ class UserModel {
     /**
      * Create a new student account.
      *
-     * A minimal set of fields is inserted to match the usage throughout the
-     * application. Passwords are hashed and the account is created with the
-     * default role of `student` and no remaining sessions.
+     * Passwords are hashed and the account is created with the default role of
+     * `student`. The number of remaining sessions can be specified to support
+     * automatic session crediting from payment gateways.
      */
-    public function createStudent(string $fullName, string $email, string $phone, string $password): int {
+    public function createStudent(
+        string $fullName,
+        string $email,
+        string $phone,
+        string $password,
+        int $remaining = 0
+    ): int {
         $hash = password_hash($password, PASSWORD_DEFAULT);
         $stmt = $this->pdo->prepare(
             "INSERT INTO users (full_name, email, phone, password, role, remaining, created_at) " .
-            "VALUES (:full_name, :email, :phone, :pass, 'student', 0, NOW())"
+            "VALUES (:full_name, :email, :phone, :pass, 'student', :remaining, NOW())"
         );
         $stmt->execute([
             ':full_name' => $fullName,
             ':email'     => $email,
             ':phone'     => $phone,
             ':pass'      => $hash,
+            ':remaining' => $remaining,
         ]);
         return (int)$this->pdo->lastInsertId();
+    }
+
+    /**
+     * Increment the remaining sessions for a user.
+     */
+    public function addSessions(int $userId, int $sessions): void {
+        $stmt = $this->pdo->prepare(
+            "UPDATE users SET remaining = remaining + :s WHERE id = :id"
+        );
+        $stmt->execute([':s' => $sessions, ':id' => $userId]);
     }
 
     public function updatePassword(int $userId, string $password): void {

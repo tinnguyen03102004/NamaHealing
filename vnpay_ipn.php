@@ -37,12 +37,26 @@ if ($checkHash === $secureHash) {
         if ($order && $order['status'] === 'paid') {
             $userModel = new UserModel($db);
             $user = $userModel->findByIdentifier($order['email']) ?? $userModel->findByIdentifier($order['phone']);
+            $newPass = null;
             if (!$user) {
-                $pass = bin2hex(random_bytes(4));
-                $userModel->createStudent($order['full_name'], $order['email'], $order['phone'], $pass);
+                $newPass = bin2hex(random_bytes(4));
+                $userId = $userModel->createStudent(
+                    $order['full_name'],
+                    $order['email'],
+                    $order['phone'],
+                    $newPass,
+                    (int)$order['sessions']
+                );
+            } else {
+                $userModel->addSessions((int)$user['id'], (int)$order['sessions']);
             }
+
             // send email
-            $body = 'Cảm ơn bạn đã đăng ký lớp học. Đăng nhập tại ' . ($_ENV['APP_URL'] ?? '') . '/login.php';
+            $body = 'Cảm ơn bạn đã đăng ký lớp học. Đăng nhập tại ' .
+                ($_ENV['APP_URL'] ?? '') . '/login.php';
+            if ($newPass !== null) {
+                $body .= '\nMật khẩu của bạn: ' . $newPass;
+            }
             Mailer::send($order['email'], 'Xác nhận đăng ký NamaHealing', $body);
 
             // Optional chatbot hook
