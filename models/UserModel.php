@@ -48,8 +48,8 @@ class UserModel {
     ): int {
         $hash = password_hash($password, PASSWORD_DEFAULT);
         $stmt = $this->pdo->prepare(
-            "INSERT INTO users (full_name, email, phone, password, role, remaining, created_at) " .
-            "VALUES (:full_name, :email, :phone, :pass, 'student', :remaining, NOW())"
+            "INSERT INTO users (full_name, email, phone, password, role, remaining) " .
+            "VALUES (:full_name, :email, :phone, :pass, 'student', :remaining)"
         );
         $stmt->execute([
             ':full_name' => $fullName,
