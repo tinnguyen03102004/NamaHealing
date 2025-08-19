@@ -26,11 +26,4 @@ class RoutesTest extends TestCase {
         $this->assertEquals(200, $this->request('/reference.php'));
     }
 
-    public function testForgotPasswordRoute() {
-        $this->assertEquals(200, $this->request('/forgot-password'));
-    }
-
-    public function testResetPasswordRoute() {
-        $this->assertEquals(200, $this->request('/reset-password'));
-    }
 }

@@ -9,8 +9,6 @@ return [
     'password_label' => 'Password',
     'identifier_placeholder' => 'Enter email or phone...',
     'password_placeholder' => 'Enter password...',
-    'forgot_password' => 'Forgot password?',
-    'forgot_password_instruction' => 'Please contact the admin to reset your password.',
     'phone_placeholder' => 'Enter phone number...',
     'no_account' => "Don't have an account?",
     'register_link' => 'Sign up',

@@ -39,7 +39,6 @@ if (class_exists(\Dotenv\Dotenv::class)) {
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? '/';
 $uri = rtrim($uri, '/') ?: '/';
 
-use NamaHealing\Controllers\ForgotPasswordController;
 use NamaHealing\Helpers\Response;
 
 // Router đơn giản
@@ -47,18 +46,6 @@ try {
     switch ($uri) {
         case '/':
             require BASE_PATH . '/home.php';
-            break;
-        case '/forgot-password':
-            (new ForgotPasswordController())->forgotForm();
-            break;
-        case '/forgot-password/submit':
-            (new ForgotPasswordController())->forgotSubmit();
-            break;
-        case '/reset-password':
-            (new ForgotPasswordController())->resetForm();
-            break;
-        case '/reset-password/submit':
-            (new ForgotPasswordController())->resetSubmit();
             break;
         default:
             // Có thể fallback sang file .php cũ nếu tồn tại (giữ tương thích)
