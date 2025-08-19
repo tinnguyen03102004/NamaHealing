@@ -16,11 +16,14 @@ class LoginController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             csrf_check($_POST['csrf_token'] ?? null);
             $identifier = trim($_POST['identifier'] ?? '');
+            if (!str_contains($identifier, '@')) {
+                $identifier = preg_replace('/\D+/', '', $identifier);
+            }
             // Identifier can be email or phone
             $pass  = $_POST['password'] ?? '';
             $model = new UserModel($this->db);
             $user  = $model->findByIdentifier($identifier);
-            if ($user && password_verify($pass, $user['password'])) {
+            if ($user && password_verify($pass, $user['password']) && in_array($user['role'], UserModel::ALLOWED_ROLES, true)) {
                 session_regenerate_id(true);
                 $_SESSION['uid']  = $user['id'];
                 $_SESSION['role'] = $user['role'];
