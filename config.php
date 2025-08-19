@@ -1,4 +1,8 @@
 <?php
+if (PHP_VERSION_ID < 80000) {
+    http_response_code(500);
+    exit('Requires PHP 8.0 or higher');
+}
 // Nạp Composer autoloader (nếu có)
 if (file_exists(__DIR__ . '/vendor/autoload.php')) {
     require_once __DIR__ . '/vendor/autoload.php';
