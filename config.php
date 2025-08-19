@@ -44,11 +44,23 @@ try {
 
 // Khởi động session (nếu chưa có)
 if (session_status() === PHP_SESSION_NONE) {
+    $domain = $_SERVER['HTTP_HOST'] ?? '';
+    if (strpos($domain, ':') !== false) {
+        $domain = explode(':', $domain)[0];
+    }
+    if ($domain && $domain !== 'localhost' && !filter_var($domain, FILTER_VALIDATE_IP)) {
+        $domain = '.' . preg_replace('/^www\./', '', $domain);
+    } else {
+        $domain = '';
+    }
+
     session_set_cookie_params([
         'lifetime' => 0,
         'path'     => '/',
+        'domain'   => $domain,
         'httponly' => true,
-        'samesite' => 'Lax'
+        'samesite' => 'Lax',
+        'secure'   => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
     ]);
     session_start();
 }
