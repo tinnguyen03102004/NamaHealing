@@ -1,6 +1,7 @@
 # NamaHealing Contributor Guide
 
 ## Dev Environment Tips
+- Requires PHP 8.0 or higher.
 - Run `composer install` to pull in PHP dependencies like `vlucas/phpdotenv`.
 - Create a `.env` file and add `OPENAI_API_KEY=sk-proj-...` so `config.php` can load it.
 - Launch a local server from the project root with `php -S localhost:8000` to preview pages.

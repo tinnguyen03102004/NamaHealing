@@ -15,7 +15,7 @@ class LoginController {
         $err = "";
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             csrf_check($_POST['csrf_token'] ?? null);
-            $identifier = $_POST['identifier'] ?? '';
+            $identifier = trim($_POST['identifier'] ?? '');
             // Identifier can be email or phone
             $pass  = $_POST['password'] ?? '';
             $model = new UserModel($this->db);
