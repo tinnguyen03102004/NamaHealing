@@ -2,6 +2,17 @@
 // Nạp Composer autoloader (nếu có)
 if (file_exists(__DIR__ . '/vendor/autoload.php')) {
     require_once __DIR__ . '/vendor/autoload.php';
+} else {
+    spl_autoload_register(function ($class) {
+        $prefix = 'NamaHealing\\';
+        if (str_starts_with($class, $prefix)) {
+            $class = substr($class, strlen($prefix));
+        }
+        $file = __DIR__ . '/' . str_replace('\\', '/', $class) . '.php';
+        if (file_exists($file)) {
+            require $file;
+        }
+    });
 }
 
 // Nạp biến môi trường từ file .env (nếu có)

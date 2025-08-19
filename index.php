@@ -14,15 +14,18 @@ define('BASE_PATH', dirname(__DIR__));
 $composer = BASE_PATH . '/vendor/autoload.php';
 if (file_exists($composer)) {
     require $composer;
+} else {
+    spl_autoload_register(function ($class) {
+        $prefix = 'NamaHealing\\';
+        if (str_starts_with($class, $prefix)) {
+            $class = substr($class, strlen($prefix));
+        }
+        $file = BASE_PATH . '/' . str_replace('\\', '/', $class) . '.php';
+        if (file_exists($file)) {
+            require $file;
+        }
+    });
 }
-spl_autoload_register(function ($class) {
-    $paths = [
-        BASE_PATH . '/controllers/' . $class . '.php',
-        BASE_PATH . '/models/' . $class . '.php',
-        BASE_PATH . '/helpers/' . $class . '.php',
-    ];
-    foreach ($paths as $p) { if (file_exists($p)) { require $p; return; } }
-});
 
 // Nạp env (nếu có vlucas/phpdotenv)
 if (class_exists(\Dotenv\Dotenv::class)) {
@@ -33,8 +36,8 @@ if (class_exists(\Dotenv\Dotenv::class)) {
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? '/';
 $uri = rtrim($uri, '/') ?: '/';
 
-use controllers\ForgotPasswordController;
-use helpers\Response;
+use NamaHealing\Controllers\ForgotPasswordController;
+use NamaHealing\Helpers\Response;
 
 // Router đơn giản
 try {

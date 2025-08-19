@@ -1,10 +1,21 @@
 <?php
 declare(strict_types=1);
 
-require dirname(__DIR__).'/vendor/autoload.php';
+require dirname(__DIR__) . '/vendor/autoload.php';
+if (!class_exists('NamaHealing\\Helpers\\Mailer')) {
+    spl_autoload_register(function ($class) {
+        $prefix = 'NamaHealing\\';
+        if (str_starts_with($class, $prefix)) {
+            $class = substr($class, strlen($prefix));
+        }
+        $file = dirname(__DIR__) . '/' . str_replace('\\', '/', $class) . '.php';
+        if (file_exists($file)) {
+            require $file;
+        }
+    });
+}
 
-use helpers\Mailer;
-use PDO;
+use NamaHealing\Helpers\Mailer;
 
 // Nạp env
 if (class_exists(\Dotenv\Dotenv::class)) {

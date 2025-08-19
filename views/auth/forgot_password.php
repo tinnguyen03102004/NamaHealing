@@ -23,7 +23,7 @@
   <div class="card">
     <h1>Quên mật khẩu</h1>
     <form id="forgotForm" method="post" action="/forgot-password/submit" novalidate>
-      <?= \helpers\Csrf::input() ?>
+      <?= \NamaHealing\Helpers\Csrf::input() ?>
       <input type="text" name="website" style="display:none">
       <label>Email</label>
       <input type="email" name="email" required placeholder="you@example.com">

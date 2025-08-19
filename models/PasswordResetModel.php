@@ -1,5 +1,5 @@
 <?php
-namespace models;
+namespace NamaHealing\Models;
 
 use PDO;
 

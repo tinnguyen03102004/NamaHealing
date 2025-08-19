@@ -22,7 +22,7 @@
   <div class="card">
     <h1>Đặt lại mật khẩu</h1>
     <form id="resetForm" method="post" action="/reset-password/submit" novalidate>
-      <?= \helpers\Csrf::input() ?>
+      <?= \NamaHealing\Helpers\Csrf::input() ?>
       <input type="text" name="website" style="display:none">
       <label>Email</label><input type="email" name="email" required>
       <label>OTP (6 số)</label><input type="text" name="otp" inputmode="numeric" pattern="\d{6}" required>
