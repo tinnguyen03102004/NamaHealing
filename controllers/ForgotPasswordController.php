@@ -15,20 +15,23 @@ class ForgotPasswordController {
     private PasswordResetModel $resets;
 
     public function __construct() {
-        // Kết nối PDO từ env
-        $dsn = sprintf('mysql:host=%s;dbname=%s;charset=utf8mb4',
-            getenv('DB_HOST'), getenv('DB_NAME'));
-        $this->pdo = new PDO($dsn, getenv('DB_USER'), getenv('DB_PASS'), [
+        // Kết nối PDO từ biến môi trường (đã nạp vào $_ENV)
+        $host = $_ENV['DB_HOST'] ?? 'localhost';
+        $name = $_ENV['DB_NAME'] ?? 'zoom_class';
+        $user = $_ENV['DB_USER'] ?? 'root';
+        $pass = $_ENV['DB_PASS'] ?? '';
+        $dsn  = sprintf('mysql:host=%s;dbname=%s;charset=utf8mb4', $host, $name);
+        $this->pdo = new PDO($dsn, $user, $pass, [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         ]);
-        $this->users = new UserModel($this->pdo);
+        $this->users  = new UserModel($this->pdo);
         $this->resets = new PasswordResetModel($this->pdo);
     }
 
     public function forgotForm(): void {
         Response::view('auth/forgot_password', [
             'csrf' => Csrf::token(),
-            'recaptcha_site_key' => getenv('RECAPTCHA_SITE_KEY'),
+            'recaptcha_site_key' => $_ENV['RECAPTCHA_SITE_KEY'] ?? '',
             'title' => 'Quên mật khẩu - NamaHealing',
             'description' => 'Nhập email để nhận mã OTP đặt lại mật khẩu',
         ]);
@@ -65,7 +68,7 @@ class ForgotPasswordController {
             $ua = $_SERVER['HTTP_USER_AGENT'] ?? '';
             $this->resets->create((int)$user['id'], $otpHash, $ip, $ua);
 
-            $appUrl = rtrim(getenv('APP_URL') ?: '', '/');
+            $appUrl = rtrim($_ENV['APP_URL'] ?? '', '/');
             $html = $this->otpEmailTemplate($otp, $appUrl);
             Mailer::queue($this->pdo, $email, 'Mã OTP đặt lại mật khẩu', $html);
         }
@@ -76,7 +79,7 @@ class ForgotPasswordController {
     public function resetForm(): void {
         Response::view('auth/reset_password', [
             'csrf' => Csrf::token(),
-            'recaptcha_site_key' => getenv('RECAPTCHA_SITE_KEY'),
+            'recaptcha_site_key' => $_ENV['RECAPTCHA_SITE_KEY'] ?? '',
             'title' => 'Đặt lại mật khẩu - NamaHealing',
             'description' => 'Nhập OTP đã gửi qua email để đặt lại mật khẩu',
         ]);
@@ -127,7 +130,7 @@ class ForgotPasswordController {
     }
 
     private function assertRecaptcha(string $token): void {
-        $secret = getenv('RECAPTCHA_SECRET_KEY');
+        $secret = $_ENV['RECAPTCHA_SECRET_KEY'] ?? null;
         if (!$secret) return; // cho phép dev nếu chưa cấu hình
         $resp = $this->post('https://www.google.com/recaptcha/api/siteverify', [
             'secret' => $secret,
@@ -155,7 +158,7 @@ class ForgotPasswordController {
     }
 
     private function pepper(): string {
-        return getenv('APP_PEPPER') ?: 'change-this-pepper';
+        return $_ENV['APP_PEPPER'] ?? 'change-this-pepper';
     }
 
     private function otpEmailTemplate(int $otp, string $appUrl): string {
