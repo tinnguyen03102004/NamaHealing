@@ -9,8 +9,6 @@ return [
     'password_label' => 'Mật khẩu',
     'identifier_placeholder' => 'Nhập email hoặc SĐT...',
     'password_placeholder' => 'Nhập mật khẩu...',
-    'forgot_password' => 'Quên mật khẩu?',
-    'forgot_password_instruction' => 'Vui lòng liên hệ admin để đặt lại mật khẩu.',
     'phone_placeholder' => 'Nhập số điện thoại...',
     'no_account' => 'Chưa có tài khoản?',
     'register_link' => 'Đăng ký',
