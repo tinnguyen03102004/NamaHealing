@@ -8,7 +8,8 @@ if (getenv('APP_ENV') === 'production') {
     ini_set('display_errors', '0');
 }
 
-define('BASE_PATH', dirname(__DIR__));
+// Đường dẫn gốc của ứng dụng
+define('BASE_PATH', __DIR__);
 
 // Autoload đơn giản (ưu tiên composer nếu có)
 $composer = BASE_PATH . '/vendor/autoload.php';

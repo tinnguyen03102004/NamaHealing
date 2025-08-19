@@ -3,5 +3,6 @@ require 'config.php';
 
 use NamaHealing\Controllers\ForgotPasswordController;
 
-$controller = new ForgotPasswordController($db);
-$controller->handle();
+// Hiển thị form quên mật khẩu sử dụng controller mới
+$controller = new ForgotPasswordController();
+$controller->forgotForm();
