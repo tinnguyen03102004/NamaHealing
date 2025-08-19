@@ -1,0 +1,1 @@
+-- TODO: SQL patch not provided in instructions. Expected to create email_queue table and supporting indexes.

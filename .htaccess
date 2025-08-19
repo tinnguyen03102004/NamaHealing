@@ -1,4 +1,18 @@
+# Bật URL đẹp, ẩn .php
 RewriteEngine On
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(forgot-password|reset-password)$ index.php [L,QSA,NC]
+
+# Force HTTPS (bỏ nếu đã có ở load balancer)
+RewriteCond %{HTTPS} !=on
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Phục vụ file tĩnh bình thường
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Giữ tương thích URL cũ dạng .php (301 sang URL đẹp)
+RewriteRule ^forgot_password\.php$ /forgot-password [R=301,L]
+RewriteRule ^reset_password\.php$ /reset-password [R=301,L]
+
+# Điều phối tất cả vào front controller
+RewriteRule ^ index.php [QSA,L]
