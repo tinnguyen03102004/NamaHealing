@@ -1,6 +1,6 @@
 {
     "name": "namahealing/app",
-    "description": "?ng d?ng qu?n ly & chia s? thi?n NamaHealing",
+    "description": "Ứng dụng quản lý & chia sẻ thiền NamaHealing",
     "autoload": {
         "psr-4": {
             "NamaHealing\\Controllers\\": "controllers/",
@@ -8,15 +8,14 @@
             "NamaHealing\\Helpers\\": "helpers/"
         }
     },
-    "authors": [
-        {
-            "name": "Tin",
-            "email": "admin@vtnaa.com"
-        }
-    ],
     "require": {
         "php": ">=8.0",
         "vlucas/phpdotenv": "^5.6",
         "phpmailer/phpmailer": "^6.9"
+    },
+    "config": {
+        "platform": {
+            "php": "8.4.10"
+        }
     }
 }
