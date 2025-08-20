@@ -10,3 +10,4 @@ vendor/
 tailwindcss.exe
 *.png
 *.jpg
+error_log
