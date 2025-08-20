@@ -14,3 +14,608 @@ Stack trace:
 Stack trace:
 #0 {main}
   thrown in /home/jvubjjzt/public_html/index.php on line 13
+[18-Aug-2025 18:04:30 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'NamaHealing\Controllers\ForgotPasswordController' not found in /home/jvubjjzt/public_html/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 13
+[18-Aug-2025 18:06:18 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'NamaHealing\Controllers\ForgotPasswordController' not found in /home/jvubjjzt/public_html/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 13
+[18-Aug-2025 18:06:18 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'NamaHealing\Controllers\ForgotPasswordController' not found in /home/jvubjjzt/public_html/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 13
+[18-Aug-2025 18:06:19 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'NamaHealing\Controllers\ForgotPasswordController' not found in /home/jvubjjzt/public_html/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 13
+[18-Aug-2025 18:06:20 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'NamaHealing\Controllers\ForgotPasswordController' not found in /home/jvubjjzt/public_html/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 13
+[18-Aug-2025 20:37:46 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'NamaHealing\Controllers\ForgotPasswordController' not found in /home/jvubjjzt/public_html/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 13
+[18-Aug-2025 21:51:46 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'NamaHealing\Controllers\ForgotPasswordController' not found in /home/jvubjjzt/public_html/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 13
+[18-Aug-2025 21:51:48 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'NamaHealing\Controllers\ForgotPasswordController' not found in /home/jvubjjzt/public_html/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 13
+[18-Aug-2025 21:51:52 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'NamaHealing\Controllers\ForgotPasswordController' not found in /home/jvubjjzt/public_html/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 13
+[18-Aug-2025 21:51:55 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'NamaHealing\Controllers\ForgotPasswordController' not found in /home/jvubjjzt/public_html/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 13
+[19-Aug-2025 08:19:50 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'NamaHealing\Controllers\ForgotPasswordController' not found in /home/jvubjjzt/public_html/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 13
+[19-Aug-2025 08:20:28 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'NamaHealing\Controllers\ForgotPasswordController' not found in /home/jvubjjzt/public_html/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 13
+[19-Aug-2025 08:23:21 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'NamaHealing\Controllers\ForgotPasswordController' not found in /home/jvubjjzt/public_html/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 13
+[19-Aug-2025 08:23:52 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'NamaHealing\Controllers\ForgotPasswordController' not found in /home/jvubjjzt/public_html/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 13
+[19-Aug-2025 08:24:02 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'NamaHealing\Controllers\ForgotPasswordController' not found in /home/jvubjjzt/public_html/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 13
+[19-Aug-2025 08:24:07 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'NamaHealing\Controllers\ForgotPasswordController' not found in /home/jvubjjzt/public_html/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 13
+[19-Aug-2025 08:24:10 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'NamaHealing\Controllers\ForgotPasswordController' not found in /home/jvubjjzt/public_html/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 13
+[19-Aug-2025 08:24:19 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'NamaHealing\Controllers\ForgotPasswordController' not found in /home/jvubjjzt/public_html/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 13
+[19-Aug-2025 08:33:35 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'NamaHealing\Controllers\ForgotPasswordController' not found in /home/jvubjjzt/public_html/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 13
+[19-Aug-2025 09:02:12 Asia/Ho_Chi_Minh] [ERROR] Class 'helpers\Response' not found
+#0 {main}
+[19-Aug-2025 09:02:12 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'helpers\Response' not found in /home/jvubjjzt/public_html/index.php:66
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 66
+[19-Aug-2025 09:02:13 Asia/Ho_Chi_Minh] [ERROR] Class 'helpers\Response' not found
+#0 {main}
+[19-Aug-2025 09:02:13 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'helpers\Response' not found in /home/jvubjjzt/public_html/index.php:66
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 66
+[19-Aug-2025 09:02:15 Asia/Ho_Chi_Minh] [ERROR] Class 'helpers\Response' not found
+#0 {main}
+[19-Aug-2025 09:02:15 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'helpers\Response' not found in /home/jvubjjzt/public_html/index.php:66
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 66
+[19-Aug-2025 09:02:16 Asia/Ho_Chi_Minh] [ERROR] Class 'helpers\Response' not found
+#0 {main}
+[19-Aug-2025 09:02:16 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'helpers\Response' not found in /home/jvubjjzt/public_html/index.php:66
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 66
+[19-Aug-2025 09:02:17 Asia/Ho_Chi_Minh] [ERROR] Class 'helpers\Response' not found
+#0 {main}
+[19-Aug-2025 09:02:17 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'helpers\Response' not found in /home/jvubjjzt/public_html/index.php:66
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 66
+[19-Aug-2025 09:02:18 Asia/Ho_Chi_Minh] [ERROR] Class 'helpers\Response' not found
+#0 {main}
+[19-Aug-2025 09:02:18 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'helpers\Response' not found in /home/jvubjjzt/public_html/index.php:66
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 66
+[19-Aug-2025 09:02:19 Asia/Ho_Chi_Minh] [ERROR] Class 'helpers\Response' not found
+#0 {main}
+[19-Aug-2025 09:02:19 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'helpers\Response' not found in /home/jvubjjzt/public_html/index.php:66
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 66
+[19-Aug-2025 09:02:20 Asia/Ho_Chi_Minh] [ERROR] Class 'helpers\Response' not found
+#0 {main}
+[19-Aug-2025 09:02:20 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'helpers\Response' not found in /home/jvubjjzt/public_html/index.php:66
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 66
+[19-Aug-2025 09:02:20 Asia/Ho_Chi_Minh] [ERROR] Class 'helpers\Response' not found
+#0 {main}
+[19-Aug-2025 09:02:20 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'helpers\Response' not found in /home/jvubjjzt/public_html/index.php:66
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 66
+[19-Aug-2025 09:02:21 Asia/Ho_Chi_Minh] [ERROR] Class 'helpers\Response' not found
+#0 {main}
+[19-Aug-2025 09:02:21 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'helpers\Response' not found in /home/jvubjjzt/public_html/index.php:66
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 66
+[19-Aug-2025 09:02:23 Asia/Ho_Chi_Minh] [ERROR] Class 'helpers\Response' not found
+#0 {main}
+[19-Aug-2025 09:02:23 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'helpers\Response' not found in /home/jvubjjzt/public_html/index.php:66
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 66
+[19-Aug-2025 09:02:36 Asia/Ho_Chi_Minh] [ERROR] Class 'controllers\ForgotPasswordController' not found
+#0 {main}
+[19-Aug-2025 09:02:36 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'helpers\Response' not found in /home/jvubjjzt/public_html/index.php:66
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 66
+[19-Aug-2025 09:02:39 Asia/Ho_Chi_Minh] [ERROR] Class 'controllers\ForgotPasswordController' not found
+#0 {main}
+[19-Aug-2025 09:02:39 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'helpers\Response' not found in /home/jvubjjzt/public_html/index.php:66
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 66
+[19-Aug-2025 09:02:40 Asia/Ho_Chi_Minh] [ERROR] Class 'controllers\ForgotPasswordController' not found
+#0 {main}
+[19-Aug-2025 09:02:40 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'helpers\Response' not found in /home/jvubjjzt/public_html/index.php:66
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 66
+[19-Aug-2025 09:02:52 Asia/Ho_Chi_Minh] [ERROR] Class 'helpers\Response' not found
+#0 {main}
+[19-Aug-2025 09:02:52 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'helpers\Response' not found in /home/jvubjjzt/public_html/index.php:66
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 66
+[19-Aug-2025 09:03:24 Asia/Ho_Chi_Minh] [ERROR] Class 'controllers\ForgotPasswordController' not found
+#0 {main}
+[19-Aug-2025 09:03:24 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'helpers\Response' not found in /home/jvubjjzt/public_html/index.php:66
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 66
+[19-Aug-2025 09:03:37 Asia/Ho_Chi_Minh] [ERROR] Class 'helpers\Response' not found
+#0 {main}
+[19-Aug-2025 09:03:37 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'helpers\Response' not found in /home/jvubjjzt/public_html/index.php:66
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 66
+[19-Aug-2025 09:03:39 Asia/Ho_Chi_Minh] [ERROR] Class 'helpers\Response' not found
+#0 {main}
+[19-Aug-2025 09:03:39 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'helpers\Response' not found in /home/jvubjjzt/public_html/index.php:66
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 66
+[19-Aug-2025 09:03:40 Asia/Ho_Chi_Minh] [ERROR] Class 'helpers\Response' not found
+#0 {main}
+[19-Aug-2025 09:03:40 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'helpers\Response' not found in /home/jvubjjzt/public_html/index.php:66
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 66
+[19-Aug-2025 09:03:41 Asia/Ho_Chi_Minh] [ERROR] Class 'helpers\Response' not found
+#0 {main}
+[19-Aug-2025 09:03:41 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'helpers\Response' not found in /home/jvubjjzt/public_html/index.php:66
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 66
+[19-Aug-2025 09:07:37 Asia/Ho_Chi_Minh] [ERROR] Class 'helpers\Response' not found
+#0 {main}
+[19-Aug-2025 09:07:37 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'helpers\Response' not found in /home/jvubjjzt/public_html/index.php:66
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 66
+[19-Aug-2025 09:09:27 Asia/Ho_Chi_Minh] [ERROR] Class 'helpers\Response' not found
+#0 {main}
+[19-Aug-2025 09:09:27 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'helpers\Response' not found in /home/jvubjjzt/public_html/index.php:66
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 66
+[19-Aug-2025 09:09:57 Asia/Ho_Chi_Minh] [ERROR] Class 'helpers\Response' not found
+#0 {main}
+[19-Aug-2025 09:09:57 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'helpers\Response' not found in /home/jvubjjzt/public_html/index.php:66
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 66
+[19-Aug-2025 09:10:39 Asia/Ho_Chi_Minh] [ERROR] Class 'helpers\Response' not found
+#0 {main}
+[19-Aug-2025 09:10:39 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'helpers\Response' not found in /home/jvubjjzt/public_html/index.php:66
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 66
+[19-Aug-2025 09:11:22 Asia/Ho_Chi_Minh] [ERROR] Class 'helpers\Response' not found
+#0 {main}
+[19-Aug-2025 09:11:22 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'helpers\Response' not found in /home/jvubjjzt/public_html/index.php:66
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 66
+[19-Aug-2025 09:11:40 Asia/Ho_Chi_Minh] [ERROR] Class 'helpers\Response' not found
+#0 {main}
+[19-Aug-2025 09:11:40 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'helpers\Response' not found in /home/jvubjjzt/public_html/index.php:66
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 66
+[19-Aug-2025 09:13:52 Asia/Ho_Chi_Minh] [ERROR] Class 'helpers\Response' not found
+#0 {main}
+[19-Aug-2025 09:13:52 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'helpers\Response' not found in /home/jvubjjzt/public_html/index.php:66
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 66
+[19-Aug-2025 09:17:29 Asia/Ho_Chi_Minh] [ERROR] Class 'helpers\Response' not found
+#0 {main}
+[19-Aug-2025 09:17:29 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'helpers\Response' not found in /home/jvubjjzt/public_html/index.php:66
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 66
+[19-Aug-2025 09:18:54 Asia/Ho_Chi_Minh] [ERROR] Class 'helpers\Response' not found
+#0 {main}
+[19-Aug-2025 09:18:54 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Class 'helpers\Response' not found in /home/jvubjjzt/public_html/index.php:66
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 66
+[19-Aug-2025 09:21:55 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function str_starts_with() in /home/jvubjjzt/public_html/index.php:20
+Stack trace:
+#0 [internal function]: {closure}('Dotenv\\Dotenv')
+#1 [internal function]: spl_autoload_call('Dotenv\\Dotenv')
+#2 /home/jvubjjzt/public_html/index.php(31): class_exists('Dotenv\\Dotenv')
+#3 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 20
+[19-Aug-2025 09:21:56 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function str_starts_with() in /home/jvubjjzt/public_html/index.php:20
+Stack trace:
+#0 [internal function]: {closure}('Dotenv\\Dotenv')
+#1 [internal function]: spl_autoload_call('Dotenv\\Dotenv')
+#2 /home/jvubjjzt/public_html/index.php(31): class_exists('Dotenv\\Dotenv')
+#3 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 20
+[19-Aug-2025 09:21:58 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function str_starts_with() in /home/jvubjjzt/public_html/index.php:20
+Stack trace:
+#0 [internal function]: {closure}('Dotenv\\Dotenv')
+#1 [internal function]: spl_autoload_call('Dotenv\\Dotenv')
+#2 /home/jvubjjzt/public_html/index.php(31): class_exists('Dotenv\\Dotenv')
+#3 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 20
+[19-Aug-2025 09:22:17 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function str_starts_with() in /home/jvubjjzt/public_html/index.php:20
+Stack trace:
+#0 [internal function]: {closure}('Dotenv\\Dotenv')
+#1 [internal function]: spl_autoload_call('Dotenv\\Dotenv')
+#2 /home/jvubjjzt/public_html/index.php(31): class_exists('Dotenv\\Dotenv')
+#3 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 20
+[19-Aug-2025 09:22:19 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function str_starts_with() in /home/jvubjjzt/public_html/index.php:20
+Stack trace:
+#0 [internal function]: {closure}('Dotenv\\Dotenv')
+#1 [internal function]: spl_autoload_call('Dotenv\\Dotenv')
+#2 /home/jvubjjzt/public_html/index.php(31): class_exists('Dotenv\\Dotenv')
+#3 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 20
+[19-Aug-2025 09:22:20 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function str_starts_with() in /home/jvubjjzt/public_html/index.php:20
+Stack trace:
+#0 [internal function]: {closure}('Dotenv\\Dotenv')
+#1 [internal function]: spl_autoload_call('Dotenv\\Dotenv')
+#2 /home/jvubjjzt/public_html/index.php(31): class_exists('Dotenv\\Dotenv')
+#3 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 20
+[19-Aug-2025 09:22:23 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function str_starts_with() in /home/jvubjjzt/public_html/index.php:20
+Stack trace:
+#0 [internal function]: {closure}('Dotenv\\Dotenv')
+#1 [internal function]: spl_autoload_call('Dotenv\\Dotenv')
+#2 /home/jvubjjzt/public_html/index.php(31): class_exists('Dotenv\\Dotenv')
+#3 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 20
+[19-Aug-2025 09:22:24 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function str_starts_with() in /home/jvubjjzt/public_html/index.php:20
+Stack trace:
+#0 [internal function]: {closure}('Dotenv\\Dotenv')
+#1 [internal function]: spl_autoload_call('Dotenv\\Dotenv')
+#2 /home/jvubjjzt/public_html/index.php(31): class_exists('Dotenv\\Dotenv')
+#3 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 20
+[19-Aug-2025 09:22:27 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function str_starts_with() in /home/jvubjjzt/public_html/index.php:20
+Stack trace:
+#0 [internal function]: {closure}('Dotenv\\Dotenv')
+#1 [internal function]: spl_autoload_call('Dotenv\\Dotenv')
+#2 /home/jvubjjzt/public_html/index.php(31): class_exists('Dotenv\\Dotenv')
+#3 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 20
+[19-Aug-2025 09:24:29 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function str_starts_with() in /home/jvubjjzt/public_html/index.php:20
+Stack trace:
+#0 [internal function]: {closure}('Dotenv\\Dotenv')
+#1 [internal function]: spl_autoload_call('Dotenv\\Dotenv')
+#2 /home/jvubjjzt/public_html/index.php(31): class_exists('Dotenv\\Dotenv')
+#3 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 20
+[19-Aug-2025 09:25:42 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function str_starts_with() in /home/jvubjjzt/public_html/index.php:20
+Stack trace:
+#0 [internal function]: {closure}('Dotenv\\Dotenv')
+#1 [internal function]: spl_autoload_call('Dotenv\\Dotenv')
+#2 /home/jvubjjzt/public_html/index.php(31): class_exists('Dotenv\\Dotenv')
+#3 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 20
+[19-Aug-2025 09:25:42 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function str_starts_with() in /home/jvubjjzt/public_html/index.php:20
+Stack trace:
+#0 [internal function]: {closure}('Dotenv\\Dotenv')
+#1 [internal function]: spl_autoload_call('Dotenv\\Dotenv')
+#2 /home/jvubjjzt/public_html/index.php(31): class_exists('Dotenv\\Dotenv')
+#3 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 20
+[19-Aug-2025 09:25:55 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function str_starts_with() in /home/jvubjjzt/public_html/index.php:20
+Stack trace:
+#0 [internal function]: {closure}('Dotenv\\Dotenv')
+#1 [internal function]: spl_autoload_call('Dotenv\\Dotenv')
+#2 /home/jvubjjzt/public_html/index.php(31): class_exists('Dotenv\\Dotenv')
+#3 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 20
+[19-Aug-2025 09:26:58 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function str_starts_with() in /home/jvubjjzt/public_html/index.php:20
+Stack trace:
+#0 [internal function]: {closure}('Dotenv\\Dotenv')
+#1 [internal function]: spl_autoload_call('Dotenv\\Dotenv')
+#2 /home/jvubjjzt/public_html/index.php(31): class_exists('Dotenv\\Dotenv')
+#3 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 20
+[19-Aug-2025 09:27:56 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function str_starts_with() in /home/jvubjjzt/public_html/index.php:20
+Stack trace:
+#0 [internal function]: {closure}('Dotenv\\Dotenv')
+#1 [internal function]: spl_autoload_call('Dotenv\\Dotenv')
+#2 /home/jvubjjzt/public_html/index.php(31): class_exists('Dotenv\\Dotenv')
+#3 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 20
+[19-Aug-2025 09:27:59 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function str_starts_with() in /home/jvubjjzt/public_html/index.php:20
+Stack trace:
+#0 [internal function]: {closure}('Dotenv\\Dotenv')
+#1 [internal function]: spl_autoload_call('Dotenv\\Dotenv')
+#2 /home/jvubjjzt/public_html/index.php(31): class_exists('Dotenv\\Dotenv')
+#3 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 20
+[19-Aug-2025 09:28:01 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function str_starts_with() in /home/jvubjjzt/public_html/index.php:20
+Stack trace:
+#0 [internal function]: {closure}('Dotenv\\Dotenv')
+#1 [internal function]: spl_autoload_call('Dotenv\\Dotenv')
+#2 /home/jvubjjzt/public_html/index.php(31): class_exists('Dotenv\\Dotenv')
+#3 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 20
+[19-Aug-2025 09:28:04 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function str_starts_with() in /home/jvubjjzt/public_html/index.php:20
+Stack trace:
+#0 [internal function]: {closure}('Dotenv\\Dotenv')
+#1 [internal function]: spl_autoload_call('Dotenv\\Dotenv')
+#2 /home/jvubjjzt/public_html/index.php(31): class_exists('Dotenv\\Dotenv')
+#3 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 20
+[19-Aug-2025 09:28:04 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function str_starts_with() in /home/jvubjjzt/public_html/index.php:20
+Stack trace:
+#0 [internal function]: {closure}('Dotenv\\Dotenv')
+#1 [internal function]: spl_autoload_call('Dotenv\\Dotenv')
+#2 /home/jvubjjzt/public_html/index.php(31): class_exists('Dotenv\\Dotenv')
+#3 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 20
+[19-Aug-2025 09:28:05 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function str_starts_with() in /home/jvubjjzt/public_html/index.php:20
+Stack trace:
+#0 [internal function]: {closure}('Dotenv\\Dotenv')
+#1 [internal function]: spl_autoload_call('Dotenv\\Dotenv')
+#2 /home/jvubjjzt/public_html/index.php(31): class_exists('Dotenv\\Dotenv')
+#3 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 20
+[19-Aug-2025 09:28:10 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function str_starts_with() in /home/jvubjjzt/public_html/index.php:20
+Stack trace:
+#0 [internal function]: {closure}('Dotenv\\Dotenv')
+#1 [internal function]: spl_autoload_call('Dotenv\\Dotenv')
+#2 /home/jvubjjzt/public_html/index.php(31): class_exists('Dotenv\\Dotenv')
+#3 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 20
+[19-Aug-2025 09:28:24 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function str_starts_with() in /home/jvubjjzt/public_html/index.php:20
+Stack trace:
+#0 [internal function]: {closure}('Dotenv\\Dotenv')
+#1 [internal function]: spl_autoload_call('Dotenv\\Dotenv')
+#2 /home/jvubjjzt/public_html/index.php(31): class_exists('Dotenv\\Dotenv')
+#3 {main}
+  thrown in /home/jvubjjzt/public_html/index.php on line 20
+[19-Aug-2025 09:34:17 Asia/Ho_Chi_Minh] [ERROR] SQLSTATE[HY000] [1045] Access denied for user ''@'localhost' (using password: NO)
+#0 /home/jvubjjzt/public_html/controllers/ForgotPasswordController.php(22): PDO->__construct('mysql:host=;dbn...', '', '', Array)
+#1 /home/jvubjjzt/public_html/index.php(47): NamaHealing\Controllers\ForgotPasswordController->__construct()
+#2 {main}
+[19-Aug-2025 09:53:43 Asia/Ho_Chi_Minh] [ERROR] SQLSTATE[HY000] [1045] Access denied for user ''@'localhost' (using password: NO)
+#0 /home/jvubjjzt/public_html/controllers/ForgotPasswordController.php(22): PDO->__construct('mysql:host=;dbn...', '', '', Array)
+#1 /home/jvubjjzt/public_html/index.php(52): NamaHealing\Controllers\ForgotPasswordController->__construct()
+#2 {main}
+[19-Aug-2025 10:11:29 Asia/Ho_Chi_Minh] [ERROR] SQLSTATE[HY000] [1045] Access denied for user ''@'localhost' (using password: NO)
+#0 /home/jvubjjzt/public_html/controllers/ForgotPasswordController.php(22): PDO->__construct('mysql:host=;dbn...', '', '', Array)
+#1 /home/jvubjjzt/public_html/index.php(52): NamaHealing\Controllers\ForgotPasswordController->__construct()
+#2 {main}
+[19-Aug-2025 10:11:31 Asia/Ho_Chi_Minh] [ERROR] SQLSTATE[HY000] [1045] Access denied for user ''@'localhost' (using password: NO)
+#0 /home/jvubjjzt/public_html/controllers/ForgotPasswordController.php(22): PDO->__construct('mysql:host=;dbn...', '', '', Array)
+#1 /home/jvubjjzt/public_html/index.php(52): NamaHealing\Controllers\ForgotPasswordController->__construct()
+#2 {main}
+[19-Aug-2025 10:11:50 Asia/Ho_Chi_Minh] [ERROR] SQLSTATE[HY000] [1045] Access denied for user ''@'localhost' (using password: NO)
+#0 /home/jvubjjzt/public_html/controllers/ForgotPasswordController.php(22): PDO->__construct('mysql:host=;dbn...', '', '', Array)
+#1 /home/jvubjjzt/public_html/index.php(52): NamaHealing\Controllers\ForgotPasswordController->__construct()
+#2 {main}
+[19-Aug-2025 10:49:53 Asia/Ho_Chi_Minh] [ERROR] SQLSTATE[HY000] [1045] Access denied for user ''@'localhost' (using password: NO)
+#0 /home/jvubjjzt/public_html/controllers/ForgotPasswordController.php(22): PDO->__construct('mysql:host=;dbn...', '', '', Array)
+#1 /home/jvubjjzt/public_html/index.php(52): NamaHealing\Controllers\ForgotPasswordController->__construct()
+#2 {main}
+[19-Aug-2025 11:20:36 Asia/Ho_Chi_Minh] [ERROR] syntax error, unexpected 'private' (T_PRIVATE), expecting variable (T_VARIABLE)
+#0 /home/jvubjjzt/public_html/vendor/composer/ClassLoader.php(427): Composer\Autoload\{closure}('/home/jvubjjzt/...')
+#1 [internal function]: Composer\Autoload\ClassLoader->loadClass('NamaHealing\\Mod...')
+#2 /home/jvubjjzt/public_html/controllers/ForgotPasswordController.php(27): spl_autoload_call('NamaHealing\\Mod...')
+#3 /home/jvubjjzt/public_html/index.php(52): NamaHealing\Controllers\ForgotPasswordController->__construct()
+#4 {main}
+[19-Aug-2025 11:20:43 Asia/Ho_Chi_Minh] [ERROR] syntax error, unexpected 'private' (T_PRIVATE), expecting variable (T_VARIABLE)
+#0 /home/jvubjjzt/public_html/vendor/composer/ClassLoader.php(427): Composer\Autoload\{closure}('/home/jvubjjzt/...')
+#1 [internal function]: Composer\Autoload\ClassLoader->loadClass('NamaHealing\\Mod...')
+#2 /home/jvubjjzt/public_html/controllers/ForgotPasswordController.php(27): spl_autoload_call('NamaHealing\\Mod...')
+#3 /home/jvubjjzt/public_html/index.php(52): NamaHealing\Controllers\ForgotPasswordController->__construct()
+#4 {main}
+[19-Aug-2025 12:23:05 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function mb_strimwidth() in /home/jvubjjzt/public_html/articles.php:33
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/articles.php on line 33
+[19-Aug-2025 12:41:06 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function mb_strimwidth() in /home/jvubjjzt/public_html/articles.php:33
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/articles.php on line 33
+[19-Aug-2025 12:46:05 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function mb_strimwidth() in /home/jvubjjzt/public_html/articles.php:33
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/articles.php on line 33
+[19-Aug-2025 12:46:53 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function mb_strimwidth() in /home/jvubjjzt/public_html/articles.php:33
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/articles.php on line 33
+[19-Aug-2025 13:07:31 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function mb_strimwidth() in /home/jvubjjzt/public_html/articles.php:33
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/articles.php on line 33
+[19-Aug-2025 13:40:17 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function mb_strimwidth() in /home/jvubjjzt/public_html/articles.php:33
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/articles.php on line 33
+[19-Aug-2025 13:49:36 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function mb_strimwidth() in /home/jvubjjzt/public_html/articles.php:33
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/articles.php on line 33
+[19-Aug-2025 14:06:38 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function mb_strimwidth() in /home/jvubjjzt/public_html/articles.php:33
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/articles.php on line 33
+[19-Aug-2025 14:56:52 Asia/Ho_Chi_Minh] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/jvubjjzt/public_html/vendor/vlucas/phpdotenv/src/Parser/Lines.php on line 121
+[19-Aug-2025 15:00:42 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'created_at' in 'INSERT INTO' in /home/jvubjjzt/public_html/models/UserModel.php:48
+Stack trace:
+#0 /home/jvubjjzt/public_html/models/UserModel.php(48): PDOStatement->execute()
+#1 /home/jvubjjzt/public_html/controllers/SelfRegisterController.php(29): NamaHealing\Models\UserModel->createStudent()
+#2 /home/jvubjjzt/public_html/register.php(7): NamaHealing\Controllers\SelfRegisterController->handle()
+#3 {main}
+  thrown in /home/jvubjjzt/public_html/models/UserModel.php on line 48
+[19-Aug-2025 15:03:25 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function mb_strimwidth() in /home/jvubjjzt/public_html/articles.php:33
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/articles.php on line 33
+[19-Aug-2025 15:06:55 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function mb_strimwidth() in /home/jvubjjzt/public_html/articles.php:33
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/articles.php on line 33
+[19-Aug-2025 15:06:56 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function mb_strimwidth() in /home/jvubjjzt/public_html/articles.php:33
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/articles.php on line 33
+[19-Aug-2025 15:24:26 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'created_at' in 'INSERT INTO' in /home/jvubjjzt/public_html/models/UserModel.php:48
+Stack trace:
+#0 /home/jvubjjzt/public_html/models/UserModel.php(48): PDOStatement->execute()
+#1 /home/jvubjjzt/public_html/controllers/SelfRegisterController.php(29): NamaHealing\Models\UserModel->createStudent()
+#2 /home/jvubjjzt/public_html/register.php(7): NamaHealing\Controllers\SelfRegisterController->handle()
+#3 {main}
+  thrown in /home/jvubjjzt/public_html/models/UserModel.php on line 48
+[19-Aug-2025 15:27:38 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'created_at' in 'INSERT INTO' in /home/jvubjjzt/public_html/models/UserModel.php:48
+Stack trace:
+#0 /home/jvubjjzt/public_html/models/UserModel.php(48): PDOStatement->execute()
+#1 /home/jvubjjzt/public_html/controllers/SelfRegisterController.php(29): NamaHealing\Models\UserModel->createStudent()
+#2 /home/jvubjjzt/public_html/register.php(7): NamaHealing\Controllers\SelfRegisterController->handle()
+#3 {main}
+  thrown in /home/jvubjjzt/public_html/models/UserModel.php on line 48
+[19-Aug-2025 15:38:12 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'created_at' in 'INSERT INTO' in /home/jvubjjzt/public_html/models/UserModel.php:48
+Stack trace:
+#0 /home/jvubjjzt/public_html/models/UserModel.php(48): PDOStatement->execute()
+#1 /home/jvubjjzt/public_html/controllers/SelfRegisterController.php(29): NamaHealing\Models\UserModel->createStudent()
+#2 /home/jvubjjzt/public_html/register.php(7): NamaHealing\Controllers\SelfRegisterController->handle()
+#3 {main}
+  thrown in /home/jvubjjzt/public_html/models/UserModel.php on line 48
+[19-Aug-2025 15:40:53 Asia/Ho_Chi_Minh] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/jvubjjzt/public_html/vendor/symfony/polyfill-mbstring/Mbstring.php on line 667
+[19-Aug-2025 15:41:15 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'created_at' in 'INSERT INTO' in /home/jvubjjzt/public_html/models/UserModel.php:48
+Stack trace:
+#0 /home/jvubjjzt/public_html/models/UserModel.php(48): PDOStatement->execute()
+#1 /home/jvubjjzt/public_html/controllers/SelfRegisterController.php(29): NamaHealing\Models\UserModel->createStudent()
+#2 /home/jvubjjzt/public_html/register.php(7): NamaHealing\Controllers\SelfRegisterController->handle()
+#3 {main}
+  thrown in /home/jvubjjzt/public_html/models/UserModel.php on line 48
+[19-Aug-2025 15:59:04 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'created_at' in 'INSERT INTO' in /home/jvubjjzt/public_html/models/UserModel.php:48
+Stack trace:
+#0 /home/jvubjjzt/public_html/models/UserModel.php(48): PDOStatement->execute()
+#1 /home/jvubjjzt/public_html/controllers/SelfRegisterController.php(29): NamaHealing\Models\UserModel->createStudent()
+#2 /home/jvubjjzt/public_html/register.php(7): NamaHealing\Controllers\SelfRegisterController->handle()
+#3 {main}
+  thrown in /home/jvubjjzt/public_html/models/UserModel.php on line 48
+[19-Aug-2025 15:59:50 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'created_at' in 'INSERT INTO' in /home/jvubjjzt/public_html/models/UserModel.php:48
+Stack trace:
+#0 /home/jvubjjzt/public_html/models/UserModel.php(48): PDOStatement->execute()
+#1 /home/jvubjjzt/public_html/controllers/SelfRegisterController.php(29): NamaHealing\Models\UserModel->createStudent()
+#2 /home/jvubjjzt/public_html/register.php(7): NamaHealing\Controllers\SelfRegisterController->handle()
+#3 {main}
+  thrown in /home/jvubjjzt/public_html/models/UserModel.php on line 48
+[19-Aug-2025 15:59:56 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'created_at' in 'INSERT INTO' in /home/jvubjjzt/public_html/models/UserModel.php:48
+Stack trace:
+#0 /home/jvubjjzt/public_html/models/UserModel.php(48): PDOStatement->execute()
+#1 /home/jvubjjzt/public_html/controllers/SelfRegisterController.php(29): NamaHealing\Models\UserModel->createStudent()
+#2 /home/jvubjjzt/public_html/register.php(7): NamaHealing\Controllers\SelfRegisterController->handle()
+#3 {main}
+  thrown in /home/jvubjjzt/public_html/models/UserModel.php on line 48
+[19-Aug-2025 16:49:39 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function mb_strimwidth() in /home/jvubjjzt/public_html/articles.php:33
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/articles.php on line 33
+[19-Aug-2025 16:52:08 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'created_at' in 'INSERT INTO' in /home/jvubjjzt/public_html/models/UserModel.php:48
+Stack trace:
+#0 /home/jvubjjzt/public_html/models/UserModel.php(48): PDOStatement->execute()
+#1 /home/jvubjjzt/public_html/controllers/SelfRegisterController.php(29): NamaHealing\Models\UserModel->createStudent()
+#2 /home/jvubjjzt/public_html/register.php(7): NamaHealing\Controllers\SelfRegisterController->handle()
+#3 {main}
+  thrown in /home/jvubjjzt/public_html/models/UserModel.php on line 48
+[19-Aug-2025 16:58:16 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function mb_strimwidth() in /home/jvubjjzt/public_html/articles.php:33
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/articles.php on line 33
+[19-Aug-2025 16:58:27 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function mb_strimwidth() in /home/jvubjjzt/public_html/articles.php:33
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/articles.php on line 33
+[19-Aug-2025 20:52:26 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function mb_strimwidth() in /home/jvubjjzt/public_html/articles.php:33
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/articles.php on line 33
+[19-Aug-2025 21:02:01 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function mb_strimwidth() in /home/jvubjjzt/public_html/articles.php:33
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/articles.php on line 33
+[19-Aug-2025 22:28:01 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function mb_strimwidth() in /home/jvubjjzt/public_html/articles.php:33
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/articles.php on line 33
+[19-Aug-2025 22:53:23 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function mb_strimwidth() in /home/jvubjjzt/public_html/articles.php:33
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/articles.php on line 33
+[20-Aug-2025 01:20:40 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function mb_strimwidth() in /home/jvubjjzt/public_html/articles.php:33
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/articles.php on line 33
+[20-Aug-2025 01:20:57 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function mb_strimwidth() in /home/jvubjjzt/public_html/articles.php:33
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/articles.php on line 33
+[20-Aug-2025 02:07:41 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function mb_strimwidth() in /home/jvubjjzt/public_html/articles.php:33
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/articles.php on line 33
+[20-Aug-2025 05:23:05 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function mb_strimwidth() in /home/jvubjjzt/public_html/articles.php:33
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/articles.php on line 33
+[20-Aug-2025 05:30:25 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function mb_strimwidth() in /home/jvubjjzt/public_html/articles.php:33
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/articles.php on line 33
+[20-Aug-2025 05:33:05 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function mb_strimwidth() in /home/jvubjjzt/public_html/articles.php:33
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/articles.php on line 33
+[20-Aug-2025 06:33:25 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function mb_strimwidth() in /home/jvubjjzt/public_html/articles.php:33
+Stack trace:
+#0 {main}
+  thrown in /home/jvubjjzt/public_html/articles.php on line 33
