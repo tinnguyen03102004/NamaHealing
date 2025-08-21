@@ -6,6 +6,9 @@ if (!isset($_SESSION['uid']) || $_SESSION['role'] !== 'admin') {
 }
 
 $notifySuccess = false;
+$zoomUpdated = false;
+
+// Handle notification sending
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_message'])) {
     csrf_check($_POST['csrf_token'] ?? null);
     $msg = trim($_POST['notify_message']);
@@ -19,6 +22,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_message'])) {
         $stmt->execute([$msg]);
         $notifySuccess = true;
     }
+}
+
+// Manage Zoom links
+$db->exec("CREATE TABLE IF NOT EXISTS zoom_links (
+    session VARCHAR(10) PRIMARY KEY,
+    url TEXT NOT NULL
+)");
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['zoom_links'])) {
+    csrf_check($_POST['csrf_token'] ?? null);
+    foreach (['morning', 'evening'] as $sess) {
+        $url = trim($_POST['zoom_' . $sess] ?? '');
+        if ($url !== '') {
+            $stmt = $db->prepare("INSERT INTO zoom_links(session, url) VALUES (?, ?) ON DUPLICATE KEY UPDATE url=VALUES(url)");
+            $stmt->execute([$sess, $url]);
+        }
+    }
+    $zoomUpdated = true;
+}
+
+$zoomLinks = ['morning' => '', 'evening' => ''];
+$stmt = $db->query("SELECT session, url FROM zoom_links");
+foreach ($stmt as $row) {
+    $zoomLinks[$row['session']] = $row['url'];
 }
 
 require 'header.php';
@@ -68,6 +95,31 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
          href="admin.php"><?= __('clear_filter') ?></a>
     </div>
   </div>
+
+  <?php if ($zoomUpdated): ?>
+    <div class="mb-4 p-3 rounded bg-green-100 text-green-700 text-sm"><?= __('zoom_links_updated') ?></div>
+  <?php endif; ?>
+
+  <form method="post" class="mb-6 bg-white/95 rounded-xl shadow px-4 py-3 flex flex-col gap-3">
+    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
+    <input type="hidden" name="zoom_links" value="1">
+    <label class="font-semibold text-mint-text"><?= __('zoom_links_title') ?></label>
+    <div class="flex flex-col gap-2">
+      <div class="flex flex-col sm:flex-row gap-2 items-center">
+        <input type="url" name="zoom_morning" value="<?= htmlspecialchars($zoomLinks['morning']) ?>" placeholder="<?= __('zoom_morning_label') ?>" class="flex-1 rounded border border-mint px-2 py-1 focus:border-mint-dark focus:ring-mint">
+        <?php if ($zoomLinks['morning']): ?>
+        <a href="<?= htmlspecialchars($zoomLinks['morning']) ?>" target="_blank" class="rounded bg-blue-100 text-blue-700 px-3 py-1 text-xs font-semibold shadow hover:bg-blue-400 hover:text-white transition"><?= __('test_link') ?></a>
+        <?php endif; ?>
+      </div>
+      <div class="flex flex-col sm:flex-row gap-2 items-center">
+        <input type="url" name="zoom_evening" value="<?= htmlspecialchars($zoomLinks['evening']) ?>" placeholder="<?= __('zoom_evening_label') ?>" class="flex-1 rounded border border-mint px-2 py-1 focus:border-mint-dark focus:ring-mint">
+        <?php if ($zoomLinks['evening']): ?>
+        <a href="<?= htmlspecialchars($zoomLinks['evening']) ?>" target="_blank" class="rounded bg-blue-100 text-blue-700 px-3 py-1 text-xs font-semibold shadow hover:bg-blue-400 hover:text-white transition"><?= __('test_link') ?></a>
+        <?php endif; ?>
+      </div>
+    </div>
+    <button class="self-start rounded-lg bg-mint text-mint-text font-semibold px-4 py-2 text-sm shadow hover:bg-mint-dark hover:text-white transition"><?= __('save_zoom_links') ?></button>
+  </form>
 
   <?php if ($notifySuccess): ?>
     <div class="mb-4 p-3 rounded bg-green-100 text-green-700 text-sm"><?= __('notification_sent') ?></div>

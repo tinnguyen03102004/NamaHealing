@@ -18,15 +18,14 @@ if (!isset($_SESSION['uid']) || $_SESSION['role'] !== 'student') {
     header('Location: login.php'); exit;
 }
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: dashboard.php');
-    exit;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_check($_POST['csrf_token'] ?? null);
+    $session = $_POST['session'] ?? 'morning';
+} else {
+    $session = $_GET['s'] ?? 'morning';
 }
 
-csrf_check($_POST['csrf_token'] ?? null);
-
 $uid = $_SESSION['uid'];
-$session = ($_POST['session'] ?? 'morning');
 if (!in_array($session, ['morning', 'evening'])) $session = 'morning';
 
 // Tạm thời bỏ kiểm tra khung giờ để test Zoom

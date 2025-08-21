@@ -69,27 +69,19 @@ require 'header.php';
     <div class="flex flex-col md:flex-row gap-4 mb-4">
         <div class="flex-1 bg-white/90 rounded-xl shadow p-4 flex flex-col items-center border border-mint/30">
           <div class="mb-2 font-semibold text-base text-mint-text"><?= __('morning_class') ?> <span class="text-gray-400 text-sm">06:00-06:40</span></div>
-          <form method="post" action="join.php" class="w-full">
-            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
-            <input type="hidden" name="session" value="morning">
-            <button type="submit"
-               data-allowed="<?= $allowMorning ? '1' : '0' ?>"
-               class="w-full rounded-xl bg-gradient-to-tr from-[#b6f0de] to-[#9dcfc3] text-[#285F57] font-bold py-2 text-center mt-3 shadow-lg hover:scale-[1.03] hover:shadow-xl transition focus:ring-2 focus:ring-mint-dark outline-none <?= $allowMorning ? '' : 'opacity-50 cursor-not-allowed' ?>">
-               <?= __('join_morning') ?>
-            </button>
-          </form>
+          <a href="join.php?s=morning"
+             data-allowed="<?= $allowMorning ? '1' : '0' ?>"
+             class="block w-full rounded-xl bg-gradient-to-tr from-[#b6f0de] to-[#9dcfc3] text-[#285F57] font-bold py-2 text-center mt-3 shadow-lg hover:scale-[1.03] hover:shadow-xl transition focus:ring-2 focus:ring-mint-dark outline-none <?= $allowMorning ? '' : 'opacity-50 cursor-not-allowed' ?>">
+             <?= __('join_morning') ?>
+          </a>
         </div>
         <div class="flex-1 bg-white/90 rounded-xl shadow p-4 flex flex-col items-center border border-mint/30">
           <div class="mb-2 font-semibold text-base text-mint-text"><?= __('evening_class') ?> <span class="text-gray-400 text-sm">20:45-21:30</span></div>
-          <form method="post" action="join.php" class="w-full">
-            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
-            <input type="hidden" name="session" value="evening">
-            <button type="submit"
-               data-allowed="<?= $allowEvening ? '1' : '0' ?>"
-               class="w-full rounded-xl bg-gradient-to-tr from-[#b6f0de] to-[#9dcfc3] text-[#285F57] font-bold py-2 text-center mt-3 shadow-lg hover:scale-[1.03] hover:shadow-xl transition focus:ring-2 focus:ring-mint-dark outline-none <?= $allowEvening ? '' : 'opacity-50 cursor-not-allowed' ?>">
-               <?= __('join_evening') ?>
-            </button>
-          </form>
+          <a href="join.php?s=evening"
+             data-allowed="<?= $allowEvening ? '1' : '0' ?>"
+             class="block w-full rounded-xl bg-gradient-to-tr from-[#b6f0de] to-[#9dcfc3] text-[#285F57] font-bold py-2 text-center mt-3 shadow-lg hover:scale-[1.03] hover:shadow-xl transition focus:ring-2 focus:ring-mint-dark outline-none <?= $allowEvening ? '' : 'opacity-50 cursor-not-allowed' ?>">
+             <?= __('join_evening') ?>
+          </a>
         </div>
     </div>
     <div class="mb-6">
@@ -128,7 +120,7 @@ require 'header.php';
 </main>
 
 <script>
-document.querySelectorAll('button[data-allowed]').forEach(btn => {
+document.querySelectorAll('a[data-allowed]').forEach(btn => {
   btn.addEventListener('click', function(e) {
     if (this.dataset.allowed !== '1') {
       e.preventDefault();
