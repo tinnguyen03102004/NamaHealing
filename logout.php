@@ -15,6 +15,6 @@ if (ini_get("session.use_cookies")) {
     );
 }
 
-// Quay về trang đăng nhập / trang chủ
-header('Location: index.php');
+// Quay về trang đăng nhập
+header('Location: login.php');
 exit;

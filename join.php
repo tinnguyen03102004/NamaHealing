@@ -29,7 +29,8 @@ $uid = $_SESSION['uid'];
 $session = ($_POST['session'] ?? 'morning');
 if (!in_array($session, ['morning', 'evening'])) $session = 'morning';
 
-// Kiểm tra khung giờ cho phép vào lớp
+// Tạm thời bỏ kiểm tra khung giờ để test Zoom
+/*
 $now = date('H:i');
 $allowed = false;
 if ($session === 'morning') {
@@ -43,6 +44,7 @@ if (!$allowed) {
     echo "<!DOCTYPE html><html><head>{$gtm_head}<meta charset='utf-8'><title>{$title}</title></head><body>{$gtm_body}<p>" . __('not_class_time') . "</p></body></html>";
     exit;
 }
+*/
 
 // Kiểm tra số buổi còn lại
 $stmt = $db->prepare("SELECT remaining FROM users WHERE id=?");
