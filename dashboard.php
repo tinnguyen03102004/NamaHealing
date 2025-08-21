@@ -41,20 +41,6 @@ $stmt = $db->prepare("SELECT COUNT(*) FROM notifications n LEFT JOIN notificatio
 $stmt->execute([$uid]);
 $unreadCount = (int)$stmt->fetchColumn();
 
-// Kiểm tra giờ hiện tại có nằm trong khung giờ vào lớp (ẩn)
-function is_morning_time() {
-    $now = date('H:i');
-    return ($now >= '05:55' && $now <= '06:40');
-}
-function is_evening_time() {
-    $now = date('H:i');
-    return ($now >= '20:40' && $now <= '21:30');
-}
-
-// xác định có đang trong giờ học hay không
-$allowMorning = is_morning_time();
-$allowEvening = is_evening_time();
-
 require 'header.php';
 ?>
 
@@ -70,16 +56,14 @@ require 'header.php';
         <div class="flex-1 bg-white/90 rounded-xl shadow p-4 flex flex-col items-center border border-mint/30">
           <div class="mb-2 font-semibold text-base text-mint-text"><?= __('morning_class') ?> <span class="text-gray-400 text-sm">06:00-06:40</span></div>
           <a href="join.php?s=morning"
-             data-allowed="<?= $allowMorning ? '1' : '0' ?>"
-             class="block w-full rounded-xl bg-gradient-to-tr from-[#b6f0de] to-[#9dcfc3] text-[#285F57] font-bold py-2 text-center mt-3 shadow-lg hover:scale-[1.03] hover:shadow-xl transition focus:ring-2 focus:ring-mint-dark outline-none <?= $allowMorning ? '' : 'opacity-50 cursor-not-allowed' ?>">
+             class="block w-full rounded-xl bg-gradient-to-tr from-[#b6f0de] to-[#9dcfc3] text-[#285F57] font-bold py-2 text-center mt-3 shadow-lg hover:scale-[1.03] hover:shadow-xl transition focus:ring-2 focus:ring-mint-dark outline-none">
              <?= __('join_morning') ?>
           </a>
         </div>
         <div class="flex-1 bg-white/90 rounded-xl shadow p-4 flex flex-col items-center border border-mint/30">
           <div class="mb-2 font-semibold text-base text-mint-text"><?= __('evening_class') ?> <span class="text-gray-400 text-sm">20:45-21:30</span></div>
           <a href="join.php?s=evening"
-             data-allowed="<?= $allowEvening ? '1' : '0' ?>"
-             class="block w-full rounded-xl bg-gradient-to-tr from-[#b6f0de] to-[#9dcfc3] text-[#285F57] font-bold py-2 text-center mt-3 shadow-lg hover:scale-[1.03] hover:shadow-xl transition focus:ring-2 focus:ring-mint-dark outline-none <?= $allowEvening ? '' : 'opacity-50 cursor-not-allowed' ?>">
+             class="block w-full rounded-xl bg-gradient-to-tr from-[#b6f0de] to-[#9dcfc3] text-[#285F57] font-bold py-2 text-center mt-3 shadow-lg hover:scale-[1.03] hover:shadow-xl transition focus:ring-2 focus:ring-mint-dark outline-none">
              <?= __('join_evening') ?>
           </a>
         </div>
@@ -118,16 +102,5 @@ require 'header.php';
     </div>
   </div>
 </main>
-
-<script>
-document.querySelectorAll('a[data-allowed]').forEach(btn => {
-  btn.addEventListener('click', function(e) {
-    if (this.dataset.allowed !== '1') {
-      e.preventDefault();
-      alert(<?= json_encode(__('not_class_time')) ?>);
-    }
-  });
-});
-</script>
 
 <?php include 'footer.php'; ?>
