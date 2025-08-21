@@ -1,6 +1,23 @@
 <?php
 require 'config.php';
 
+// Nếu đã đăng nhập, chuyển thẳng tới giao diện tương ứng
+if (isset($_SESSION['uid'])) {
+    if (($_SESSION['role'] ?? '') === 'admin') {
+        header('Location: admin.php');
+        exit;
+    } elseif (($_SESSION['role'] ?? '') === 'teacher') {
+        header('Location: teacher_dashboard.php');
+        exit;
+    } else {
+        $stmt = $db->prepare("SELECT remaining FROM users WHERE id=?");
+        $stmt->execute([$_SESSION['uid']]);
+        $remaining = (int)$stmt->fetchColumn();
+        header('Location: ' . ($remaining > 0 ? 'dashboard.php' : 'welcome.php'));
+        exit;
+    }
+}
+
 // Xử lý logic đăng nhập
 $err = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
