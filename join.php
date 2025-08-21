@@ -35,7 +35,7 @@ function should_count_session(string $session): bool {
     } else {
         $start = strtotime('20:45');
     }
-    return ($now >= $start - 15 * 60) && ($now <= $start + 15 * 60);
+    return ($now >= $start - 10 * 60) && ($now <= $start + 45 * 60);
 }
 $shouldCount = should_count_session($session);
 
