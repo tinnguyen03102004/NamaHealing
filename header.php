@@ -11,6 +11,14 @@ require_once __DIR__ . '/i18n.php';
   'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
   })(window,document,'script','dataLayer','GTM-MZ695946');</script>
   <!-- End Google Tag Manager -->
+  <?php if (basename($_SERVER['PHP_SELF']) === 'welcome.php'): ?>
+  <!-- Google tag (gtag.js) event -->
+  <script>
+    gtag('event', 'conversion_event_page_view', {
+      // <event_parameters>
+    });
+  </script>
+  <?php endif; ?>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?= isset($pageTitle) ? htmlspecialchars($pageTitle) : 'NamaHealing' ?></title>
