@@ -174,4 +174,10 @@ return [
     'err_password_mismatch' => 'Mật khẩu không khớp!',
     'err_current_password' => 'Mật khẩu hiện tại không đúng!',
     'password_changed' => 'Đổi mật khẩu thành công.',
+    'cancel_session_title' => 'Hủy buổi học',
+    'cancel_add_button' => 'Thêm hủy buổi',
+    'cancel_delete_button' => 'Xóa hủy buổi',
+    'cancel_added' => 'Đã đánh dấu buổi học bị hủy.',
+    'cancel_removed' => 'Đã xóa hủy buổi.',
+    'session_cancelled' => 'Buổi học hôm nay đã bị hủy.',
 ];

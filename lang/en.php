@@ -174,4 +174,10 @@ return [
     'err_password_mismatch' => 'Passwords do not match!',
     'err_current_password' => 'Current password is incorrect!',
     'password_changed' => 'Password updated successfully.',
+    'cancel_session_title' => 'Cancel class',
+    'cancel_add_button' => 'Add cancellation',
+    'cancel_delete_button' => 'Remove cancellation',
+    'cancel_added' => 'Class marked as canceled.',
+    'cancel_removed' => 'Cancellation removed.',
+    'session_cancelled' => 'This class has been canceled.',
 ];

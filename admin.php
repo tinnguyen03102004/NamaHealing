@@ -48,6 +48,31 @@ foreach ($stmt as $row) {
     $zoomLinks[$row['session']] = $row['url'];
 }
 
+// Manage session cancellations
+$db->exec("CREATE TABLE IF NOT EXISTS session_cancellations (
+    date DATE NOT NULL,
+    session VARCHAR(10) NOT NULL,
+    PRIMARY KEY(date, session)
+)");
+$cancelMsg = null;
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_session'])) {
+    csrf_check($_POST['csrf_token'] ?? null);
+    $date = $_POST['cancel_date'] ?? '';
+    $sess = $_POST['cancel_session_type'] ?? 'morning';
+    $action = $_POST['cancel_action'] ?? 'add';
+    if ($date) {
+        if ($action === 'add') {
+            $stmt = $db->prepare("INSERT IGNORE INTO session_cancellations(date, session) VALUES (?, ?)");
+            $stmt->execute([$date, $sess]);
+            $cancelMsg = __('cancel_added');
+        } else {
+            $stmt = $db->prepare("DELETE FROM session_cancellations WHERE date=? AND session=?");
+            $stmt->execute([$date, $sess]);
+            $cancelMsg = __('cancel_removed');
+        }
+    }
+}
+
 require 'header.php';
 
 // --- XỬ LÝ LỌC ---
@@ -119,6 +144,25 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
       </div>
     </div>
     <button class="self-start rounded-lg bg-mint text-mint-text font-semibold px-4 py-2 text-sm shadow hover:bg-mint-dark hover:text-white transition"><?= __('save_zoom_links') ?></button>
+  </form>
+
+  <?php if ($cancelMsg): ?>
+    <div class="mb-4 p-3 rounded bg-green-100 text-green-700 text-sm"><?= $cancelMsg ?></div>
+  <?php endif; ?>
+
+  <form method="post" class="mb-6 bg-white/95 rounded-xl shadow px-4 py-3 flex flex-col gap-3">
+    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
+    <input type="hidden" name="cancel_session" value="1">
+    <label class="font-semibold text-mint-text"><?= __('cancel_session_title') ?></label>
+    <div class="flex flex-col sm:flex-row gap-2 items-center">
+      <input type="date" name="cancel_date" class="rounded border border-mint px-2 py-1 focus:border-mint-dark focus:ring-mint" required>
+      <select name="cancel_session_type" class="rounded border border-mint px-2 py-1 focus:border-mint-dark focus:ring-mint">
+        <option value="morning"><?= __('morning') ?></option>
+        <option value="evening"><?= __('evening') ?></option>
+      </select>
+      <button name="cancel_action" value="add" class="rounded-lg bg-mint text-mint-text font-semibold px-4 py-2 text-sm shadow hover:bg-mint-dark hover:text-white transition"><?= __('cancel_add_button') ?></button>
+      <button name="cancel_action" value="remove" class="rounded-lg border border-mint text-mint-text font-medium px-4 py-2 text-sm hover:bg-mint hover:text-white transition"><?= __('cancel_delete_button') ?></button>
+    </div>
   </form>
 
   <?php if ($notifySuccess): ?>
