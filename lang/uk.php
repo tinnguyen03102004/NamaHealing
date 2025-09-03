@@ -174,4 +174,10 @@ return [
     'err_password_mismatch' => 'Паролі не співпадають!',
     'err_current_password' => 'Неправильний поточний пароль!',
     'password_changed' => 'Пароль успішно змінено.',
+    'cancel_session_title' => 'Скасування заняття',
+    'cancel_add_button' => 'Додати скасування',
+    'cancel_delete_button' => 'Видалити скасування',
+    'cancel_added' => 'Заняття позначено як скасоване.',
+    'cancel_removed' => 'Скасування видалено.',
+    'session_cancelled' => 'Це заняття було скасовано.',
 ];

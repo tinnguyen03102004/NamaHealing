@@ -28,6 +28,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $uid = $_SESSION['uid'];
 if (!in_array($session, ['morning', 'evening'])) $session = 'morning';
 
+// Check for canceled session
+$db->exec("CREATE TABLE IF NOT EXISTS session_cancellations (
+    date DATE NOT NULL,
+    session VARCHAR(10) NOT NULL,
+    PRIMARY KEY(date, session)
+)");
+$today = date('Y-m-d');
+$stmt = $db->prepare("SELECT 1 FROM session_cancellations WHERE date=? AND session=?");
+$stmt->execute([$today, $session]);
+if ($stmt->fetchColumn()) {
+    echo "<!DOCTYPE html><html><head><meta charset='utf-8'><title>" . __('session_cancelled') . "</title></head><body><p style='text-align:center;margin-top:20px;font-weight:bold;color:red;'>" . __('session_cancelled') . "</p></body></html>";
+    exit;
+}
+
 function should_count_session(string $session): bool {
     $now = time();
     if ($session === 'morning') {
