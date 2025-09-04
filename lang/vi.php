@@ -179,5 +179,6 @@ return [
     'cancel_delete_button' => 'Xóa hủy buổi',
     'cancel_added' => 'Đã đánh dấu buổi học bị hủy.',
     'cancel_removed' => 'Đã xóa hủy buổi.',
-    'session_cancelled' => 'Buổi học hôm nay đã bị hủy.',
+    'session_cancelled' => 'Buổi học bị hủy',
+    'session_cancelled_detail' => 'Lớp nghỉ do thầy có việc bận, vui lòng quay lại vào hôm sau.',
 ];
