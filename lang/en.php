@@ -179,5 +179,6 @@ return [
     'cancel_delete_button' => 'Remove cancellation',
     'cancel_added' => 'Class marked as canceled.',
     'cancel_removed' => 'Cancellation removed.',
-    'session_cancelled' => 'This class has been canceled.',
+    'session_cancelled' => 'Class canceled',
+    'session_cancelled_detail' => 'Class is canceled because the teacher is busy, please come back tomorrow.',
 ];

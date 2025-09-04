@@ -38,7 +38,33 @@ $today = date('Y-m-d');
 $stmt = $db->prepare("SELECT 1 FROM session_cancellations WHERE date=? AND session=?");
 $stmt->execute([$today, $session]);
 if ($stmt->fetchColumn()) {
-    echo "<!DOCTYPE html><html><head><meta charset='utf-8'><title>" . __('session_cancelled') . "</title></head><body><p style='text-align:center;margin-top:20px;font-weight:bold;color:red;'>" . __('session_cancelled') . "</p></body></html>";
+    $lang = $_SESSION['lang'] ?? 'vi';
+    $title = __('session_cancelled');
+    $detail = __('session_cancelled_detail');
+    echo <<<HTML
+<!DOCTYPE html>
+<html lang="{$lang}">
+<head>
+{$gtm_head}
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{$title}</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<style>body{font-family:'Montserrat',sans-serif;}</style>
+</head>
+<body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-emerald-100">
+{$gtm_body}
+<div class="bg-white rounded-2xl shadow-lg p-6 mx-4 text-center max-w-md">
+  <h1 class="text-2xl font-semibold text-red-600 mb-4">{$title}</h1>
+  <p class="text-lg text-gray-800 leading-relaxed">{$detail}</p>
+  <a href="dashboard.php" class="mt-6 inline-block px-6 py-2 rounded-full bg-emerald-600 text-white hover:bg-emerald-700">Quay lại</a>
+</div>
+</body>
+</html>
+HTML;
     exit;
 }
 
