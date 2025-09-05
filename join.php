@@ -90,9 +90,14 @@ if ($remain <= 0) {
 }
 
 if ($shouldCount) {
-    // Trừ buổi, lưu lịch sử
-    $db->prepare("UPDATE users SET remaining=remaining-1 WHERE id=?")->execute([$uid]);
-    $db->prepare("INSERT INTO sessions(user_id, session) VALUES (?,?)")->execute([$uid, $session]);
+    // Kiểm tra xem đã ghi nhận buổi này trong hôm nay chưa
+    $stmt = $db->prepare("SELECT 1 FROM sessions WHERE user_id=? AND session=? AND DATE(created_at)=CURDATE()");
+    $stmt->execute([$uid, $session]);
+    if (!$stmt->fetchColumn()) {
+        // Trừ buổi, lưu lịch sử
+        $db->prepare("UPDATE users SET remaining=remaining-1 WHERE id=?")->execute([$uid]);
+        $db->prepare("INSERT INTO sessions(user_id, session) VALUES (?,?)")->execute([$uid, $session]);
+    }
 }
 
 $stmt = $db->prepare("SELECT url FROM zoom_links WHERE session=?");
