@@ -70,6 +70,9 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+require_once __DIR__ . '/helpers/RememberMe.php';
+remember_bootstrap($db);
+
 // CSRF token utilities
 if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));

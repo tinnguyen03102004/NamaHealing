@@ -103,9 +103,62 @@ $isChatbotPage = basename($_SERVER['PHP_SELF']) === 'chatbot.php';
     document.addEventListener('click', () => list.classList.add('hidden'));
   }
 
+  function initNotificationModal() {
+    const modal = document.getElementById('notification-modal');
+    if (!modal) return;
+    const csrf = modal.dataset.csrf || '';
+    const notificationId = modal.dataset.notificationId || '';
+    let dismissed = false;
+
+    const markAsRead = () => {
+      if (dismissed || !notificationId) {
+        return;
+      }
+      dismissed = true;
+      const body = new URLSearchParams({ csrf_token: csrf, notification_id: notificationId });
+      fetch('notifications_mark.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: body.toString(),
+      }).catch(() => {});
+    };
+
+    const removeModal = () => {
+      modal.classList.add('opacity-0');
+      setTimeout(() => {
+        if (modal.parentElement) {
+          modal.parentElement.removeChild(modal);
+        }
+      }, 200);
+    };
+
+    const closeModal = () => {
+      if (dismissed) {
+        removeModal();
+        return;
+      }
+      markAsRead();
+      removeModal();
+    };
+
+    modal.querySelectorAll('[data-close]').forEach(el => {
+      el.addEventListener('click', event => {
+        event.preventDefault();
+        closeModal();
+      });
+    });
+
+    modal.addEventListener('click', event => {
+      if (event.target === modal) {
+        closeModal();
+      }
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     initFooter();
     initNotifications();
+    initNotificationModal();
   });
   </script>
   </body>

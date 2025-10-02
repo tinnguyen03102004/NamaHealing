@@ -1,6 +1,7 @@
 <?php
 define('REQUIRE_LOGIN', true);
 require 'config.php';
+require_once __DIR__ . '/helpers/Notifications.php';
 if (!isset($_SESSION['uid']) || $_SESSION['role'] !== 'student') {
     header('Location: login.php');
     exit;
@@ -22,27 +23,44 @@ $stmt->execute([$uid]);
 $history = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Thông báo
-$db->exec("CREATE TABLE IF NOT EXISTS notifications (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    message TEXT NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-)");
-$db->exec("CREATE TABLE IF NOT EXISTS notification_reads (
-    notification_id INT NOT NULL,
-    user_id INT NOT NULL,
-    read_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (notification_id, user_id)
-)");
-
-$stmt = $db->query("SELECT id, message, created_at FROM notifications ORDER BY created_at DESC");
-$notifications = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-$stmt = $db->prepare("SELECT COUNT(*) FROM notifications n LEFT JOIN notification_reads r ON n.id = r.notification_id AND r.user_id = ? WHERE r.notification_id IS NULL");
-$stmt->execute([$uid]);
-$unreadCount = (int)$stmt->fetchColumn();
+notifications_setup($db);
+$notifications = notifications_fetch_active($db);
+$unreadCount = notifications_unread_count($db, $uid);
+$popupNotification = notifications_unread_cancellation($db, $uid);
 
 require 'header.php';
 ?>
+
+<?php if (!empty($popupNotification)): ?>
+  <?php
+    $scopeKey = $popupNotification['session_scope'] === 'morning'
+      ? 'notification_scope_morning'
+      : ($popupNotification['session_scope'] === 'evening'
+          ? 'notification_scope_evening'
+          : 'notification_scope_both');
+    $modalTitle = $popupNotification['title'] !== null && $popupNotification['title'] !== ''
+      ? htmlspecialchars($popupNotification['title'])
+      : __('notification_popup_intro');
+    $modalCreated = sprintf(__('notification_created_at'), date('H:i d/m/Y', strtotime($popupNotification['created_at'])));
+    $modalScope = sprintf(__('notification_popup_scope'), __($scopeKey));
+  ?>
+  <div id="notification-modal" role="dialog" aria-modal="true" class="fixed inset-0 z-40 flex items-center justify-center bg-black/40 px-4" data-notification-id="<?= $popupNotification['id'] ?>" data-csrf="<?= $_SESSION['csrf_token']; ?>">
+    <div class="relative w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl">
+      <button type="button" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 focus:outline-none" data-close aria-label="<?= __('notification_popup_close_label') ?>">
+        &times;
+      </button>
+      <h3 class="text-xl font-semibold text-mint-text mb-2"><?= $modalTitle ?></h3>
+      <div class="text-sm text-gray-700 whitespace-pre-line leading-relaxed"><?= nl2br(htmlspecialchars($popupNotification['message'])) ?></div>
+      <div class="mt-3 text-xs text-gray-500 space-y-1">
+        <div><?= $modalScope ?></div>
+        <div><?= $modalCreated ?></div>
+      </div>
+      <div class="mt-5 flex justify-end">
+        <button type="button" class="rounded-full bg-mint text-mint-text font-semibold px-4 py-2 text-sm shadow hover:bg-mint-dark hover:text-white transition" data-close><?= __('notification_popup_dismiss') ?></button>
+      </div>
+    </div>
+  </div>
+<?php endif; ?>
 
 <main class="min-h-[75vh] flex flex-col items-center justify-center px-2 py-8">
   <div class="w-full max-w-xl mx-auto bg-white/95 rounded-2xl shadow-2xl shadow-[#76a89e26] px-6 py-8">

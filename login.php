@@ -44,6 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['uid']  = $user['id'];
         $_SESSION['role'] = $user['role'];
 
+        remember_issue_token($db, (int)$user['id']);
+
         // Xác định URL đích sau đăng nhập
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
         $host     = $_SERVER['HTTP_HOST'] ?? '';
