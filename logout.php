@@ -2,6 +2,9 @@
 // logout.php
 require 'config.php';      // đảm bảo đã khởi tạo session_start()
 
+$currentCookie = $_COOKIE[REMEMBER_COOKIE_NAME] ?? null;
+$currentUserId = isset($_SESSION['uid']) ? (int)$_SESSION['uid'] : null;
+
 // Xoá toàn bộ biến phiên và huỷ session
 $_SESSION = [];
 session_destroy();
@@ -14,6 +17,8 @@ if (ini_get("session.use_cookies")) {
         $params["secure"], $params["httponly"]
     );
 }
+
+remember_forget($db, $currentCookie, $currentUserId);
 
 // Quay về trang đăng nhập
 header('Location: login.php');

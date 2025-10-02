@@ -117,9 +117,33 @@ require_once __DIR__ . '/i18n.php';
         <div id="notif-list" class="hidden absolute right-0 mt-2 w-72 max-w-[90vw] bg-white border border-gray-200 rounded shadow-lg max-h-[80vh] overflow-y-auto text-sm">
           <div class="px-4 py-2 font-semibold border-b"><?= __('notifications') ?></div>
           <?php if (!empty($notifications)): foreach ($notifications as $n): ?>
-            <div class="px-4 py-2 border-b last:border-0">
-              <div><?= htmlspecialchars($n['message']) ?></div>
-              <div class="text-xs text-gray-400"><?= date('H:i d/m/Y', strtotime($n['created_at'])) ?></div>
+            <?php
+              $title = trim($n['title'] ?? '');
+              $typeBadgeClass = ($n['type'] ?? 'general') === 'cancellation'
+                ? 'bg-red-100 text-red-600'
+                : 'bg-emerald-100 text-emerald-700';
+              $scope = $n['session_scope'] ?? 'both';
+              $scopeKey = $scope === 'morning'
+                ? 'notification_scope_morning'
+                : ($scope === 'evening' ? 'notification_scope_evening' : 'notification_scope_both');
+            ?>
+            <div class="px-4 py-3 border-b last:border-0">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <div class="flex flex-wrap items-center gap-2">
+                  <?php if ($title !== ''): ?>
+                    <span class="text-sm font-semibold text-mint-text"><?= htmlspecialchars($title) ?></span>
+                  <?php endif; ?>
+                  <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold <?= $typeBadgeClass ?>">
+                    <?= ($n['type'] ?? 'general') === 'cancellation' ? __('notification_type_cancellation') : __('notification_type_general') ?>
+                  </span>
+                  <span class="text-[11px] text-gray-500"><?= __($scopeKey) ?></span>
+                </div>
+                <span class="text-xs text-gray-400"><?= date('H:i d/m/Y', strtotime($n['created_at'])) ?></span>
+              </div>
+              <div class="mt-2 text-sm text-gray-700 whitespace-pre-line"><?= nl2br(htmlspecialchars($n['message'])) ?></div>
+              <?php if (!empty($n['expires_at'])): ?>
+                <div class="mt-2 text-[11px] text-gray-400"><?= sprintf(__('notification_expires_at'), date('H:i d/m/Y', strtotime($n['expires_at']))) ?></div>
+              <?php endif; ?>
             </div>
           <?php endforeach; else: ?>
             <div class="px-4 py-2 text-gray-500"><?= __('no_notifications') ?></div>

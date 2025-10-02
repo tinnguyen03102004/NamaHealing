@@ -1,28 +1,59 @@
 <?php
 define('REQUIRE_LOGIN', true);
 require 'config.php';
+require_once __DIR__ . '/helpers/Notifications.php';
 if (!isset($_SESSION['uid']) || $_SESSION['role'] !== 'admin') {
     header('Location: login.php'); exit;
 }
 
+$notifyDeleted = false;
 $notifySuccess = false;
 $zoomUpdated = false;
 
-// Handle notification sending
+notifications_setup($db);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_notification'])) {
+    csrf_check($_POST['csrf_token'] ?? null);
+    $deleteId = (int)$_POST['delete_notification'];
+    if ($deleteId > 0) {
+        notifications_delete($db, $deleteId);
+        $notifyDeleted = true;
+    }
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_message'])) {
     csrf_check($_POST['csrf_token'] ?? null);
     $msg = trim($_POST['notify_message']);
     if ($msg !== '') {
-        $db->exec("CREATE TABLE IF NOT EXISTS notifications (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            message TEXT NOT NULL,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        )");
-        $stmt = $db->prepare("INSERT INTO notifications (message) VALUES (?)");
-        $stmt->execute([$msg]);
+        $title = trim($_POST['notify_title'] ?? '');
+        $type = $_POST['notify_type'] ?? 'general';
+        if (!in_array($type, NOTIFICATION_TYPES, true)) {
+            $type = 'general';
+        }
+        $scope = $_POST['notify_scope'] ?? 'both';
+        if (!in_array($scope, NOTIFICATION_SESSION_SCOPES, true)) {
+            $scope = 'both';
+        }
+        $expiresInput = trim($_POST['notify_expires'] ?? '');
+        $expiresAt = null;
+        if ($expiresInput !== '') {
+            $dt = DateTime::createFromFormat('Y-m-d\TH:i', $expiresInput);
+            if ($dt instanceof DateTime) {
+                $expiresAt = $dt->format('Y-m-d H:i:s');
+            }
+        }
+
+        notifications_create($db, $msg, [
+            'title'         => $title,
+            'type'          => $type,
+            'session_scope' => $scope,
+            'expires_at'    => $expiresAt,
+        ]);
         $notifySuccess = true;
     }
 }
+
+$recentNotifications = notifications_fetch_recent($db, 25);
 
 // Manage Zoom links
 $db->exec("CREATE TABLE IF NOT EXISTS zoom_links (
@@ -165,16 +196,111 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
   </form>
 
+  <?php if ($notifyDeleted): ?>
+    <div class="mb-4 p-3 rounded bg-yellow-100 text-yellow-800 text-sm">
+      <?= __('notification_deleted') ?>
+    </div>
+  <?php endif; ?>
+
   <?php if ($notifySuccess): ?>
     <div class="mb-4 p-3 rounded bg-green-100 text-green-700 text-sm"><?= __('notification_sent') ?></div>
   <?php endif; ?>
 
-  <form method="post" class="mb-6 bg-white/95 rounded-xl shadow px-4 py-3 flex flex-col gap-3">
+  <form method="post" class="mb-6 bg-white/95 rounded-xl shadow px-4 py-4 flex flex-col gap-4">
     <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
-    <label for="notify" class="font-semibold text-mint-text"><?= __('send_notification') ?></label>
-    <textarea id="notify" name="notify_message" class="border border-mint rounded p-2" placeholder="<?= __('notification_placeholder') ?>" required></textarea>
+    <h3 class="font-semibold text-mint-text text-lg"><?= __('send_notification') ?></h3>
+    <div class="grid gap-3">
+      <div class="flex flex-col gap-1">
+        <label for="notify_title" class="text-sm font-medium text-mint-text"><?= __('notification_title_label') ?></label>
+        <input id="notify_title" name="notify_title" type="text" class="border border-mint rounded px-3 py-2 focus:border-mint-dark focus:ring-mint" placeholder="<?= __('notification_title_placeholder') ?>">
+      </div>
+      <div class="grid gap-3 sm:grid-cols-2">
+        <div class="flex flex-col gap-1">
+          <label for="notify_type" class="text-sm font-medium text-mint-text"><?= __('notification_type_label') ?></label>
+          <select id="notify_type" name="notify_type" class="border border-mint rounded px-3 py-2 focus:border-mint-dark focus:ring-mint">
+            <option value="general"><?= __('notification_type_general') ?></option>
+            <option value="cancellation"><?= __('notification_type_cancellation') ?></option>
+          </select>
+        </div>
+        <div class="flex flex-col gap-1">
+          <label for="notify_scope" class="text-sm font-medium text-mint-text"><?= __('notification_scope_label') ?></label>
+          <select id="notify_scope" name="notify_scope" class="border border-mint rounded px-3 py-2 focus:border-mint-dark focus:ring-mint">
+            <option value="both"><?= __('notification_scope_both') ?></option>
+            <option value="morning"><?= __('notification_scope_morning') ?></option>
+            <option value="evening"><?= __('notification_scope_evening') ?></option>
+          </select>
+        </div>
+      </div>
+      <div class="flex flex-col gap-1">
+        <label for="notify_expires" class="text-sm font-medium text-mint-text"><?= __('notification_expires_label') ?></label>
+        <input id="notify_expires" type="datetime-local" name="notify_expires" class="border border-mint rounded px-3 py-2 focus:border-mint-dark focus:ring-mint">
+      </div>
+      <div class="flex flex-col gap-1">
+        <label for="notify" class="text-sm font-medium text-mint-text"><?= __('notification_message_label') ?></label>
+        <textarea id="notify" name="notify_message" class="border border-mint rounded px-3 py-2 min-h-[120px] focus:border-mint-dark focus:ring-mint" placeholder="<?= __('notification_placeholder') ?>" required></textarea>
+      </div>
+    </div>
     <button class="self-start rounded-lg bg-mint text-mint-text font-semibold px-4 py-2 text-sm shadow hover:bg-mint-dark hover:text-white transition"><?= __('send_notification') ?></button>
   </form>
+
+  <section class="mb-6 bg-white/95 rounded-xl shadow px-4 py-4">
+    <h3 class="font-semibold text-mint-text text-lg mb-3 flex items-center gap-2">
+      <?= __('notification_list_title') ?>
+    </h3>
+    <?php if (empty($recentNotifications)): ?>
+      <p class="text-sm text-gray-500"><?= __('notification_none_admin') ?></p>
+    <?php else: ?>
+      <div class="flex flex-col divide-y divide-gray-100">
+        <?php foreach ($recentNotifications as $note): ?>
+          <?php
+            $typeBadgeClass = $note['type'] === 'cancellation'
+              ? 'bg-red-100 text-red-600'
+              : 'bg-emerald-100 text-emerald-700';
+            $scopeKey = $note['session_scope'] === 'morning'
+              ? 'notification_scope_morning'
+              : ($note['session_scope'] === 'evening'
+                  ? 'notification_scope_evening'
+                  : 'notification_scope_both');
+            $createdText = sprintf(__('notification_created_at'), date('H:i d/m/Y', strtotime($note['created_at'])));
+            $expiresText = $note['expires_at']
+              ? sprintf(__('notification_expires_at'), date('H:i d/m/Y', strtotime($note['expires_at'])))
+              : __('notification_no_expiry');
+          ?>
+          <div class="py-3 flex flex-col gap-2 <?= !empty($note['is_expired']) ? 'opacity-70' : '' ?>">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold <?= $typeBadgeClass ?>">
+                  <?= $note['type'] === 'cancellation' ? __('notification_type_cancellation') : __('notification_type_general') ?>
+                </span>
+                <span class="text-xs text-gray-500"><?= __($scopeKey) ?></span>
+                <?php if (!empty($note['is_expired'])): ?>
+                  <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] bg-gray-200 text-gray-600 font-medium">
+                    <?= __('notification_expired_badge') ?>
+                  </span>
+                <?php endif; ?>
+              </div>
+              <div class="text-xs text-gray-400 text-right flex flex-col">
+                <span><?= $createdText ?></span>
+                <span><?= $expiresText ?></span>
+              </div>
+            </div>
+            <?php if (!empty($note['title'])): ?>
+              <div class="text-sm font-semibold text-mint-text"><?= htmlspecialchars($note['title']) ?></div>
+            <?php endif; ?>
+            <div class="text-sm text-gray-700 whitespace-pre-line"><?= nl2br(htmlspecialchars($note['message'])) ?></div>
+            <div class="flex justify-end">
+              <form method="post" class="inline">
+                <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
+                <button name="delete_notification" value="<?= $note['id'] ?>" class="text-xs text-red-600 hover:text-red-800 font-semibold">
+                  <?= __('notification_delete') ?>
+                </button>
+              </form>
+            </div>
+          </div>
+        <?php endforeach; ?>
+      </div>
+    <?php endif; ?>
+  </section>
 
   <!-- FORM LỌC -->
   <form class="mb-5 flex flex-col sm:flex-row items-center gap-3" method="get">

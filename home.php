@@ -160,9 +160,25 @@ $currentUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' 
                 <span class="logo-text">NamaHealing</span>
             </a>
             <div class="flex items-center gap-3 sm:gap-6">
-                <a href="login.php" class="text-base px-4 py-2 min-h-[40px] rounded-full border border-white/40 hover:bg-white hover:text-black transition flex items-center justify-center">
+                <?php if (!isset($_SESSION['uid'])): ?>
+                  <a href="login.php" class="text-base px-4 py-2 min-h-[40px] rounded-full border border-white/40 hover:bg-white hover:text-black transition flex items-center justify-center">
                     <?= __('login_button') ?>
-                </a>
+                  </a>
+                <?php else: ?>
+                  <?php if (($_SESSION['role'] ?? '') === 'student'): ?>
+                    <a href="dashboard.php" class="text-base px-4 py-2 min-h-[40px] rounded-full border border-white/40 hover:bg-white hover:text-black transition flex items-center justify-center">
+                      <?= __('go_to_class') ?>
+                    </a>
+                  <?php elseif (($_SESSION['role'] ?? '') === 'admin'): ?>
+                    <a href="admin.php" class="text-base px-4 py-2 min-h-[40px] rounded-full border border-white/40 hover:bg-white hover:text-black transition flex items-center justify-center">
+                      <?= __('admin_title') ?>
+                    </a>
+                  <?php elseif (($_SESSION['role'] ?? '') === 'teacher'): ?>
+                    <a href="teacher_dashboard.php" class="text-base px-4 py-2 min-h-[40px] rounded-full border border-white/40 hover:bg-white hover:text-black transition flex items-center justify-center">
+                      Teacher
+                    </a>
+                  <?php endif; ?>
+                <?php endif; ?>
                 <span class="hidden sm:block">
                   <a href="?lang=vi" class="text-sm country-code <?= ($_SESSION['lang'] ?? 'vi') === 'vi' ? 'font-bold' : '' ?>" aria-label="<?= __('language_vi') ?>">vn</a>
                   |
