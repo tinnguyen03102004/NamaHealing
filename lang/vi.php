@@ -286,6 +286,7 @@ return [
     'zoom_evening_label' => 'Link Zoom lớp chiều',
     'zoom_vip_morning_label' => 'Link Zoom VIP buổi sáng',
     'zoom_vip_evening_label' => 'Link Zoom VIP buổi tối',
+    'current_zoom_link' => 'Link Zoom hiện tại:',
     'save_zoom_links' => 'Lưu link Zoom',
     'test_link' => 'Test',
     'zoom_links_updated' => 'Đã cập nhật link Zoom.',
