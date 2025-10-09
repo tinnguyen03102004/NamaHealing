@@ -82,45 +82,55 @@ require 'header.php';
         <?= htmlspecialchars($materialsFlash) ?>
       </div>
     <?php endif; ?>
-    <section class="grid gap-4 md:grid-cols-2 mb-6">
-      <article class="flex h-full flex-col rounded-2xl border border-emerald-100 bg-white/95 p-5 shadow-sm shadow-[#76a89e26] transition hover:border-emerald-200 hover:shadow-md">
-        <div class="flex items-start gap-3">
-          <span class="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-2xl" aria-hidden="true">🌞</span>
+    <section class="mb-6">
+      <article class="flex flex-col rounded-2xl border border-emerald-100 bg-white/95 p-6 shadow-sm shadow-[#76a89e26]">
+        <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h3 class="text-lg font-semibold text-mint-text"><?= __('morning_class') ?></h3>
-            <p class="text-sm font-medium text-emerald-700"><?= __('morning_class_time') ?></p>
+            <h3 class="text-lg font-semibold text-mint-text"><?= __('student_class_section_title') ?></h3>
+            <p class="text-sm text-gray-600"><?= __('student_class_section_subtitle') ?></p>
           </div>
         </div>
-        <p class="mt-4 text-sm leading-relaxed text-gray-600">
-          <?= __('morning_class_description') ?>
-        </p>
-        <div class="mt-auto pt-4">
-          <a href="join.php?s=morning"
-             class="inline-flex w-full items-center justify-center rounded-lg bg-mint text-mint-text px-4 py-2 text-sm font-semibold transition hover:bg-mint-dark hover:text-white focus:outline-none focus:ring-2 focus:ring-mint-dark">
-             <?= __('join_morning') ?>
-          </a>
-        </div>
-      </article>
-      <article class="flex h-full flex-col rounded-2xl border border-emerald-100 bg-white/95 p-5 shadow-sm shadow-[#76a89e26] transition hover:border-emerald-200 hover:shadow-md">
-        <div class="flex items-start gap-3">
-          <span class="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-2xl" aria-hidden="true">🌙</span>
-          <div>
-            <h3 class="text-lg font-semibold text-mint-text"><?= __('evening_class') ?></h3>
-            <p class="text-sm font-medium text-emerald-700"><?= __('evening_class_time') ?></p>
+        <div class="mt-5 grid gap-4 md:grid-cols-2">
+          <div class="flex flex-col rounded-xl border border-emerald-100 bg-white p-5 shadow-sm shadow-[#76a89e26] transition hover:border-emerald-200 hover:shadow-md">
+            <div class="flex items-start gap-3">
+              <span class="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-2xl" aria-hidden="true">🌞</span>
+              <div>
+                <h4 class="text-lg font-semibold text-mint-text"><?= __('morning_class') ?></h4>
+                <p class="text-sm font-medium text-emerald-700"><?= __('morning_class_time') ?></p>
+              </div>
+            </div>
+            <p class="mt-4 text-sm leading-relaxed text-gray-600">
+              <?= __('morning_class_description') ?>
+            </p>
+            <div class="mt-auto pt-4">
+              <a href="join.php?s=morning"
+                 class="inline-flex w-full items-center justify-center rounded-lg bg-mint text-mint-text px-4 py-2 text-sm font-semibold transition hover:bg-mint-dark hover:text-white focus:outline-none focus:ring-2 focus:ring-mint-dark">
+                 <?= __('join_morning') ?>
+              </a>
+            </div>
           </div>
-        </div>
-        <p class="mt-4 text-sm leading-relaxed text-gray-600">
-          <?= __('evening_class_description') ?>
-        </p>
-        <div class="mt-auto pt-4">
-          <a href="join.php?s=evening"
-             class="inline-flex w-full items-center justify-center rounded-lg bg-mint text-mint-text px-4 py-2 text-sm font-semibold transition hover:bg-mint-dark hover:text-white focus:outline-none focus:ring-2 focus:ring-mint-dark">
-             <?= __('join_evening') ?>
-          </a>
+          <div class="flex flex-col rounded-xl border border-emerald-100 bg-white p-5 shadow-sm shadow-[#76a89e26] transition hover:border-emerald-200 hover:shadow-md">
+            <div class="flex items-start gap-3">
+              <span class="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-2xl" aria-hidden="true">🌙</span>
+              <div>
+                <h4 class="text-lg font-semibold text-mint-text"><?= __('evening_class') ?></h4>
+                <p class="text-sm font-medium text-emerald-700"><?= __('evening_class_time') ?></p>
+              </div>
+            </div>
+            <p class="mt-4 text-sm leading-relaxed text-gray-600">
+              <?= __('evening_class_description') ?>
+            </p>
+            <div class="mt-auto pt-4">
+              <a href="join.php?s=evening"
+                 class="inline-flex w-full items-center justify-center rounded-lg bg-mint text-mint-text px-4 py-2 text-sm font-semibold transition hover:bg-mint-dark hover:text-white focus:outline-none focus:ring-2 focus:ring-mint-dark">
+                 <?= __('join_evening') ?>
+              </a>
+            </div>
+          </div>
         </div>
       </article>
     </section>
-    <section class="grid gap-4 md:grid-cols-2 mb-6">
+    <section class="mb-6 space-y-4">
       <article class="flex h-full flex-col rounded-2xl border border-emerald-100 bg-white/95 p-5 shadow-sm shadow-[#76a89e26] transition hover:border-emerald-200 hover:shadow-md">
         <div class="flex items-start justify-between gap-3">
           <div class="flex items-start gap-3">
