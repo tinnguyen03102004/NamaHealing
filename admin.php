@@ -3,6 +3,7 @@ define('REQUIRE_LOGIN', true);
 require 'config.php';
 require_once __DIR__ . '/helpers/Notifications.php';
 require_once __DIR__ . '/helpers/Schema.php';
+require_once __DIR__ . '/helpers/Value.php';
 if (!isset($_SESSION['uid']) || $_SESSION['role'] !== 'admin') {
     header('Location: login.php'); exit;
 }
@@ -501,7 +502,7 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <?= $row['remaining'] ?>
               </td>
               <td class="px-2 sm:px-3 py-2">
-                <?php $isVip = !empty($row['is_vip']); ?>
+                <?php $isVip = db_bool($row['is_vip'] ?? null); ?>
                 <div class="flex flex-col items-center gap-2">
                   <span class="inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold <?= $isVip ? 'bg-amber-100 text-amber-700' : 'bg-gray-100 text-gray-600' ?>">
                     <?php if ($isVip): ?>
