@@ -2,6 +2,7 @@
 define('REQUIRE_LOGIN', true);
 require 'config.php';
 require_once __DIR__ . '/helpers/Notifications.php';
+require_once __DIR__ . '/helpers/Schema.php';
 if (!isset($_SESSION['uid']) || $_SESSION['role'] !== 'admin') {
     header('Location: login.php'); exit;
 }
@@ -9,8 +10,12 @@ if (!isset($_SESSION['uid']) || $_SESSION['role'] !== 'admin') {
 $notifyDeleted = false;
 $notifySuccess = false;
 $zoomUpdated = false;
+$vipStatusUpdated = !empty($_SESSION['vip_status_flash'] ?? false);
+unset($_SESSION['vip_status_flash']);
 
 notifications_setup($db);
+ensure_users_has_vip($db);
+ensure_zoom_links_audience($db);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_notification'])) {
     csrf_check($_POST['csrf_token'] ?? null);
@@ -57,26 +62,69 @@ $recentNotifications = notifications_fetch_recent($db, 25);
 
 // Manage Zoom links
 $db->exec("CREATE TABLE IF NOT EXISTS zoom_links (
-    session VARCHAR(10) PRIMARY KEY,
-    url TEXT NOT NULL
+    session VARCHAR(10) NOT NULL,
+    audience VARCHAR(10) NOT NULL DEFAULT 'student',
+    url TEXT NOT NULL,
+    PRIMARY KEY (session, audience)
 )");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['zoom_links'])) {
     csrf_check($_POST['csrf_token'] ?? null);
-    foreach (['morning', 'evening'] as $sess) {
-        $url = trim($_POST['zoom_' . $sess] ?? '');
-        if ($url !== '') {
-            $stmt = $db->prepare("INSERT INTO zoom_links(session, url) VALUES (?, ?) ON DUPLICATE KEY UPDATE url=VALUES(url)");
-            $stmt->execute([$sess, $url]);
+    $audiences = ['student', 'vip'];
+    $sessions = ['morning', 'evening'];
+    foreach ($audiences as $audience) {
+        foreach ($sessions as $sess) {
+            $field = "zoom_{$audience}_{$sess}";
+            $url = trim($_POST[$field] ?? '');
+            if ($url === '') {
+                continue;
+            }
+            $stmt = $db->prepare(
+                "INSERT INTO zoom_links(session, audience, url) VALUES (?, ?, ?) " .
+                "ON DUPLICATE KEY UPDATE url = VALUES(url)"
+            );
+            $stmt->execute([$sess, $audience, $url]);
         }
     }
     $zoomUpdated = true;
 }
 
-$zoomLinks = ['morning' => '', 'evening' => ''];
-$stmt = $db->query("SELECT session, url FROM zoom_links");
-foreach ($stmt as $row) {
-    $zoomLinks[$row['session']] = $row['url'];
+$zoomLinks = [
+    'student' => ['morning' => '', 'evening' => ''],
+    'vip' => ['morning' => '', 'evening' => ''],
+];
+try {
+    $stmt = $db->query("SELECT session, audience, url FROM zoom_links");
+    foreach ($stmt as $row) {
+        $audience = $row['audience'] ?? 'student';
+        if (isset($zoomLinks[$audience][$row['session']])) {
+            $zoomLinks[$audience][$row['session']] = $row['url'];
+        }
+    }
+} catch (PDOException $e) {
+    $stmt = $db->query("SELECT session, url FROM zoom_links");
+    foreach ($stmt as $row) {
+        if (isset($zoomLinks['student'][$row['session']])) {
+            $zoomLinks['student'][$row['session']] = $row['url'];
+        }
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_vip'])) {
+    csrf_check($_POST['csrf_token'] ?? null);
+    $studentId = (int)$_POST['toggle_vip'];
+    $value = (int)($_POST['vip_value'] ?? 0);
+    if ($studentId > 0) {
+        $stmt = $db->prepare('UPDATE users SET is_vip = ? WHERE id = ?');
+        $stmt->execute([$value ? 1 : 0, $studentId]);
+        $_SESSION['vip_status_flash'] = true;
+        $redirect = 'admin.php';
+        if (!empty($_SERVER['QUERY_STRING'])) {
+            $redirect .= '?' . $_SERVER['QUERY_STRING'];
+        }
+        header('Location: ' . $redirect);
+        exit;
+    }
 }
 
 // Manage session cancellations
@@ -220,19 +268,40 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
       <form method="post" class="mb-6 bg-white/95 rounded-xl shadow px-4 py-3 flex flex-col gap-3">
         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
         <input type="hidden" name="zoom_links" value="1">
-        <label class="font-semibold text-mint-text"><?= __('zoom_links_title') ?></label>
-        <div class="flex flex-col gap-2">
-          <div class="flex flex-col sm:flex-row gap-2 items-center">
-            <input type="url" name="zoom_morning" value="<?= htmlspecialchars($zoomLinks['morning']) ?>" placeholder="<?= __('zoom_morning_label') ?>" class="flex-1 rounded border border-mint px-2 py-1 focus:border-mint-dark focus:ring-mint">
-            <?php if ($zoomLinks['morning']): ?>
-            <a href="<?= htmlspecialchars($zoomLinks['morning']) ?>" target="_blank" class="rounded bg-blue-100 text-blue-700 px-3 py-1 text-xs font-semibold shadow hover:bg-blue-400 hover:text-white transition"><?= __('test_link') ?></a>
-            <?php endif; ?>
+        <div class="grid gap-4">
+          <div class="grid gap-2">
+            <label class="font-semibold text-mint-text text-sm uppercase tracking-wide"><?= __('zoom_links_title') ?></label>
+            <div class="flex flex-col gap-2">
+              <div class="flex flex-col sm:flex-row gap-2 items-center">
+                <input type="url" name="zoom_student_morning" value="<?= htmlspecialchars($zoomLinks['student']['morning']) ?>" placeholder="<?= __('zoom_morning_label') ?>" class="flex-1 rounded border border-mint px-2 py-1 focus:border-mint-dark focus:ring-mint">
+                <?php if ($zoomLinks['student']['morning']): ?>
+                <a href="<?= htmlspecialchars($zoomLinks['student']['morning']) ?>" target="_blank" class="rounded bg-blue-100 text-blue-700 px-3 py-1 text-xs font-semibold shadow hover:bg-blue-400 hover:text-white transition"><?= __('test_link') ?></a>
+                <?php endif; ?>
+              </div>
+              <div class="flex flex-col sm:flex-row gap-2 items-center">
+                <input type="url" name="zoom_student_evening" value="<?= htmlspecialchars($zoomLinks['student']['evening']) ?>" placeholder="<?= __('zoom_evening_label') ?>" class="flex-1 rounded border border-mint px-2 py-1 focus:border-mint-dark focus:ring-mint">
+                <?php if ($zoomLinks['student']['evening']): ?>
+                <a href="<?= htmlspecialchars($zoomLinks['student']['evening']) ?>" target="_blank" class="rounded bg-blue-100 text-blue-700 px-3 py-1 text-xs font-semibold shadow hover:bg-blue-400 hover:text-white transition"><?= __('test_link') ?></a>
+                <?php endif; ?>
+              </div>
+            </div>
           </div>
-          <div class="flex flex-col sm:flex-row gap-2 items-center">
-            <input type="url" name="zoom_evening" value="<?= htmlspecialchars($zoomLinks['evening']) ?>" placeholder="<?= __('zoom_evening_label') ?>" class="flex-1 rounded border border-mint px-2 py-1 focus:border-mint-dark focus:ring-mint">
-            <?php if ($zoomLinks['evening']): ?>
-            <a href="<?= htmlspecialchars($zoomLinks['evening']) ?>" target="_blank" class="rounded bg-blue-100 text-blue-700 px-3 py-1 text-xs font-semibold shadow hover:bg-blue-400 hover:text-white transition"><?= __('test_link') ?></a>
-            <?php endif; ?>
+          <div class="grid gap-2">
+            <label class="font-semibold text-mint-text text-sm uppercase tracking-wide"><?= __('zoom_links_vip_title') ?></label>
+            <div class="flex flex-col gap-2">
+              <div class="flex flex-col sm:flex-row gap-2 items-center">
+                <input type="url" name="zoom_vip_morning" value="<?= htmlspecialchars($zoomLinks['vip']['morning']) ?>" placeholder="<?= __('zoom_vip_morning_label') ?>" class="flex-1 rounded border border-mint px-2 py-1 focus:border-mint-dark focus:ring-mint">
+                <?php if ($zoomLinks['vip']['morning']): ?>
+                <a href="<?= htmlspecialchars($zoomLinks['vip']['morning']) ?>" target="_blank" class="rounded bg-blue-100 text-blue-700 px-3 py-1 text-xs font-semibold shadow hover:bg-blue-400 hover:text-white transition"><?= __('test_link') ?></a>
+                <?php endif; ?>
+              </div>
+              <div class="flex flex-col sm:flex-row gap-2 items-center">
+                <input type="url" name="zoom_vip_evening" value="<?= htmlspecialchars($zoomLinks['vip']['evening']) ?>" placeholder="<?= __('zoom_vip_evening_label') ?>" class="flex-1 rounded border border-mint px-2 py-1 focus:border-mint-dark focus:ring-mint">
+                <?php if ($zoomLinks['vip']['evening']): ?>
+                <a href="<?= htmlspecialchars($zoomLinks['vip']['evening']) ?>" target="_blank" class="rounded bg-blue-100 text-blue-700 px-3 py-1 text-xs font-semibold shadow hover:bg-blue-400 hover:text-white transition"><?= __('test_link') ?></a>
+                <?php endif; ?>
+              </div>
+            </div>
           </div>
         </div>
         <button class="self-start rounded-lg bg-mint text-mint-text font-semibold px-4 py-2 text-sm shadow hover:bg-mint-dark hover:text-white transition"><?= __('save_zoom_links') ?></button>
@@ -400,6 +469,11 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <summary>Bảng học viên</summary>
     <div class="admin-section__content">
       <div class="overflow-x-auto rounded-xl shadow-2xl shadow-[#76a89e26] bg-white/95">
+        <?php if ($vipStatusUpdated): ?>
+          <div class="mx-4 mt-4 mb-3 rounded-lg bg-emerald-100 text-emerald-700 px-4 py-2 text-sm font-medium">
+            <?= __('vip_status_updated') ?>
+          </div>
+        <?php endif; ?>
         <table class="w-full min-w-[650px] text-sm border-separate border-spacing-y-1">
           <thead>
             <tr class="bg-mint/10 text-mint-text text-base font-semibold">
@@ -408,13 +482,14 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
               <th class="py-2 px-2 sm:px-3 whitespace-nowrap"><?= __('tbl_email') ?></th>
               <th class="py-2 px-2 sm:px-3 whitespace-nowrap"><?= __('tbl_phone') ?></th>
               <th class="py-2 px-2 sm:px-3 text-center whitespace-nowrap"><?= __('tbl_remaining') ?></th>
+              <th class="py-2 px-2 sm:px-3 text-center whitespace-nowrap"><?= __('tbl_type') ?></th>
               <th class="py-2 px-2 sm:px-3 rounded-tr-xl text-center whitespace-nowrap"><?= __('tbl_actions') ?></th>
             </tr>
           </thead>
           <tbody>
           <?php if (empty($students)): ?>
             <tr>
-              <td colspan="6" class="py-5 text-center text-gray-400"><?= __('not_found') ?></td>
+              <td colspan="7" class="py-5 text-center text-gray-400"><?= __('not_found') ?></td>
             </tr>
           <?php else: foreach ($students as $row): ?>
             <tr class="hover:bg-mint/5 transition">
@@ -424,6 +499,29 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
               <td class="px-2 sm:px-3 py-2"><?= htmlspecialchars($row['phone']) ?></td>
               <td class="px-2 sm:px-3 py-2 text-center font-semibold <?= $row['remaining'] == 0 ? 'text-red-600' : 'text-mint-text' ?>">
                 <?= $row['remaining'] ?>
+              </td>
+              <td class="px-2 sm:px-3 py-2">
+                <?php $isVip = !empty($row['is_vip']); ?>
+                <div class="flex flex-col items-center gap-2">
+                  <span class="inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold <?= $isVip ? 'bg-amber-100 text-amber-700' : 'bg-gray-100 text-gray-600' ?>">
+                    <?php if ($isVip): ?>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                      <?= __('vip_badge') ?>
+                    <?php else: ?>
+                      <?= __('standard_badge') ?>
+                    <?php endif; ?>
+                  </span>
+                  <form method="post" class="flex flex-col items-center gap-1 text-xs">
+                    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
+                    <input type="hidden" name="toggle_vip" value="<?= $row['id'] ?>">
+                    <input type="hidden" name="vip_value" value="<?= $isVip ? 0 : 1 ?>">
+                    <button class="rounded border <?= $isVip ? 'border-gray-300 text-gray-600 hover:bg-gray-100' : 'border-amber-400 text-amber-600 hover:bg-amber-50' ?> px-3 py-1 font-medium transition" type="submit">
+                      <?= $isVip ? __('remove_vip_button') : __('make_vip_button') ?>
+                    </button>
+                  </form>
+                </div>
               </td>
               <td class="px-2 sm:px-3 py-2 text-center flex flex-wrap gap-2 justify-center items-center">
                 <!-- CỘNG BUỔI -->

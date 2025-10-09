@@ -32,7 +32,8 @@ foreach ($journals as $j) {
     $messages[] = [
         'time' => $j['created_at'],
         'role' => 'student',
-        'content' => date('d/m/Y', strtotime($j['meditation_at'])) . ': ' . $j['content'],
+        'content' => $j['content'],
+        'meditation_at' => $j['meditation_at'],
     ];
     if (!empty($j['teacher_reply'])) {
         $messages[] = [
@@ -43,6 +44,27 @@ foreach ($journals as $j) {
     }
 }
 usort($messages, fn($a, $b) => strtotime($a['time']) <=> strtotime($b['time']));
+
+$groupedMessages = [];
+foreach ($messages as $message) {
+    $timestamp = $message['time'] ? strtotime($message['time']) : null;
+    $dateKey = $timestamp ? date('Y-m-d', $timestamp) : uniqid('unknown_', true);
+    $displayDate = $timestamp ? date('d/m/Y', $timestamp) : '';
+    $message['display_time'] = $timestamp ? date('H:i', $timestamp) : '';
+    if (!isset($groupedMessages[$dateKey])) {
+        $groupedMessages[$dateKey] = [
+            'date' => $displayDate,
+            'items' => [],
+        ];
+    }
+    if (!empty($message['meditation_at'])) {
+        $meditationTs = strtotime($message['meditation_at']);
+        $message['meditation_label'] = $meditationTs
+            ? sprintf(__('journal_meditation_day'), date('d/m/Y', $meditationTs))
+            : '';
+    }
+    $groupedMessages[$dateKey]['items'][] = $message;
+}
 
 $pageTitle = 'Báo Thiền';
 require 'header.php';
@@ -68,22 +90,69 @@ require 'header.php';
     </div>
     <button type="submit" class="bg-[#9dcfc3] text-white px-4 py-2 rounded">Gửi</button>
   </form>
-  <?php if ($messages): ?>
-    <section id="journal-history" class="bg-white p-4 rounded shadow">
-      <h2 class="text-lg font-semibold mb-3">Lịch sử báo thiền</h2>
-      <div id="journal-log" class="space-y-2 max-h-96 overflow-y-auto">
-        <?php $curDate = ''; foreach ($messages as $m): ?>
-          <?php $d = date('d/m/Y', strtotime($m['time'])); ?>
-          <?php if ($d !== $curDate): $curDate = $d; ?>
-            <div class="text-center text-xs text-gray-500"><span class="px-2 py-1 bg-gray-200 rounded-full"><?= $d ?></span></div>
-          <?php endif; ?>
-          <?php if ($m['role'] === 'student'): ?>
-            <div class="text-left"><div class="inline-block bg-gray-100 p-2 rounded"><?= htmlspecialchars($m['content']) ?></div></div>
-          <?php else: ?>
-            <div class="text-right"><div class="inline-block bg-green-100 p-2 rounded"><?= htmlspecialchars($m['content']) ?></div></div>
-          <?php endif; ?>
+  <?php if (!empty($groupedMessages)): ?>
+    <section id="journal-history" class="bg-white p-6 rounded-2xl shadow">
+      <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 mb-4">
+        <div>
+          <h2 class="text-xl font-semibold text-emerald-800">Lịch sử báo thiền</h2>
+          <p class="text-sm text-gray-500">Theo dõi lại những chia sẻ và phản hồi gần đây.</p>
+        </div>
+      </div>
+      <div id="journal-log" class="space-y-6 max-h-[520px] overflow-y-auto pr-1">
+        <?php foreach ($groupedMessages as $group): ?>
+          <?php
+            $dateText = $group['date'];
+            $dateObj = DateTime::createFromFormat('d/m/Y', $dateText);
+            $day = $dateObj ? $dateObj->format('d') : $dateText;
+            $monthYear = $dateObj ? $dateObj->format('m/Y') : '';
+          ?>
+          <article class="rounded-2xl border border-emerald-50 bg-emerald-50/60 p-5 shadow-sm">
+            <header class="mb-4 flex items-center gap-3">
+              <div class="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500 text-white text-lg font-semibold">
+                <?= htmlspecialchars($day) ?>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-sm font-semibold text-emerald-700"><?= htmlspecialchars($dateText) ?></span>
+                <?php if ($monthYear): ?>
+                  <span class="text-xs text-emerald-600/80"><?= htmlspecialchars($monthYear) ?></span>
+                <?php endif; ?>
+              </div>
+            </header>
+            <div class="space-y-4">
+              <?php foreach ($group['items'] as $entry): ?>
+                <?php $isTeacher = ($entry['role'] === 'teacher'); ?>
+                <div class="flex <?= $isTeacher ? 'justify-end' : 'justify-start' ?>">
+                  <div class="max-w-[75%] rounded-2xl border px-4 py-3 shadow-sm <?= $isTeacher ? 'bg-white border-emerald-200 text-emerald-900' : 'bg-white border-gray-200 text-gray-800' ?>">
+                    <div class="mb-2 flex items-center gap-2">
+                      <span class="text-xs font-semibold uppercase tracking-wide <?= $isTeacher ? 'text-emerald-600' : 'text-gray-500' ?>">
+                        <?= __($isTeacher ? 'journal_teacher_label' : 'journal_student_label') ?>
+                      </span>
+                      <?php if (!empty($entry['display_time'])): ?>
+                        <span class="text-[11px] text-gray-400">
+                          <?= htmlspecialchars($entry['display_time']) ?>
+                        </span>
+                      <?php endif; ?>
+                    </div>
+                    <?php if (!$isTeacher && !empty($entry['meditation_label'])): ?>
+                      <p class="text-xs font-medium text-emerald-600 mb-2">
+                        <?= htmlspecialchars($entry['meditation_label']) ?>
+                      </p>
+                    <?php endif; ?>
+                    <div class="text-sm leading-relaxed whitespace-pre-line">
+                      <?= nl2br(htmlspecialchars($entry['content'])) ?>
+                    </div>
+                  </div>
+                </div>
+              <?php endforeach; ?>
+            </div>
+          </article>
         <?php endforeach; ?>
       </div>
+    </section>
+  <?php else: ?>
+    <section class="bg-white p-6 rounded-2xl shadow text-center text-gray-500">
+      <h2 class="text-lg font-semibold text-emerald-800 mb-2">Lịch sử báo thiền</h2>
+      <p>Chưa có nội dung báo thiền nào. Hãy chia sẻ những trải nghiệm đầu tiên của bạn!</p>
     </section>
   <?php endif; ?>
 </main>

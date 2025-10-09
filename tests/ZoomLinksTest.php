@@ -17,11 +17,11 @@ class ZoomLinksTest extends TestCase {
         if (!$this->db) {
             $this->markTestSkipped('DB not initialized');
         }
-        $this->db->exec("CREATE TABLE IF NOT EXISTS zoom_links (session VARCHAR(10) PRIMARY KEY, url TEXT NOT NULL)");
+        $this->db->exec("CREATE TABLE IF NOT EXISTS zoom_links (session VARCHAR(10) NOT NULL, audience VARCHAR(10) NOT NULL DEFAULT 'student', url TEXT NOT NULL, PRIMARY KEY (session, audience))");
         $url = 'https://example.com/zoom';
-        $stmt = $this->db->prepare("INSERT INTO zoom_links(session, url) VALUES ('morning', ?) ON DUPLICATE KEY UPDATE url=VALUES(url)");
+        $stmt = $this->db->prepare("INSERT INTO zoom_links(session, audience, url) VALUES ('morning', 'student', ?) ON DUPLICATE KEY UPDATE url=VALUES(url)");
         $stmt->execute([$url]);
-        $stmt = $this->db->prepare("SELECT url FROM zoom_links WHERE session='morning'");
+        $stmt = $this->db->prepare("SELECT url FROM zoom_links WHERE session='morning' AND audience='student'");
         $stmt->execute();
         $fetched = $stmt->fetchColumn();
         $this->assertSame($url, $fetched);

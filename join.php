@@ -1,6 +1,7 @@
 <?php
 define('REQUIRE_LOGIN', true);
 require 'config.php';
+require_once __DIR__ . '/helpers/Schema.php';
 
 $gtm_head = <<<'HTML'
 <!-- Google Tag Manager -->
@@ -17,6 +18,9 @@ HTML;
 if (!isset($_SESSION['uid']) || $_SESSION['role'] !== 'student') {
     header('Location: login.php'); exit;
 }
+
+ensure_users_has_vip($db);
+ensure_zoom_links_audience($db);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_check($_POST['csrf_token'] ?? null);
@@ -79,10 +83,12 @@ function should_count_session(string $session): bool {
 }
 $shouldCount = should_count_session($session);
 
-// Kiểm tra số buổi còn lại
-$stmt = $db->prepare("SELECT remaining FROM users WHERE id=?");
+// Kiểm tra số buổi còn lại và trạng thái VIP
+$stmt = $db->prepare("SELECT remaining, is_vip FROM users WHERE id=?");
 $stmt->execute([$uid]);
-$remain = (int)$stmt->fetchColumn();
+$userInfo = $stmt->fetch(PDO::FETCH_ASSOC);
+$remain = (int)($userInfo['remaining'] ?? 0);
+$isVip = !empty($userInfo['is_vip']);
 
 if ($remain <= 0) {
     header('Location: welcome.php');
@@ -100,9 +106,53 @@ if ($shouldCount) {
     }
 }
 
-$stmt = $db->prepare("SELECT url FROM zoom_links WHERE session=?");
-$stmt->execute([$session]);
+$db->exec("CREATE TABLE IF NOT EXISTS zoom_links (
+    session VARCHAR(10) NOT NULL,
+    audience VARCHAR(10) NOT NULL DEFAULT 'student',
+    url TEXT NOT NULL,
+    PRIMARY KEY (session, audience)
+)");
+
+$audience = $isVip ? 'vip' : 'student';
+$stmt = $db->prepare("SELECT url FROM zoom_links WHERE session=? AND audience=?");
+$stmt->execute([$session, $audience]);
 $url = $stmt->fetchColumn();
+if (!$url && $isVip) {
+    $stmt = $db->prepare("SELECT url FROM zoom_links WHERE session=? AND audience='student'");
+    $stmt->execute([$session]);
+    $url = $stmt->fetchColumn();
+}
+
+if (!$url) {
+    $lang = $_SESSION['lang'] ?? 'vi';
+    $message = __('zoom_link_missing');
+    $buttonLabel = __('back_to_dashboard');
+    echo <<<HTML
+<!DOCTYPE html>
+<html lang="{$lang}">
+<head>
+{$gtm_head}
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zoom</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<style>body{font-family:'Montserrat',sans-serif;}</style>
+</head>
+<body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-emerald-100">
+{$gtm_body}
+<div class="bg-white rounded-2xl shadow-lg p-6 mx-4 text-center max-w-md">
+  <h1 class="text-xl font-semibold text-emerald-700 mb-3">Zoom</h1>
+  <p class="text-base text-gray-700 leading-relaxed">{$message}</p>
+  <a href="dashboard.php" class="mt-5 inline-block px-5 py-2 rounded-full bg-emerald-600 text-white hover:bg-emerald-700 transition"><?= htmlspecialchars($buttonLabel) ?></a>
+</div>
+</body>
+</html>
+HTML;
+    exit;
+}
 // Chuyển hướng tự động tới ứng dụng Zoom phù hợp với từng thiết bị
 $ua = strtolower($_SERVER['HTTP_USER_AGENT'] ?? '');
 $parsed = parse_url($url);
