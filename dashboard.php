@@ -82,44 +82,101 @@ require 'header.php';
         <?= htmlspecialchars($materialsFlash) ?>
       </div>
     <?php endif; ?>
-    <div class="flex flex-col md:flex-row gap-4 mb-4">
-        <div class="flex-1 bg-white/90 rounded-xl shadow p-4 flex flex-col items-center border border-mint/30">
-          <div class="mb-2 font-semibold text-base text-mint-text"><?= __('morning_class') ?> <span class="text-gray-400 text-sm">06:00-06:40</span></div>
+    <section class="grid gap-4 md:grid-cols-2 mb-6">
+      <article class="flex h-full flex-col rounded-2xl border border-emerald-100 bg-white/95 p-5 shadow-sm shadow-[#76a89e26] transition hover:border-emerald-200 hover:shadow-md">
+        <div class="flex items-start gap-3">
+          <span class="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-2xl" aria-hidden="true">🌞</span>
+          <div>
+            <h3 class="text-lg font-semibold text-mint-text"><?= __('morning_class') ?></h3>
+            <p class="text-sm font-medium text-emerald-700"><?= __('morning_class_time') ?></p>
+          </div>
+        </div>
+        <p class="mt-4 text-sm leading-relaxed text-gray-600">
+          <?= __('morning_class_description') ?>
+        </p>
+        <div class="mt-auto pt-4">
           <a href="join.php?s=morning"
-             class="block w-full rounded-xl bg-gradient-to-tr from-[#b6f0de] to-[#9dcfc3] text-[#285F57] font-bold py-2 text-center mt-3 shadow-lg hover:scale-[1.03] hover:shadow-xl transition focus:ring-2 focus:ring-mint-dark outline-none">
+             class="inline-flex w-full items-center justify-center rounded-lg bg-mint text-mint-text px-4 py-2 text-sm font-semibold transition hover:bg-mint-dark hover:text-white focus:outline-none focus:ring-2 focus:ring-mint-dark">
              <?= __('join_morning') ?>
           </a>
         </div>
-        <div class="flex-1 bg-white/90 rounded-xl shadow p-4 flex flex-col items-center border border-mint/30">
-          <div class="mb-2 font-semibold text-base text-mint-text"><?= __('evening_class') ?> <span class="text-gray-400 text-sm">20:45-21:30</span></div>
+      </article>
+      <article class="flex h-full flex-col rounded-2xl border border-emerald-100 bg-white/95 p-5 shadow-sm shadow-[#76a89e26] transition hover:border-emerald-200 hover:shadow-md">
+        <div class="flex items-start gap-3">
+          <span class="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-2xl" aria-hidden="true">🌙</span>
+          <div>
+            <h3 class="text-lg font-semibold text-mint-text"><?= __('evening_class') ?></h3>
+            <p class="text-sm font-medium text-emerald-700"><?= __('evening_class_time') ?></p>
+          </div>
+        </div>
+        <p class="mt-4 text-sm leading-relaxed text-gray-600">
+          <?= __('evening_class_description') ?>
+        </p>
+        <div class="mt-auto pt-4">
           <a href="join.php?s=evening"
-             class="block w-full rounded-xl bg-gradient-to-tr from-[#b6f0de] to-[#9dcfc3] text-[#285F57] font-bold py-2 text-center mt-3 shadow-lg hover:scale-[1.03] hover:shadow-xl transition focus:ring-2 focus:ring-mint-dark outline-none">
+             class="inline-flex w-full items-center justify-center rounded-lg bg-mint text-mint-text px-4 py-2 text-sm font-semibold transition hover:bg-mint-dark hover:text-white focus:outline-none focus:ring-2 focus:ring-mint-dark">
              <?= __('join_evening') ?>
           </a>
         </div>
-    </div>
-    <div class="grid gap-4 md:grid-cols-2 mb-6">
-      <a href="student_journal.php"
-         class="block w-full rounded-xl bg-gradient-to-tr from-[#b6f0de] to-[#9dcfc3] text-[#285F57] font-bold py-3 text-center shadow-lg hover:scale-[1.03] hover:shadow-xl transition focus:ring-2 focus:ring-mint-dark outline-none">
-         Báo Thiền
-      </a>
-      <a href="student_materials.php"
-         class="block w-full rounded-xl border border-mint/40 bg-white/90 p-4 text-left shadow transition hover:shadow-lg <?= $materialsUnlocked ? 'hover:scale-[1.01]' : 'cursor-not-allowed opacity-75' ?>"
-         data-materials-link
-         data-locked="<?= $materialsUnlocked ? '0' : '1' ?>"
-         <?= $materialsUnlocked ? '' : 'aria-disabled="true"' ?>>
-        <div class="flex items-center justify-between">
-          <div class="text-lg font-semibold text-mint-text"><?= __('student_materials_card_title') ?></div>
-          <span class="text-xs font-semibold uppercase tracking-wide rounded-full px-3 py-1 <?= $materialsUnlocked ? 'bg-mint text-mint-text' : 'bg-gray-200 text-gray-600' ?>">
+      </article>
+    </section>
+    <section class="grid gap-4 md:grid-cols-2 mb-6">
+      <article class="flex h-full flex-col rounded-2xl border border-emerald-100 bg-white/95 p-5 shadow-sm shadow-[#76a89e26] transition hover:border-emerald-200 hover:shadow-md">
+        <div class="flex items-start justify-between gap-3">
+          <div class="flex items-start gap-3">
+            <span class="flex h-12 w-12 items-center justify-center rounded-full bg-amber-100 text-2xl" aria-hidden="true">🧘</span>
+            <div>
+              <h3 class="text-lg font-semibold text-mint-text"><?= __('student_journal_card_title') ?></h3>
+              <p class="text-sm text-gray-600"><?= __('student_journal_card_subtitle') ?></p>
+            </div>
+          </div>
+          <span class="inline-flex items-center rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-amber-700">
+            <?= __('student_journal_card_badge') ?>
+          </span>
+        </div>
+        <p class="mt-4 text-sm leading-relaxed text-gray-600">
+          <?= __('student_journal_card_description') ?>
+        </p>
+        <div class="mt-auto space-y-3 pt-4">
+          <a href="student_journal.php"
+             class="inline-flex w-full items-center justify-center rounded-lg bg-mint text-mint-text px-4 py-2 text-sm font-semibold transition hover:bg-mint-dark hover:text-white focus:outline-none focus:ring-2 focus:ring-mint-dark">
+             <?= __('student_journal_card_button') ?>
+          </a>
+          <a href="student_journal.php#guide" class="inline-flex items-center justify-center text-sm font-medium text-mint-text hover:text-emerald-700">
+            <?= __('student_journal_card_secondary') ?>
+          </a>
+        </div>
+      </article>
+      <article class="flex h-full flex-col rounded-2xl border border-emerald-100 bg-white/95 p-5 shadow-sm shadow-[#76a89e26] transition hover:border-emerald-200 hover:shadow-md">
+        <div class="flex items-start justify-between gap-3">
+          <div class="flex items-start gap-3">
+            <span class="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-2xl" aria-hidden="true">📚</span>
+            <div>
+              <h3 class="text-lg font-semibold text-mint-text"><?= __('student_materials_card_title') ?></h3>
+              <p class="text-sm text-gray-600"><?= __('student_materials_card_subtitle') ?></p>
+            </div>
+          </div>
+          <span class="inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-wide <?= $materialsUnlocked ? 'border-mint/40 bg-mint/10 text-mint-text' : 'border-gray-200 bg-gray-100 text-gray-600' ?>">
             <?= $materialsUnlocked ? __('student_materials_card_open_badge') : __('student_materials_card_locked_badge') ?>
           </span>
         </div>
-        <p class="mt-2 text-sm text-gray-600 leading-relaxed"><?= __('student_materials_card_description') ?></p>
+        <p class="mt-4 text-sm leading-relaxed text-gray-600">
+          <?= __('student_materials_card_description') ?>
+        </p>
         <p class="mt-3 text-sm font-medium <?= $materialsUnlocked ? 'text-mint-text' : 'text-gray-500' ?>">
           <?= $materialsUnlocked ? __('student_materials_card_open_hint') : __('student_materials_card_locked_hint') ?>
         </p>
-      </a>
-    </div>
+        <div class="mt-auto pt-4">
+          <a href="student_materials.php"
+             class="inline-flex w-full items-center justify-center rounded-lg bg-mint text-mint-text px-4 py-2 text-sm font-semibold transition hover:bg-mint-dark hover:text-white focus:outline-none focus:ring-2 focus:ring-mint-dark <?= $materialsUnlocked ? '' : 'cursor-not-allowed opacity-75' ?>"
+             data-materials-link
+             data-locked="<?= $materialsUnlocked ? '0' : '1' ?>"
+             <?= $materialsUnlocked ? '' : 'aria-disabled="true"' ?>>
+            <?= __('student_materials_card_button') ?>
+          </a>
+        </div>
+      </article>
+    </section>
     <h5 class="text-center text-base font-semibold text-mint-text mt-2 mb-3"><?= __('recent_history') ?></h5>
     <div class="mt-4">
       <?php if ($history): ?>
