@@ -25,6 +25,8 @@ return [
     'morning' => 'Morning',
     'evening' => 'Evening',
     'no_history' => 'No history',
+    'history_joined_description' => 'Joined the %s session',
+    'no_history_hint' => 'Your meditation journey will appear here after you join a class.',
     'not_class_time' => 'It is not class time yet, please come back later',
     'admin_title' => 'Admin – Student list',
     'admin_subtitle' => 'Manage, add sessions and view history',
