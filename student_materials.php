@@ -74,8 +74,16 @@ include 'header.php';
             <?php foreach ($items as $item): ?>
               <?php
                 $title = htmlspecialchars($item['title'] ?? '');
-                $link = htmlspecialchars($item['link'] ?? '');
-                $isAudio = $catKey === 'meditations' && student_materials_is_audio($item['link'] ?? '');
+                $rawLink = $item['link'] ?? '';
+                $isAudio = $catKey === 'meditations' && student_materials_is_audio($rawLink);
+                $rawDownload = $item['file'] ?? $rawLink;
+                $link = htmlspecialchars($rawLink);
+                $downloadLink = htmlspecialchars($rawDownload);
+                $downloadText = htmlspecialchars(__('student_materials_download_audio'));
+                $originalName = $item['original_name'] ?? '';
+                if ($originalName !== '') {
+                    $downloadText .= ' (' . htmlspecialchars($originalName) . ')';
+                }
               ?>
               <article class="border border-mint/40 rounded-xl p-4 bg-white shadow-sm">
                 <h3 class="text-lg font-semibold text-mint-text mb-2"><?= $title ?></h3>
@@ -85,7 +93,11 @@ include 'header.php';
                     <?= __('student_materials_audio_fallback') ?>
                   </audio>
                   <div class="mt-2 text-xs text-gray-500 break-words">
-                    <a href="<?= $link ?>" target="_blank" class="underline text-blue-600"><?= __('student_materials_download_audio') ?></a>
+                    <?php if ($downloadLink !== ''): ?>
+                      <a href="<?= $downloadLink ?>" target="_blank" download class="underline text-blue-600"><?= $downloadText ?></a>
+                    <?php else: ?>
+                      <span class="italic text-gray-400"><?= __('student_materials_admin_link_missing') ?></span>
+                    <?php endif; ?>
                   </div>
                 <?php else: ?>
                   <a href="<?= $link ?>" target="_blank" class="inline-flex items-center gap-2 text-sm text-blue-600 font-medium hover:underline">

@@ -201,17 +201,77 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $cat = $_POST['student_category'] ?? '';
         $title = trim($_POST['student_title'] ?? '');
         $link = trim($_POST['student_link'] ?? '');
-        if (!in_array($cat, $studentMaterialCategories, true) || $title === '' || $link === '') {
+        $uploadsDir = __DIR__ . '/uploads/student_materials';
+        $uploadedPath = '';
+        $originalName = '';
+        $uploadInfo = $_FILES['student_file'] ?? null;
+        $hasUpload = is_array($uploadInfo) && ($uploadInfo['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_OK && !empty($uploadInfo['tmp_name']);
+
+        if (!in_array($cat, $studentMaterialCategories, true)) {
+            $error = 'Thiếu thông tin tài liệu học viên';
+        } elseif ($title === '') {
             $error = 'Thiếu thông tin tài liệu học viên';
         } else {
-            $studentMaterials[$cat][] = ['title' => $title, 'link' => $link];
-            file_put_contents($studentMaterialsFile, json_encode($studentMaterials, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-            $success = 'Đã thêm tài liệu học viên';
+            if ($hasUpload) {
+                $ext = strtolower(pathinfo($uploadInfo['name'], PATHINFO_EXTENSION));
+                $allowedExt = ['mp3', 'm4a', 'wav', 'ogg'];
+                if (!in_array($ext, $allowedExt, true)) {
+                    $error = 'File audio không hợp lệ (chỉ hỗ trợ mp3, m4a, wav, ogg)';
+                } else {
+                    if (!is_dir($uploadsDir)) {
+                        mkdir($uploadsDir, 0777, true);
+                    }
+                    $filename = uniqid('med_', true) . '.' . $ext;
+                    $destination = $uploadsDir . '/' . $filename;
+                    if (!move_uploaded_file($uploadInfo['tmp_name'], $destination)) {
+                        $error = 'Không thể lưu file audio lên máy chủ';
+                    } else {
+                        $relativePath = 'uploads/student_materials/' . $filename;
+                        $uploadedPath = $relativePath;
+                        $originalName = $uploadInfo['name'] ?? '';
+                    }
+                }
+            }
+
+            if (!$error) {
+                if ($cat === 'meditations') {
+                    if ($uploadedPath === '' && $link === '') {
+                        $error = 'Thiếu link hoặc file audio cho mục thiền';
+                    }
+                } elseif ($link === '') {
+                    $error = 'Thiếu thông tin tài liệu học viên';
+                }
+            }
+
+            if (!$error) {
+                $entry = ['title' => $title];
+                if ($uploadedPath !== '') {
+                    $entry['link'] = $uploadedPath;
+                    $entry['file'] = $uploadedPath;
+                    if ($originalName !== '') {
+                        $entry['original_name'] = $originalName;
+                    }
+                }
+                if (!isset($entry['link']) && $link !== '') {
+                    $entry['link'] = $link;
+                }
+                $studentMaterials[$cat][] = $entry;
+                file_put_contents($studentMaterialsFile, json_encode($studentMaterials, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+                $success = 'Đã thêm tài liệu học viên';
+            }
         }
     } elseif ($action === 'delete_student_material') {
         $cat = $_POST['category'] ?? '';
         $idx = intval($_POST['index'] ?? -1);
         if (in_array($cat, $studentMaterialCategories, true) && isset($studentMaterials[$cat][$idx])) {
+            $item = $studentMaterials[$cat][$idx];
+            $filePath = $item['file'] ?? '';
+            if (is_string($filePath) && strpos($filePath, 'uploads/student_materials/') === 0) {
+                $absolutePath = __DIR__ . '/' . $filePath;
+                if (is_file($absolutePath)) {
+                    @unlink($absolutePath);
+                }
+            }
             array_splice($studentMaterials[$cat], $idx, 1);
             file_put_contents($studentMaterialsFile, json_encode($studentMaterials, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
             $success = 'Đã xóa tài liệu học viên';
@@ -267,7 +327,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <span><?= __('student_materials_admin_section') ?></span>
       <span class="text-sm font-normal text-gray-500">(<?= __('student_materials_card_title') ?>)</span>
     </h2>
-    <form method="post" class="grid gap-4 md:grid-cols-4 bg-white rounded-xl border border-gray-200 p-4 mb-6">
+    <form method="post" enctype="multipart/form-data" class="grid gap-4 md:grid-cols-4 bg-white rounded-xl border border-gray-200 p-4 mb-6">
       <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
       <input type="hidden" name="action" value="add_student_material">
       <div class="md:col-span-1">
@@ -285,6 +345,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <div class="md:col-span-2">
         <label class="block text-sm font-medium text-gray-600 mb-1" for="student_link"><?= __('student_materials_admin_link_label') ?></label>
         <input id="student_link" type="url" name="student_link" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-mint/40" placeholder="https://...">
+      </div>
+      <div class="md:col-span-2">
+        <label class="block text-sm font-medium text-gray-600 mb-1" for="student_file"><?= __('student_materials_admin_audio_label') ?></label>
+        <input id="student_file" type="file" name="student_file" accept="audio/*" class="w-full border border-dashed border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-mint/40 bg-gray-50">
+        <p class="mt-1 text-xs text-gray-500"><?= __('student_materials_admin_audio_hint') ?></p>
       </div>
       <div class="md:col-span-4 flex justify-end">
         <button type="submit" class="px-4 py-2 rounded-lg bg-mint text-mint-text font-semibold hover:bg-mint-dark hover:text-white transition">
@@ -309,7 +374,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 border border-mint/30 rounded-lg px-3 py-2">
                   <div>
                     <div class="font-medium text-sm text-mint-text"><?= htmlspecialchars($item['title']) ?></div>
-                    <a href="<?= htmlspecialchars($item['link']) ?>" target="_blank" class="text-xs text-blue-600 break-all"><?= htmlspecialchars($item['link']) ?></a>
+                    <?php
+                      $linkHref = htmlspecialchars($item['link'] ?? '');
+                      $linkTextRaw = $item['original_name'] ?? ($item['link'] ?? '');
+                      $linkText = htmlspecialchars($linkTextRaw);
+                    ?>
+                    <?php if ($linkHref !== ''): ?>
+                      <a href="<?= $linkHref ?>" target="_blank" class="text-xs text-blue-600 break-all flex items-center gap-2">
+                        <span><?= $linkText ?></span>
+                        <?php if (!empty($item['file'])): ?>
+                          <span class="inline-flex items-center px-2 py-0.5 text-[10px] uppercase tracking-wide rounded bg-mint/10 text-mint-text border border-mint/30"><?= __('student_materials_admin_audio_uploaded') ?></span>
+                        <?php endif; ?>
+                      </a>
+                    <?php else: ?>
+                      <span class="text-xs text-gray-400 italic"><?= __('student_materials_admin_link_missing') ?></span>
+                    <?php endif; ?>
                   </div>
                   <div class="flex items-center gap-2">
                     <?php $isFirst = ($i === 0); $isLast = ($i === count($entries) - 1); ?>
