@@ -25,6 +25,8 @@ return [
     'morning' => 'Sáng',
     'evening' => 'Chiều',
     'no_history' => 'Chưa có lịch sử',
+    'history_joined_description' => 'Đã tham gia buổi %s',
+    'no_history_hint' => 'Khi bạn tham gia lớp thiền đầu tiên, dòng thời gian này sẽ ghi lại hành trình của bạn.',
     'not_class_time' => 'Hiện chưa đến giờ học, vui lòng quay lại sau',
     'admin_title' => 'Quản trị viên – Danh sách học viên',
     'admin_subtitle' => 'Quản lý, cộng buổi, xem lịch sử từng học viên',

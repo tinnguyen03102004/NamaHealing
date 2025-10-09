@@ -121,27 +121,46 @@ require 'header.php';
       </a>
     </div>
     <h5 class="text-center text-base font-semibold text-mint-text mt-2 mb-3"><?= __('recent_history') ?></h5>
-    <div class="overflow-x-auto">
-      <table class="w-full text-sm bg-white border border-gray-100 rounded-lg">
-        <thead>
-          <tr class="bg-mint/10 text-mint-text font-semibold">
-            <th class="py-2 px-3 rounded-tl-lg"><?= __('session') ?></th>
-            <th class="py-2 px-3 rounded-tr-lg"><?= __('time') ?></th>
-          </tr>
-        </thead>
-        <tbody>
-        <?php if ($history): foreach ($history as $h): ?>
-          <tr class="even:bg-gray-50 hover:bg-mint/5 transition">
-            <td class="py-2 px-3"><?= $h['session']=='morning'?__('morning'):__('evening') ?></td>
-            <td class="py-2 px-3"><?= date('H:i d/m/Y', strtotime($h['created_at'])) ?></td>
-          </tr>
-        <?php endforeach; else: ?>
-          <tr>
-            <td colspan="2" class="py-4 text-center text-gray-400"><?= __('no_history') ?></td>
-          </tr>
-        <?php endif; ?>
-        </tbody>
-      </table>
+    <div class="mt-4">
+      <?php if ($history): ?>
+        <ul class="timeline-list">
+          <?php foreach ($history as $index => $h):
+            $timestamp = strtotime($h['created_at']);
+            $sessionKey = $h['session'] === 'morning' ? 'morning' : 'evening';
+            $sessionLabel = __($sessionKey);
+            $sessionLabelLower = function_exists('mb_strtolower')
+              ? mb_strtolower($sessionLabel, 'UTF-8')
+              : strtolower($sessionLabel);
+            $description = sprintf(__('history_joined_description'), $sessionLabelLower);
+          ?>
+            <li class="timeline-item <?= $index === 0 ? 'timeline-item--latest' : '' ?>">
+              <div class="timeline-marker" aria-hidden="true"></div>
+              <div class="timeline-content">
+                <div class="timeline-header">
+                  <span class="timeline-badge <?= $h['session'] === 'morning' ? 'timeline-badge--morning' : 'timeline-badge--evening' ?>">
+                    <?= htmlspecialchars($sessionLabel) ?>
+                  </span>
+                  <div class="timeline-datetime">
+                    <span class="timeline-date"><?= htmlspecialchars(date('d/m', $timestamp)) ?></span>
+                    <span class="timeline-time"><?= htmlspecialchars(date('H:i', $timestamp)) ?></span>
+                  </div>
+                </div>
+                <p class="timeline-description">
+                  <?= htmlspecialchars($description) ?>
+                </p>
+              </div>
+            </li>
+          <?php endforeach; ?>
+        </ul>
+      <?php else: ?>
+        <div class="timeline-empty" role="status">
+          <div class="timeline-empty-icon" aria-hidden="true">🌱</div>
+          <div class="timeline-empty-texts">
+            <p class="timeline-empty-title"><?= __('no_history') ?></p>
+            <p class="timeline-empty-description"><?= __('no_history_hint') ?></p>
+          </div>
+        </div>
+      <?php endif; ?>
     </div>
     <div class="text-center mt-4">
       <a href="change_password.php" class="text-sm text-blue-600 underline"><?= __('change_password') ?></a>
