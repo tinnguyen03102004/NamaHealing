@@ -1,6 +1,7 @@
 <?php
 define('REQUIRE_LOGIN', true);
 require 'config.php';
+require_once __DIR__ . '/i18n.php';
 
 use NamaHealing\Helpers\ThumbnailFetcher;
 use NamaHealing\Helpers\MetaFetcher;
@@ -16,10 +17,18 @@ if (!is_dir($dataDir)) {
 $articlesFile = $dataDir . '/articles.json';
 $videosFile = $dataDir . '/videos.json';
 $docsFile    = $dataDir . '/docs.json';
+$studentMaterialsFile = $dataDir . '/student_materials.json';
+$studentMaterialCategories = ['meditations', 'exercises', 'sutras'];
 
 if (!file_exists($articlesFile)) file_put_contents($articlesFile, '[]');
 if (!file_exists($videosFile))  file_put_contents($videosFile, '[]');
-if (!file_exists($docsFile))    file_put_contents($docsFile, json_encode(['prayers'=>[], 'chanting'=>[], 'reference'=>[]], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+if (!file_exists($docsFile)) {
+    file_put_contents($docsFile, json_encode(['prayers'=>[], 'chanting'=>[], 'reference'=>[]], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+}
+if (!file_exists($studentMaterialsFile)) {
+    $defaultStudentMaterials = array_fill_keys($studentMaterialCategories, []);
+    file_put_contents($studentMaterialsFile, json_encode($defaultStudentMaterials, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+}
 
 $success = '';
 $error = '';
@@ -27,9 +36,16 @@ $error = '';
 $articles = json_decode(file_get_contents($articlesFile), true);
 $videos   = json_decode(file_get_contents($videosFile), true);
 $docs     = json_decode(file_get_contents($docsFile), true);
+$studentMaterials = json_decode(file_get_contents($studentMaterialsFile), true);
 $articles = is_array($articles) ? $articles : [];
 $videos   = is_array($videos)   ? $videos   : [];
 $docs = is_array($docs) && isset($docs['prayers']) ? $docs : ['prayers'=>[], 'chanting'=>[], 'reference'=>[]];
+$studentMaterials = is_array($studentMaterials) ? $studentMaterials : [];
+foreach ($studentMaterialCategories as $catKey) {
+    if (!isset($studentMaterials[$catKey]) || !is_array($studentMaterials[$catKey])) {
+        $studentMaterials[$catKey] = [];
+    }
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_check($_POST['csrf_token'] ?? null);
@@ -181,6 +197,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             file_put_contents($docsFile, json_encode($docs, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
             $success = 'Đã cập nhật thứ tự';
         }
+    } elseif ($action === 'add_student_material') {
+        $cat = $_POST['student_category'] ?? '';
+        $title = trim($_POST['student_title'] ?? '');
+        $link = trim($_POST['student_link'] ?? '');
+        if (!in_array($cat, $studentMaterialCategories, true) || $title === '' || $link === '') {
+            $error = 'Thiếu thông tin tài liệu học viên';
+        } else {
+            $studentMaterials[$cat][] = ['title' => $title, 'link' => $link];
+            file_put_contents($studentMaterialsFile, json_encode($studentMaterials, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+            $success = 'Đã thêm tài liệu học viên';
+        }
+    } elseif ($action === 'delete_student_material') {
+        $cat = $_POST['category'] ?? '';
+        $idx = intval($_POST['index'] ?? -1);
+        if (in_array($cat, $studentMaterialCategories, true) && isset($studentMaterials[$cat][$idx])) {
+            array_splice($studentMaterials[$cat], $idx, 1);
+            file_put_contents($studentMaterialsFile, json_encode($studentMaterials, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+            $success = 'Đã xóa tài liệu học viên';
+        }
+    } elseif ($action === 'move_student_material') {
+        $cat = $_POST['category'] ?? '';
+        $idx = intval($_POST['index'] ?? -1);
+        $dir = $_POST['dir'] ?? '';
+        if (!in_array($cat, $studentMaterialCategories, true) || !isset($studentMaterials[$cat][$idx])) {
+            // no-op
+        } elseif ($dir === 'up' && $idx > 0) {
+            [$studentMaterials[$cat][$idx - 1], $studentMaterials[$cat][$idx]] = [$studentMaterials[$cat][$idx], $studentMaterials[$cat][$idx - 1]];
+            file_put_contents($studentMaterialsFile, json_encode($studentMaterials, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+            $success = 'Đã cập nhật thứ tự tài liệu học viên';
+        } elseif ($dir === 'down' && $idx < count($studentMaterials[$cat]) - 1) {
+            [$studentMaterials[$cat][$idx], $studentMaterials[$cat][$idx + 1]] = [$studentMaterials[$cat][$idx + 1], $studentMaterials[$cat][$idx]];
+            file_put_contents($studentMaterialsFile, json_encode($studentMaterials, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+            $success = 'Đã cập nhật thứ tự tài liệu học viên';
+        }
     }
 }
 ?>
@@ -210,6 +260,90 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <button type="submit" class="bg-teal-600 text-white px-4 py-2 rounded"><?= __('button_add_article') ?></button>
       </div>
     </form>
+</section>
+
+  <section class="mb-10">
+    <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">
+      <span><?= __('student_materials_admin_section') ?></span>
+      <span class="text-sm font-normal text-gray-500">(<?= __('student_materials_card_title') ?>)</span>
+    </h2>
+    <form method="post" class="grid gap-4 md:grid-cols-4 bg-white rounded-xl border border-gray-200 p-4 mb-6">
+      <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
+      <input type="hidden" name="action" value="add_student_material">
+      <div class="md:col-span-1">
+        <label class="block text-sm font-medium text-gray-600 mb-1" for="student_category"><?= __('student_materials_admin_category_label') ?></label>
+        <select id="student_category" name="student_category" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-mint/40">
+          <option value="meditations"><?= __('student_materials_meditations') ?></option>
+          <option value="exercises"><?= __('student_materials_exercises') ?></option>
+          <option value="sutras"><?= __('student_materials_sutras') ?></option>
+        </select>
+      </div>
+      <div class="md:col-span-1">
+        <label class="block text-sm font-medium text-gray-600 mb-1" for="student_title"><?= __('student_materials_admin_title_label') ?></label>
+        <input id="student_title" type="text" name="student_title" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-mint/40" placeholder="<?= __('student_materials_admin_title_label') ?>">
+      </div>
+      <div class="md:col-span-2">
+        <label class="block text-sm font-medium text-gray-600 mb-1" for="student_link"><?= __('student_materials_admin_link_label') ?></label>
+        <input id="student_link" type="url" name="student_link" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-mint/40" placeholder="https://...">
+      </div>
+      <div class="md:col-span-4 flex justify-end">
+        <button type="submit" class="px-4 py-2 rounded-lg bg-mint text-mint-text font-semibold hover:bg-mint-dark hover:text-white transition">
+          <?= __('student_materials_admin_add_button') ?>
+        </button>
+      </div>
+    </form>
+
+    <div class="space-y-8">
+      <?php foreach ($studentMaterialCategories as $catKey): ?>
+        <?php $entries = $studentMaterials[$catKey] ?? []; ?>
+        <div class="bg-white border border-gray-200 rounded-xl p-4">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-lg font-semibold text-mint-text"><?= __($catKey === 'meditations' ? 'student_materials_meditations' : ($catKey === 'exercises' ? 'student_materials_exercises' : 'student_materials_sutras')) ?></h3>
+            <span class="text-xs uppercase tracking-wide text-gray-400"><?= count($entries) ?> <?= __('student_materials_items_label') ?></span>
+          </div>
+          <?php if (empty($entries)): ?>
+            <p class="text-sm text-gray-500"><?= __('student_materials_empty') ?></p>
+          <?php else: ?>
+            <div class="space-y-3">
+              <?php foreach ($entries as $i => $item): ?>
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 border border-mint/30 rounded-lg px-3 py-2">
+                  <div>
+                    <div class="font-medium text-sm text-mint-text"><?= htmlspecialchars($item['title']) ?></div>
+                    <a href="<?= htmlspecialchars($item['link']) ?>" target="_blank" class="text-xs text-blue-600 break-all"><?= htmlspecialchars($item['link']) ?></a>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <?php $isFirst = ($i === 0); $isLast = ($i === count($entries) - 1); ?>
+                    <form method="post">
+                      <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
+                      <input type="hidden" name="action" value="move_student_material">
+                      <input type="hidden" name="category" value="<?= htmlspecialchars($catKey) ?>">
+                      <input type="hidden" name="index" value="<?= $i ?>">
+                      <input type="hidden" name="dir" value="up">
+                      <button type="submit" class="px-2 py-1 text-xs rounded border border-gray-300 hover:bg-gray-100 <?= $isFirst ? 'opacity-40 cursor-not-allowed border-gray-200' : '' ?>" <?= $isFirst ? 'disabled' : '' ?>>↑</button>
+                    </form>
+                    <form method="post">
+                      <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
+                      <input type="hidden" name="action" value="move_student_material">
+                      <input type="hidden" name="category" value="<?= htmlspecialchars($catKey) ?>">
+                      <input type="hidden" name="index" value="<?= $i ?>">
+                      <input type="hidden" name="dir" value="down">
+                      <button type="submit" class="px-2 py-1 text-xs rounded border border-gray-300 hover:bg-gray-100 <?= $isLast ? 'opacity-40 cursor-not-allowed border-gray-200' : '' ?>" <?= $isLast ? 'disabled' : '' ?>>↓</button>
+                    </form>
+                    <form method="post" onsubmit="return confirm('<?= __('confirm_delete_doc') ?>');">
+                      <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
+                      <input type="hidden" name="action" value="delete_student_material">
+                      <input type="hidden" name="category" value="<?= htmlspecialchars($catKey) ?>">
+                      <input type="hidden" name="index" value="<?= $i ?>">
+                      <button type="submit" class="px-3 py-1 text-xs rounded bg-red-500 text-white hover:bg-red-600 transition">✕</button>
+                    </form>
+                  </div>
+                </div>
+              <?php endforeach; ?>
+            </div>
+          <?php endif; ?>
+        </div>
+      <?php endforeach; ?>
+    </div>
   </section>
 
   <section class="mb-8">

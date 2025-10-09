@@ -22,6 +22,13 @@ $stmt = $db->prepare("SELECT session, created_at FROM sessions WHERE user_id=? O
 $stmt->execute([$uid]);
 $history = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+$attendanceStmt = $db->prepare("SELECT COUNT(*) FROM sessions WHERE user_id=?");
+$attendanceStmt->execute([$uid]);
+$attendanceCount = (int) $attendanceStmt->fetchColumn();
+$materialsUnlocked = $attendanceCount > 0;
+$materialsFlash = $_SESSION['materials_error'] ?? '';
+unset($_SESSION['materials_error']);
+
 // Thông báo
 notifications_setup($db);
 $notifications = notifications_fetch_active($db);
@@ -70,6 +77,11 @@ require 'header.php';
     <div class="text-center mb-6 text-lg font-semibold text-green-700 flex flex-col items-center">
       🌿 <span><?= sprintf(__('remaining_sessions'), $remain) ?></span>
     </div>
+    <?php if ($materialsFlash): ?>
+      <div class="mb-4 rounded-xl border border-yellow-200 bg-yellow-50 px-4 py-3 text-sm text-yellow-800">
+        <?= htmlspecialchars($materialsFlash) ?>
+      </div>
+    <?php endif; ?>
     <div class="flex flex-col md:flex-row gap-4 mb-4">
         <div class="flex-1 bg-white/90 rounded-xl shadow p-4 flex flex-col items-center border border-mint/30">
           <div class="mb-2 font-semibold text-base text-mint-text"><?= __('morning_class') ?> <span class="text-gray-400 text-sm">06:00-06:40</span></div>
@@ -86,10 +98,26 @@ require 'header.php';
           </a>
         </div>
     </div>
-    <div class="mb-6">
+    <div class="grid gap-4 md:grid-cols-2 mb-6">
       <a href="student_journal.php"
-         class="block w-full rounded-xl bg-gradient-to-tr from-[#b6f0de] to-[#9dcfc3] text-[#285F57] font-bold py-2 text-center shadow-lg hover:scale-[1.03] hover:shadow-xl transition focus:ring-2 focus:ring-mint-dark outline-none">
+         class="block w-full rounded-xl bg-gradient-to-tr from-[#b6f0de] to-[#9dcfc3] text-[#285F57] font-bold py-3 text-center shadow-lg hover:scale-[1.03] hover:shadow-xl transition focus:ring-2 focus:ring-mint-dark outline-none">
          Báo Thiền
+      </a>
+      <a href="student_materials.php"
+         class="block w-full rounded-xl border border-mint/40 bg-white/90 p-4 text-left shadow transition hover:shadow-lg <?= $materialsUnlocked ? 'hover:scale-[1.01]' : 'cursor-not-allowed opacity-75' ?>"
+         data-materials-link
+         data-locked="<?= $materialsUnlocked ? '0' : '1' ?>"
+         <?= $materialsUnlocked ? '' : 'aria-disabled="true"' ?>>
+        <div class="flex items-center justify-between">
+          <div class="text-lg font-semibold text-mint-text"><?= __('student_materials_card_title') ?></div>
+          <span class="text-xs font-semibold uppercase tracking-wide rounded-full px-3 py-1 <?= $materialsUnlocked ? 'bg-mint text-mint-text' : 'bg-gray-200 text-gray-600' ?>">
+            <?= $materialsUnlocked ? __('student_materials_card_open_badge') : __('student_materials_card_locked_badge') ?>
+          </span>
+        </div>
+        <p class="mt-2 text-sm text-gray-600 leading-relaxed"><?= __('student_materials_card_description') ?></p>
+        <p class="mt-3 text-sm font-medium <?= $materialsUnlocked ? 'text-mint-text' : 'text-gray-500' ?>">
+          <?= $materialsUnlocked ? __('student_materials_card_open_hint') : __('student_materials_card_locked_hint') ?>
+        </p>
       </a>
     </div>
     <h5 class="text-center text-base font-semibold text-mint-text mt-2 mb-3"><?= __('recent_history') ?></h5>
@@ -120,5 +148,20 @@ require 'header.php';
     </div>
   </div>
 </main>
+
+<?php if (!$materialsUnlocked): ?>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var materialsLink = document.querySelector('[data-materials-link][data-locked="1"]');
+  if (materialsLink) {
+    const message = <?= json_encode(__('student_materials_locked_message'), JSON_UNESCAPED_UNICODE); ?>;
+    materialsLink.addEventListener('click', function (event) {
+      event.preventDefault();
+      alert(message);
+    });
+  }
+});
+</script>
+<?php endif; ?>
 
 <?php include 'footer.php'; ?>
