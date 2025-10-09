@@ -17,10 +17,71 @@ if ($remain <= 0) {
     exit;
 }
 
-// Lấy lịch sử
-$stmt = $db->prepare("SELECT session, created_at FROM sessions WHERE user_id=? ORDER BY created_at DESC LIMIT 5");
-$stmt->execute([$uid]);
-$history = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// Thiết lập dữ liệu lịch tham gia
+$today = new DateTimeImmutable('today');
+$monthStart = (new DateTimeImmutable('first day of this month'))->setTime(0, 0, 0);
+$monthEnd = (new DateTimeImmutable('last day of this month'))->setTime(23, 59, 59);
+$gridStart = $monthStart->modify('monday this week')->setTime(0, 0, 0);
+$gridEnd = $monthEnd->modify('sunday this week')->setTime(23, 59, 59);
+
+$calendarStmt = $db->prepare("SELECT session, created_at FROM sessions WHERE user_id=? AND created_at BETWEEN ? AND ? ORDER BY created_at ASC");
+$calendarStmt->execute([
+    $uid,
+    $gridStart->format('Y-m-d H:i:s'),
+    $gridEnd->format('Y-m-d H:i:s'),
+]);
+$calendarSessions = $calendarStmt->fetchAll(PDO::FETCH_ASSOC);
+
+$attendanceByDate = [];
+$currentMonthKey = $monthStart->format('Y-m');
+$hasSessionsInMonth = false;
+
+foreach ($calendarSessions as $entry) {
+    $sessionType = $entry['session'];
+    if ($sessionType !== 'morning' && $sessionType !== 'evening') {
+        continue;
+    }
+
+    $sessionDate = new DateTimeImmutable($entry['created_at']);
+    $dateKey = $sessionDate->format('Y-m-d');
+
+    if (!isset($attendanceByDate[$dateKey])) {
+        $attendanceByDate[$dateKey] = [
+            'morning' => false,
+            'evening' => false,
+            'times' => [
+                'morning' => [],
+                'evening' => [],
+            ],
+        ];
+    }
+
+    $attendanceByDate[$dateKey][$sessionType] = true;
+    $attendanceByDate[$dateKey]['times'][$sessionType][] = $sessionDate->format('H:i');
+
+    if ($sessionDate->format('Y-m') === $currentMonthKey) {
+        $hasSessionsInMonth = true;
+    }
+}
+
+$calendarPeriod = new DatePeriod(
+    $gridStart,
+    new DateInterval('P1D'),
+    $gridEnd->modify('+1 day')
+);
+
+$monthNameKey = 'calendar_month_' . $monthStart->format('n');
+$monthLabel = sprintf(__('attendance_calendar_month_label'), __($monthNameKey), $monthStart->format('Y'));
+$weekdayLabels = [
+    ['short' => __('calendar_weekday_mon_short'), 'long' => __('calendar_weekday_mon_long')],
+    ['short' => __('calendar_weekday_tue_short'), 'long' => __('calendar_weekday_tue_long')],
+    ['short' => __('calendar_weekday_wed_short'), 'long' => __('calendar_weekday_wed_long')],
+    ['short' => __('calendar_weekday_thu_short'), 'long' => __('calendar_weekday_thu_long')],
+    ['short' => __('calendar_weekday_fri_short'), 'long' => __('calendar_weekday_fri_long')],
+    ['short' => __('calendar_weekday_sat_short'), 'long' => __('calendar_weekday_sat_long')],
+    ['short' => __('calendar_weekday_sun_short'), 'long' => __('calendar_weekday_sun_long')],
+];
+$todayKey = $today->format('Y-m-d');
 
 $attendanceStmt = $db->prepare("SELECT COUNT(*) FROM sessions WHERE user_id=?");
 $attendanceStmt->execute([$uid]);
@@ -187,48 +248,111 @@ require 'header.php';
         </div>
       </article>
     </section>
-    <h5 class="text-center text-base font-semibold text-mint-text mt-2 mb-3"><?= __('recent_history') ?></h5>
-    <div class="mt-4">
-      <?php if ($history): ?>
-        <ul class="timeline-list">
-          <?php foreach ($history as $index => $h):
-            $timestamp = strtotime($h['created_at']);
-            $sessionKey = $h['session'] === 'morning' ? 'morning' : 'evening';
-            $sessionLabel = __($sessionKey);
-            $sessionLabelLower = function_exists('mb_strtolower')
-              ? mb_strtolower($sessionLabel, 'UTF-8')
-              : strtolower($sessionLabel);
-            $description = sprintf(__('history_joined_description'), $sessionLabelLower);
-          ?>
-            <li class="timeline-item <?= $index === 0 ? 'timeline-item--latest' : '' ?>">
-              <div class="timeline-marker" aria-hidden="true"></div>
-              <div class="timeline-content">
-                <div class="timeline-header">
-                  <span class="timeline-badge <?= $h['session'] === 'morning' ? 'timeline-badge--morning' : 'timeline-badge--evening' ?>">
-                    <?= htmlspecialchars($sessionLabel) ?>
-                  </span>
-                  <div class="timeline-datetime">
-                    <span class="timeline-date"><?= htmlspecialchars(date('d/m', $timestamp)) ?></span>
-                    <span class="timeline-time"><?= htmlspecialchars(date('H:i', $timestamp)) ?></span>
-                  </div>
-                </div>
-                <p class="timeline-description">
-                  <?= htmlspecialchars($description) ?>
-                </p>
-              </div>
-            </li>
-          <?php endforeach; ?>
-        </ul>
-      <?php else: ?>
-        <div class="timeline-empty" role="status">
-          <div class="timeline-empty-icon" aria-hidden="true">🌱</div>
-          <div class="timeline-empty-texts">
-            <p class="timeline-empty-title"><?= __('no_history') ?></p>
-            <p class="timeline-empty-description"><?= __('no_history_hint') ?></p>
+    <section class="attendance-calendar mt-8">
+      <div class="attendance-calendar__header">
+        <div>
+          <h5 class="attendance-calendar__title"><?= __('attendance_calendar_title') ?></h5>
+          <p class="attendance-calendar__subtitle"><?= __('attendance_calendar_subtitle') ?></p>
+        </div>
+        <span class="attendance-calendar__badge" aria-live="polite"><?= htmlspecialchars($monthLabel) ?></span>
+      </div>
+      <div class="attendance-calendar__legend" aria-label="<?= __('attendance_calendar_legend_title') ?>">
+        <span class="attendance-calendar__legend-title"><?= __('attendance_calendar_legend_title') ?></span>
+        <div class="attendance-calendar__legend-items">
+          <div class="attendance-calendar__legend-item">
+            <span class="attendance-calendar__legend-dot attendance-calendar__legend-dot--morning">🌞</span>
+            <span><?= __('attendance_calendar_legend_morning') ?></span>
+          </div>
+          <div class="attendance-calendar__legend-item">
+            <span class="attendance-calendar__legend-dot attendance-calendar__legend-dot--evening">🌙</span>
+            <span><?= __('attendance_calendar_legend_evening') ?></span>
+          </div>
+          <div class="attendance-calendar__legend-item">
+            <span class="attendance-calendar__legend-dot attendance-calendar__legend-dot--both">🌞🌙</span>
+            <span><?= __('attendance_calendar_legend_both') ?></span>
           </div>
         </div>
+      </div>
+      <div class="attendance-calendar__grid">
+        <?php foreach ($weekdayLabels as $weekday): ?>
+          <div class="attendance-calendar__weekday" aria-label="<?= htmlspecialchars($weekday['long']) ?>">
+            <?= htmlspecialchars($weekday['short']) ?>
+          </div>
+        <?php endforeach; ?>
+      </div>
+      <div class="attendance-calendar__days">
+        <?php foreach ($calendarPeriod as $date): ?>
+          <?php
+            $dateKey = $date->format('Y-m-d');
+            $isCurrentMonth = $date->format('Y-m') === $currentMonthKey;
+            $attendance = $attendanceByDate[$dateKey] ?? [
+              'morning' => false,
+              'evening' => false,
+              'times' => [
+                'morning' => [],
+                'evening' => [],
+              ],
+            ];
+
+            $dayClasses = ['attendance-calendar__day'];
+            if (!$isCurrentMonth) {
+              $dayClasses[] = 'attendance-calendar__day--muted';
+            }
+            if ($attendance['morning'] && $attendance['evening']) {
+              $dayClasses[] = 'attendance-calendar__day--has-both';
+            } elseif ($attendance['morning']) {
+              $dayClasses[] = 'attendance-calendar__day--has-morning';
+            } elseif ($attendance['evening']) {
+              $dayClasses[] = 'attendance-calendar__day--has-evening';
+            }
+            if ($dateKey === $todayKey) {
+              $dayClasses[] = 'attendance-calendar__day--today';
+            }
+
+            $morningStatus = sprintf(
+              $attendance['morning'] ? __('attendance_calendar_slot_status_present') : __('attendance_calendar_slot_status_absent'),
+              __('morning')
+            );
+            if ($attendance['morning'] && !empty($attendance['times']['morning'])) {
+              $morningStatus .= ' ' . sprintf(__('attendance_calendar_slot_time_suffix'), implode(', ', $attendance['times']['morning']));
+            }
+
+            $eveningStatus = sprintf(
+              $attendance['evening'] ? __('attendance_calendar_slot_status_present') : __('attendance_calendar_slot_status_absent'),
+              __('evening')
+            );
+            if ($attendance['evening'] && !empty($attendance['times']['evening'])) {
+              $eveningStatus .= ' ' . sprintf(__('attendance_calendar_slot_time_suffix'), implode(', ', $attendance['times']['evening']));
+            }
+
+            $ariaLabel = sprintf(
+              __('attendance_calendar_day_summary'),
+              $date->format('d/m/Y'),
+              implode('; ', [$morningStatus, $eveningStatus])
+            );
+          ?>
+          <div class="<?= implode(' ', $dayClasses) ?>" aria-label="<?= htmlspecialchars($ariaLabel) ?>" title="<?= htmlspecialchars($ariaLabel) ?>">
+            <div class="attendance-calendar__day-header">
+              <span class="attendance-calendar__date"><?= htmlspecialchars($date->format('j')) ?></span>
+              <?php if ($dateKey === $todayKey): ?>
+                <span class="attendance-calendar__today-badge"><?= __('attendance_calendar_today_badge') ?></span>
+              <?php endif; ?>
+            </div>
+            <div class="attendance-calendar__slots">
+              <div class="attendance-calendar__slot attendance-calendar__slot--morning <?= $attendance['morning'] ? 'attendance-calendar__slot--checked' : '' ?>" title="<?= htmlspecialchars($morningStatus) ?>">
+                <span aria-hidden="true">🌞</span>
+              </div>
+              <div class="attendance-calendar__slot attendance-calendar__slot--evening <?= $attendance['evening'] ? 'attendance-calendar__slot--checked' : '' ?>" title="<?= htmlspecialchars($eveningStatus) ?>">
+                <span aria-hidden="true">🌙</span>
+              </div>
+            </div>
+          </div>
+        <?php endforeach; ?>
+      </div>
+      <?php if (!$hasSessionsInMonth): ?>
+        <p class="attendance-calendar__empty"><?= __('attendance_calendar_empty') ?></p>
       <?php endif; ?>
-    </div>
+    </section>
     <div class="text-center mt-4">
       <a href="change_password.php" class="text-sm text-blue-600 underline"><?= __('change_password') ?></a>
     </div>
