@@ -286,6 +286,7 @@ return [
     'zoom_evening_label' => 'Evening class Zoom URL',
     'zoom_vip_morning_label' => 'VIP morning Zoom URL',
     'zoom_vip_evening_label' => 'VIP evening Zoom URL',
+    'current_zoom_link' => 'Current Zoom link:',
     'save_zoom_links' => 'Save Zoom links',
     'test_link' => 'Test',
     'zoom_links_updated' => 'Zoom links updated.',

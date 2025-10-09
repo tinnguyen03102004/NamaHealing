@@ -286,6 +286,7 @@ return [
     'zoom_evening_label' => 'Посилання Zoom вечірнього заняття',
     'zoom_vip_morning_label' => 'VIP посилання Zoom на ранок',
     'zoom_vip_evening_label' => 'VIP посилання Zoom на вечір',
+    'current_zoom_link' => 'Поточне посилання Zoom:',
     'save_zoom_links' => 'Зберегти посилання Zoom',
     'test_link' => 'Тест',
     'zoom_links_updated' => 'Посилання Zoom оновлено.',

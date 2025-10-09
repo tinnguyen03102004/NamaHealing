@@ -111,6 +111,39 @@ try {
     }
 }
 
+if (!function_exists('render_zoom_link_field')) {
+    function render_zoom_link_field(array $zoomLinks, string $audience, string $session, string $labelKey): void {
+        $url = $zoomLinks[$audience][$session] ?? '';
+        $inputName = "zoom_{$audience}_{$session}";
+        $placeholderText = __($labelKey);
+        $placeholderAttr = htmlspecialchars($placeholderText, ENT_QUOTES, 'UTF-8');
+        $encodedUrl = htmlspecialchars($url, ENT_QUOTES, 'UTF-8');
+        ?>
+        <div class="flex flex-col gap-1">
+          <div class="flex flex-col sm:flex-row gap-2 items-center">
+            <input type="url"
+                   name="<?= $inputName ?>"
+                   value="<?= $encodedUrl ?>"
+                   placeholder="<?= $placeholderAttr ?>"
+                   class="flex-1 rounded border border-mint px-2 py-1 focus:border-mint-dark focus:ring-mint">
+            <?php if ($url !== ''): ?>
+            <a href="<?= $encodedUrl ?>"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="rounded bg-blue-100 text-blue-700 px-3 py-1 text-xs font-semibold shadow hover:bg-blue-400 hover:text-white transition"><?= __('test_link') ?></a>
+            <?php endif; ?>
+          </div>
+          <?php if ($url !== ''): ?>
+          <div class="text-xs text-gray-600 break-all">
+            <span class="font-medium mr-1"><?= __('current_zoom_link') ?></span>
+            <a href="<?= $encodedUrl ?>" target="_blank" rel="noopener noreferrer" class="underline decoration-dotted hover:decoration-solid text-gray-700"><?= $encodedUrl ?></a>
+          </div>
+          <?php endif; ?>
+        </div>
+        <?php
+    }
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_vip'])) {
     csrf_check($_POST['csrf_token'] ?? null);
     $studentId = (int)$_POST['toggle_vip'];
@@ -273,35 +306,15 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
           <div class="grid gap-2">
             <label class="font-semibold text-mint-text text-sm uppercase tracking-wide"><?= __('zoom_links_title') ?></label>
             <div class="flex flex-col gap-2">
-              <div class="flex flex-col sm:flex-row gap-2 items-center">
-                <input type="url" name="zoom_student_morning" value="<?= htmlspecialchars($zoomLinks['student']['morning']) ?>" placeholder="<?= __('zoom_morning_label') ?>" class="flex-1 rounded border border-mint px-2 py-1 focus:border-mint-dark focus:ring-mint">
-                <?php if ($zoomLinks['student']['morning']): ?>
-                <a href="<?= htmlspecialchars($zoomLinks['student']['morning']) ?>" target="_blank" class="rounded bg-blue-100 text-blue-700 px-3 py-1 text-xs font-semibold shadow hover:bg-blue-400 hover:text-white transition"><?= __('test_link') ?></a>
-                <?php endif; ?>
-              </div>
-              <div class="flex flex-col sm:flex-row gap-2 items-center">
-                <input type="url" name="zoom_student_evening" value="<?= htmlspecialchars($zoomLinks['student']['evening']) ?>" placeholder="<?= __('zoom_evening_label') ?>" class="flex-1 rounded border border-mint px-2 py-1 focus:border-mint-dark focus:ring-mint">
-                <?php if ($zoomLinks['student']['evening']): ?>
-                <a href="<?= htmlspecialchars($zoomLinks['student']['evening']) ?>" target="_blank" class="rounded bg-blue-100 text-blue-700 px-3 py-1 text-xs font-semibold shadow hover:bg-blue-400 hover:text-white transition"><?= __('test_link') ?></a>
-                <?php endif; ?>
-              </div>
+              <?php render_zoom_link_field($zoomLinks, 'student', 'morning', 'zoom_morning_label'); ?>
+              <?php render_zoom_link_field($zoomLinks, 'student', 'evening', 'zoom_evening_label'); ?>
             </div>
           </div>
           <div class="grid gap-2">
             <label class="font-semibold text-mint-text text-sm uppercase tracking-wide"><?= __('zoom_links_vip_title') ?></label>
             <div class="flex flex-col gap-2">
-              <div class="flex flex-col sm:flex-row gap-2 items-center">
-                <input type="url" name="zoom_vip_morning" value="<?= htmlspecialchars($zoomLinks['vip']['morning']) ?>" placeholder="<?= __('zoom_vip_morning_label') ?>" class="flex-1 rounded border border-mint px-2 py-1 focus:border-mint-dark focus:ring-mint">
-                <?php if ($zoomLinks['vip']['morning']): ?>
-                <a href="<?= htmlspecialchars($zoomLinks['vip']['morning']) ?>" target="_blank" class="rounded bg-blue-100 text-blue-700 px-3 py-1 text-xs font-semibold shadow hover:bg-blue-400 hover:text-white transition"><?= __('test_link') ?></a>
-                <?php endif; ?>
-              </div>
-              <div class="flex flex-col sm:flex-row gap-2 items-center">
-                <input type="url" name="zoom_vip_evening" value="<?= htmlspecialchars($zoomLinks['vip']['evening']) ?>" placeholder="<?= __('zoom_vip_evening_label') ?>" class="flex-1 rounded border border-mint px-2 py-1 focus:border-mint-dark focus:ring-mint">
-                <?php if ($zoomLinks['vip']['evening']): ?>
-                <a href="<?= htmlspecialchars($zoomLinks['vip']['evening']) ?>" target="_blank" class="rounded bg-blue-100 text-blue-700 px-3 py-1 text-xs font-semibold shadow hover:bg-blue-400 hover:text-white transition"><?= __('test_link') ?></a>
-                <?php endif; ?>
-              </div>
+              <?php render_zoom_link_field($zoomLinks, 'vip', 'morning', 'zoom_vip_morning_label'); ?>
+              <?php render_zoom_link_field($zoomLinks, 'vip', 'evening', 'zoom_vip_evening_label'); ?>
             </div>
           </div>
         </div>
