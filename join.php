@@ -2,6 +2,7 @@
 define('REQUIRE_LOGIN', true);
 require 'config.php';
 require_once __DIR__ . '/helpers/Schema.php';
+require_once __DIR__ . '/helpers/Value.php';
 
 $gtm_head = <<<'HTML'
 <!-- Google Tag Manager -->
@@ -88,7 +89,7 @@ $stmt = $db->prepare("SELECT remaining, is_vip FROM users WHERE id=?");
 $stmt->execute([$uid]);
 $userInfo = $stmt->fetch(PDO::FETCH_ASSOC);
 $remain = (int)($userInfo['remaining'] ?? 0);
-$isVip = !empty($userInfo['is_vip']);
+$isVip = db_bool($userInfo['is_vip'] ?? null);
 
 if ($remain <= 0) {
     header('Location: welcome.php');
