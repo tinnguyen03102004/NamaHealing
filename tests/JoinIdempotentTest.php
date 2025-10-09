@@ -12,7 +12,7 @@ class JoinIdempotentTest extends TestCase {
             $this->markTestSkipped('DB not available');
         }
         if ($this->db) {
-            $this->db->exec('CREATE TABLE IF NOT EXISTS users (id INT PRIMARY KEY AUTO_INCREMENT, remaining INT NOT NULL)');
+            $this->db->exec('CREATE TABLE IF NOT EXISTS users (id INT PRIMARY KEY AUTO_INCREMENT, remaining INT NOT NULL, is_vip TINYINT(1) NOT NULL DEFAULT 0)');
             $this->db->exec('CREATE TABLE IF NOT EXISTS sessions (id INT PRIMARY KEY AUTO_INCREMENT, user_id INT, session VARCHAR(10), created_at DATETIME DEFAULT CURRENT_TIMESTAMP)');
             $this->db->exec('TRUNCATE TABLE users');
             $this->db->exec('TRUNCATE TABLE sessions');
