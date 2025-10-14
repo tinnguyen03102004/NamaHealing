@@ -56,7 +56,7 @@ class WelcomeCodeRedemptionTest extends TestCase {
 
         $remain = $this->db->query('SELECT remaining FROM users WHERE id=1')->fetchColumn();
         $this->assertSame('100', (string) $remain);
-        $this->assertSame('join.php?s=morning', $GLOBALS['redirectUrl'] ?? null);
+        $this->assertSame('dashboard.php', $GLOBALS['redirectUrl'] ?? null);
 
         $_POST = [];
         $_SERVER['REQUEST_METHOD'] = 'GET';

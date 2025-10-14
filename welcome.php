@@ -22,9 +22,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($success) {
             if (defined('WELCOME_TEST_MODE') && WELCOME_TEST_MODE === true) {
-                $redirectUrl = 'join.php?s=morning';
+                $redirectUrl = 'dashboard.php';
             } else {
-                header('Location: join.php?s=morning');
+                header('Location: dashboard.php');
                 exit;
             }
         }
