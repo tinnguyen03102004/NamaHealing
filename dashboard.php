@@ -272,14 +272,23 @@ document.addEventListener('DOMContentLoaded', function () {
       if (!isInteractive()) {
         return;
       }
-      setPressed(true);
+      try {
+        button.setPointerCapture(event.pointerId);
+      } catch (error) {
+        // Some browsers may not support setPointerCapture on non-pointer-enabled elements.
+      }
+      requestAnimationFrame(function () {
+        setPressed(true);
+      });
     });
 
     const resetPressed = function () {
-      setPressed(false);
+      requestAnimationFrame(function () {
+        setPressed(false);
+      });
     };
 
-    ['pointerup', 'pointercancel', 'pointerleave', 'blur'].forEach(function (evt) {
+    ['pointerup', 'pointercancel', 'lostpointercapture', 'pointerleave', 'blur'].forEach(function (evt) {
       button.addEventListener(evt, resetPressed);
     });
 
