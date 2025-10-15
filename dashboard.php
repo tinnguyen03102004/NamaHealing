@@ -38,6 +38,94 @@ $popupNotification = notifications_unread_cancellation($db, $uid);
 require 'header.php';
 ?>
 
+<style>
+  .dashboard-gradient {
+    background: radial-gradient(circle at 10% 20%, rgba(213, 243, 235, 0.55), transparent 60%),
+                radial-gradient(circle at 90% 10%, rgba(186, 225, 242, 0.45), transparent 55%),
+                linear-gradient(135deg, rgba(243, 251, 248, 0.95), rgba(235, 246, 241, 0.9));
+  }
+  .glass-shell {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.45));
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    box-shadow: 0 24px 48px rgba(86, 146, 132, 0.22);
+    backdrop-filter: blur(22px);
+  }
+  .glass-card {
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0.35));
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 18px 36px rgba(86, 146, 132, 0.18);
+    backdrop-filter: blur(18px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .glass-subcard {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.58), rgba(255, 255, 255, 0.3));
+    border: 1px solid rgba(255, 255, 255, 0.48);
+    box-shadow: 0 16px 32px rgba(86, 146, 132, 0.16);
+    backdrop-filter: blur(16px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .glass-card:hover,
+  .glass-subcard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 22px 44px rgba(86, 146, 132, 0.26);
+  }
+  .glass-table {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.35));
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 20px 40px rgba(86, 146, 132, 0.12);
+    backdrop-filter: blur(14px);
+  }
+  .glass-button {
+    position: relative;
+    background: linear-gradient(135deg, rgba(166, 232, 205, 0.85), rgba(121, 209, 195, 0.65));
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 12px 28px rgba(102, 176, 158, 0.28);
+    color: #0f4f3e !important;
+    text-shadow: none;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  }
+  .glass-button:hover {
+    background: linear-gradient(135deg, rgba(117, 204, 180, 0.95), rgba(74, 172, 152, 0.8));
+    box-shadow: 0 16px 34px rgba(91, 168, 150, 0.35);
+    transform: translateY(-1px);
+    color: #ffffff !important;
+  }
+  .glass-button:focus-visible {
+    outline: 3px solid rgba(101, 189, 168, 0.55);
+    outline-offset: 2px;
+  }
+  .glass-button[aria-disabled="true"],
+  .glass-button[disabled],
+  .glass-button.disabled {
+    background: linear-gradient(135deg, rgba(210, 231, 226, 0.65), rgba(192, 221, 216, 0.45));
+    color: rgba(15, 79, 62, 0.55) !important;
+    box-shadow: none;
+  }
+  .glass-emoji-pill {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.25));
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    box-shadow: 0 12px 24px rgba(255, 200, 134, 0.25);
+  }
+  .glass-badge {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.25));
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: #896c2f;
+  }
+  .glass-history-badge {
+    background: linear-gradient(135deg, rgba(213, 243, 235, 0.75), rgba(160, 222, 206, 0.55));
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: #145947;
+    box-shadow: 0 8px 18px rgba(118, 168, 158, 0.22);
+  }
+  .glass-table thead {
+    background: linear-gradient(180deg, rgba(203, 238, 226, 0.65), rgba(184, 227, 218, 0.55));
+    color: #0f4f3e;
+  }
+  .glass-table tbody tr:hover {
+    background: rgba(211, 242, 233, 0.4);
+  }
+</style>
+
 <?php if (!empty($popupNotification)): ?>
   <?php
     $scopeKey = $popupNotification['session_scope'] === 'morning'
@@ -52,7 +140,7 @@ require 'header.php';
     $modalScope = sprintf(__('notification_popup_scope'), __($scopeKey));
   ?>
   <div id="notification-modal" role="dialog" aria-modal="true" class="fixed inset-0 z-40 flex items-center justify-center bg-black/40 px-4" data-notification-id="<?= $popupNotification['id'] ?>" data-csrf="<?= $_SESSION['csrf_token']; ?>">
-    <div class="relative w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl">
+    <div class="glass-card relative w-full max-w-lg rounded-2xl p-6">
       <button type="button" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 focus:outline-none" data-close aria-label="<?= __('notification_popup_close_label') ?>">
         &times;
       </button>
@@ -63,14 +151,14 @@ require 'header.php';
         <div><?= $modalCreated ?></div>
       </div>
       <div class="mt-5 flex justify-end">
-        <button type="button" class="rounded-full bg-mint text-mint-text font-semibold px-4 py-2 text-sm shadow hover:bg-mint-dark hover:text-white transition" data-close><?= __('notification_popup_dismiss') ?></button>
+        <button type="button" class="glass-button rounded-full px-4 py-2 text-sm font-semibold" data-close><?= __('notification_popup_dismiss') ?></button>
       </div>
     </div>
   </div>
 <?php endif; ?>
 
-<main class="min-h-[75vh] flex flex-col items-center justify-center px-2 py-8">
-  <div class="w-full max-w-xl mx-auto bg-white/95 rounded-2xl shadow-2xl shadow-[#76a89e26] px-6 py-8">
+<main class="dashboard-gradient min-h-[75vh] flex flex-col items-center justify-center px-2 py-8">
+  <div class="glass-shell w-full max-w-xl mx-auto rounded-2xl px-6 py-8">
     <h2 class="text-center text-2xl md:text-3xl font-bold text-mint-text mb-2" style="font-family:'Montserrat',sans-serif;">
       <?= sprintf(__('welcome'), htmlspecialchars($user['full_name'])) ?>
     </h2>
@@ -83,7 +171,7 @@ require 'header.php';
       </div>
     <?php endif; ?>
     <section class="mb-6">
-      <article class="flex flex-col rounded-2xl border border-emerald-100 bg-white/95 p-6 shadow-sm shadow-[#76a89e26]">
+      <article class="glass-card flex flex-col rounded-2xl p-6">
         <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h3 class="text-lg font-semibold text-mint-text"><?= __('student_class_section_title') ?></h3>
@@ -91,9 +179,9 @@ require 'header.php';
           </div>
         </div>
         <div class="mt-5 grid gap-4 md:grid-cols-2">
-          <div class="flex flex-col rounded-xl border border-emerald-100 bg-white p-5 shadow-sm shadow-[#76a89e26] transition hover:border-emerald-200 hover:shadow-md">
+          <div class="glass-subcard flex flex-col rounded-xl p-5 transition">
             <div class="flex items-start gap-3">
-              <span class="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-2xl" aria-hidden="true">🌞</span>
+              <span class="glass-emoji-pill flex h-12 w-12 items-center justify-center rounded-full text-2xl" aria-hidden="true">🌞</span>
               <div>
                 <h4 class="text-lg font-semibold text-mint-text"><?= __('morning_class') ?></h4>
                 <p class="text-sm font-medium text-emerald-700"><?= __('morning_class_time') ?></p>
@@ -104,14 +192,14 @@ require 'header.php';
             </p>
             <div class="mt-auto pt-4">
               <a href="join.php?s=morning"
-                 class="inline-flex w-full items-center justify-center rounded-lg bg-mint text-mint-text px-4 py-2 text-sm font-semibold transition hover:bg-mint-dark hover:text-white focus:outline-none focus:ring-2 focus:ring-mint-dark">
+                 class="glass-button inline-flex w-full items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold">
                  <?= __('join_morning') ?>
               </a>
             </div>
           </div>
-          <div class="flex flex-col rounded-xl border border-emerald-100 bg-white p-5 shadow-sm shadow-[#76a89e26] transition hover:border-emerald-200 hover:shadow-md">
+          <div class="glass-subcard flex flex-col rounded-xl p-5 transition">
             <div class="flex items-start gap-3">
-              <span class="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-2xl" aria-hidden="true">🌙</span>
+              <span class="glass-emoji-pill flex h-12 w-12 items-center justify-center rounded-full text-2xl" aria-hidden="true">🌙</span>
               <div>
                 <h4 class="text-lg font-semibold text-mint-text"><?= __('evening_class') ?></h4>
                 <p class="text-sm font-medium text-emerald-700"><?= __('evening_class_time') ?></p>
@@ -122,7 +210,7 @@ require 'header.php';
             </p>
             <div class="mt-auto pt-4">
               <a href="join.php?s=evening"
-                 class="inline-flex w-full items-center justify-center rounded-lg bg-mint text-mint-text px-4 py-2 text-sm font-semibold transition hover:bg-mint-dark hover:text-white focus:outline-none focus:ring-2 focus:ring-mint-dark">
+                 class="glass-button inline-flex w-full items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold">
                  <?= __('join_evening') ?>
               </a>
             </div>
@@ -131,16 +219,16 @@ require 'header.php';
       </article>
     </section>
     <section class="mb-6 space-y-4">
-      <article class="flex h-full flex-col rounded-2xl border border-emerald-100 bg-white/95 p-5 shadow-sm shadow-[#76a89e26] transition hover:border-emerald-200 hover:shadow-md">
+      <article class="glass-card flex h-full flex-col rounded-2xl p-5 transition">
         <div class="flex items-start justify-between gap-3">
           <div class="flex items-start gap-3">
-            <span class="flex h-12 w-12 items-center justify-center rounded-full bg-amber-100 text-2xl" aria-hidden="true">🧘</span>
+            <span class="glass-emoji-pill flex h-12 w-12 items-center justify-center rounded-full text-2xl" aria-hidden="true">🧘</span>
             <div>
               <h3 class="text-lg font-semibold text-mint-text"><?= __('student_journal_card_title') ?></h3>
               <p class="text-sm text-gray-600"><?= __('student_journal_card_subtitle') ?></p>
             </div>
           </div>
-          <span class="inline-flex items-center rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-amber-700">
+          <span class="glass-badge inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide">
             <?= __('student_journal_card_badge') ?>
           </span>
         </div>
@@ -149,24 +237,24 @@ require 'header.php';
         </p>
         <div class="mt-auto space-y-3 pt-4">
           <a href="student_journal.php"
-             class="inline-flex w-full items-center justify-center rounded-lg bg-mint text-mint-text px-4 py-2 text-sm font-semibold transition hover:bg-mint-dark hover:text-white focus:outline-none focus:ring-2 focus:ring-mint-dark">
-             <?= __('student_journal_card_button') ?>
+             class="glass-button inline-flex w-full items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold">
+            <?= __('student_journal_card_button') ?>
           </a>
           <a href="student_journal.php#guide" class="inline-flex items-center justify-center text-sm font-medium text-mint-text hover:text-emerald-700">
             <?= __('student_journal_card_secondary') ?>
           </a>
         </div>
       </article>
-      <article class="flex h-full flex-col rounded-2xl border border-emerald-100 bg-white/95 p-5 shadow-sm shadow-[#76a89e26] transition hover:border-emerald-200 hover:shadow-md">
+      <article class="glass-card flex h-full flex-col rounded-2xl p-5 transition">
         <div class="flex items-start justify-between gap-3">
           <div class="flex items-start gap-3">
-            <span class="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-2xl" aria-hidden="true">📚</span>
+            <span class="glass-emoji-pill flex h-12 w-12 items-center justify-center rounded-full text-2xl" aria-hidden="true">📚</span>
             <div>
               <h3 class="text-lg font-semibold text-mint-text"><?= __('student_materials_card_title') ?></h3>
               <p class="text-sm text-gray-600"><?= __('student_materials_card_subtitle') ?></p>
             </div>
           </div>
-          <span class="inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-wide <?= $materialsUnlocked ? 'border-mint/40 bg-mint/10 text-mint-text' : 'border-gray-200 bg-gray-100 text-gray-600' ?>">
+          <span class="inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-wide <?= $materialsUnlocked ? 'border-white/50 bg-white/30 text-mint-text' : 'border-white/40 bg-white/20 text-gray-600' ?>">
             <?= $materialsUnlocked ? __('student_materials_card_open_badge') : __('student_materials_card_locked_badge') ?>
           </span>
         </div>
@@ -178,7 +266,7 @@ require 'header.php';
         </p>
         <div class="mt-auto pt-4">
           <a href="student_materials.php"
-             class="inline-flex w-full items-center justify-center rounded-lg bg-mint text-mint-text px-4 py-2 text-sm font-semibold transition hover:bg-mint-dark hover:text-white focus:outline-none focus:ring-2 focus:ring-mint-dark <?= $materialsUnlocked ? '' : 'cursor-not-allowed opacity-75' ?>"
+             class="glass-button inline-flex w-full items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold <?= $materialsUnlocked ? '' : 'cursor-not-allowed opacity-75' ?>"
              data-materials-link
              data-locked="<?= $materialsUnlocked ? '0' : '1' ?>"
              <?= $materialsUnlocked ? '' : 'aria-disabled="true"' ?>>
@@ -193,22 +281,22 @@ require 'header.php';
           <h5 class="text-lg font-semibold text-mint-text"><?= __('recent_history') ?></h5>
           <p class="text-sm text-gray-500"><?= sprintf(__('history_table_description'), $historyLimit) ?></p>
         </div>
-        <span class="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-emerald-700">
+        <span class="glass-history-badge inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide">
           <?= sprintf(__('history_table_total'), $attendanceCount) ?>
         </span>
       </div>
       <?php if (!empty($historySessions)): ?>
         <div class="mt-4 overflow-x-auto">
-          <table class="min-w-full border border-gray-200 overflow-hidden rounded-2xl bg-white text-sm">
-            <thead class="bg-mint/10 text-left text-mint-text">
+          <table class="glass-table min-w-full overflow-hidden rounded-2xl text-sm">
+            <thead class="text-left">
               <tr>
                 <th scope="col" class="px-4 py-3 font-semibold uppercase tracking-wide"><?= __('session') ?></th>
                 <th scope="col" class="px-4 py-3 font-semibold uppercase tracking-wide"><?= __('history_table_joined_at') ?></th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-gray-100">
+            <tbody class="divide-y divide-white/30">
               <?php foreach ($historySessions as $entry): ?>
-                <tr class="hover:bg-mint/5 transition">
+                <tr class="transition">
                   <td class="px-4 py-3 font-medium text-gray-700">
                     <?php if ($entry['session'] === 'morning'): ?>
                       <span class="mr-1" aria-hidden="true">🌞</span><?= __('morning') ?>
