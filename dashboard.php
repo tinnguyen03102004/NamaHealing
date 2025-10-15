@@ -38,201 +38,6 @@ $popupNotification = notifications_unread_cancellation($db, $uid);
 require 'header.php';
 ?>
 
-<style>
-  .dashboard-gradient {
-    background: radial-gradient(circle at 10% 20%, rgba(213, 243, 235, 0.55), transparent 60%),
-                radial-gradient(circle at 90% 10%, rgba(186, 225, 242, 0.45), transparent 55%),
-                linear-gradient(135deg, rgba(243, 251, 248, 0.95), rgba(235, 246, 241, 0.9));
-  }
-  .glass-shell {
-    background: linear-gradient(145deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.45));
-    border: 1px solid rgba(255, 255, 255, 0.55);
-    box-shadow: 0 24px 48px rgba(86, 146, 132, 0.22);
-    backdrop-filter: blur(22px);
-  }
-  .glass-card {
-    background: linear-gradient(160deg, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0.35));
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    box-shadow: 0 18px 36px rgba(86, 146, 132, 0.18);
-    backdrop-filter: blur(18px);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  .glass-subcard {
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.58), rgba(255, 255, 255, 0.3));
-    border: 1px solid rgba(255, 255, 255, 0.48);
-    box-shadow: 0 16px 32px rgba(86, 146, 132, 0.16);
-    backdrop-filter: blur(16px);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  .glass-card:hover,
-  .glass-subcard:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 22px 44px rgba(86, 146, 132, 0.26);
-  }
-  .glass-table {
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.35));
-    border: 1px solid rgba(255, 255, 255, 0.45);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 20px 40px rgba(86, 146, 132, 0.12);
-    backdrop-filter: blur(14px);
-  }
-  .glass-button {
-    --glass-button-overlay: rgba(255, 255, 255, 0.08);
-    --glass-button-overlay-pressed: rgba(255, 255, 255, 0.16);
-    --glass-button-border-color: rgba(255, 255, 255, 0.28);
-    --glass-button-shadow-color: rgba(0, 0, 0, 0.32);
-    --glass-button-shadow-hover: rgba(0, 0, 0, 0.36);
-    --glass-button-shadow-pressed: rgba(0, 0, 0, 0.35);
-    --glass-button-label-color: rgba(17, 24, 32, 0.92);
-    position: relative;
-    z-index: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    min-height: max(3.67rem, 58px);
-    padding: clamp(0.75rem, 0.7rem + 0.4vw, 1rem) clamp(1.3rem, 1.05rem + 0.9vw, 1.85rem);
-    border-radius: 1.333rem;
-    border: 1.33px solid var(--glass-button-border-color);
-    background-color: var(--glass-button-overlay);
-    color: var(--glass-button-label-color) !important;
-    font-family: "SF Pro Text", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    font-weight: 600;
-    font-size: clamp(1rem, 0.97rem + 0.15vw, 1.125rem);
-    line-height: 1.25;
-    letter-spacing: 0.01em;
-    text-decoration: none;
-    text-shadow: none;
-    backdrop-filter: saturate(180%) blur(24px);
-    -webkit-backdrop-filter: saturate(180%) blur(24px);
-    box-shadow: 0 8px 12px var(--glass-button-shadow-color);
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, color 0.2s ease;
-    touch-action: manipulation;
-  }
-  .glass-button::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    pointer-events: none;
-    background: radial-gradient(circle at 30% 0%, rgba(255, 255, 255, 0.55), transparent 65%);
-    opacity: 0.7;
-    mix-blend-mode: screen;
-    transition: opacity 0.2s ease;
-  }
-  .glass-button:hover {
-    box-shadow: 0 14px 18px var(--glass-button-shadow-hover);
-  }
-  .glass-button:hover::before {
-    opacity: 0.9;
-  }
-  .glass-button:focus-visible {
-    outline: 3px solid rgba(82, 192, 169, 0.55);
-    outline-offset: 4px;
-  }
-  .glass-button.is-pressed,
-  .glass-button:active {
-    transform: scale(0.98);
-    background-color: var(--glass-button-overlay-pressed);
-    box-shadow: 0 6px 12px var(--glass-button-shadow-pressed);
-  }
-  .glass-button.is-pressed::before,
-  .glass-button:active::before {
-    opacity: 1;
-  }
-  .glass-button[aria-disabled="true"],
-  .glass-button[disabled],
-  .glass-button.disabled {
-    cursor: not-allowed;
-    --glass-button-overlay: rgba(255, 255, 255, 0.28);
-    --glass-button-overlay-pressed: rgba(255, 255, 255, 0.32);
-    --glass-button-border-color: rgba(255, 255, 255, 0.2);
-    --glass-button-label-color: rgba(17, 24, 32, 0.45);
-    box-shadow: none;
-  }
-  @media (prefers-color-scheme: dark) {
-    .glass-button {
-      --glass-button-overlay: rgba(0, 0, 0, 0.12);
-      --glass-button-overlay-pressed: rgba(0, 0, 0, 0.2);
-      --glass-button-border-color: rgba(255, 255, 255, 0.14);
-      --glass-button-label-color: rgba(255, 255, 255, 0.92);
-      --glass-button-shadow-color: rgba(0, 0, 0, 0.4);
-      --glass-button-shadow-hover: rgba(0, 0, 0, 0.45);
-      --glass-button-shadow-pressed: rgba(0, 0, 0, 0.45);
-    }
-    .glass-button::before {
-      background: radial-gradient(circle at 30% 0%, rgba(255, 255, 255, 0.35), transparent 70%);
-    }
-  }
-  @media (prefers-contrast: more) {
-    .glass-button {
-      --glass-button-overlay: rgba(255, 255, 255, 0.16);
-      --glass-button-overlay-pressed: rgba(255, 255, 255, 0.24);
-      border-width: 1.5px;
-      --glass-button-shadow-color: rgba(0, 0, 0, 0.4);
-      --glass-button-shadow-hover: rgba(0, 0, 0, 0.45);
-      --glass-button-shadow-pressed: rgba(0, 0, 0, 0.42);
-      box-shadow: 0 12px 16px var(--glass-button-shadow-color);
-    }
-  }
-  @media (prefers-contrast: more) and (prefers-color-scheme: dark) {
-    .glass-button {
-      --glass-button-overlay: rgba(0, 0, 0, 0.24);
-      --glass-button-overlay-pressed: rgba(0, 0, 0, 0.32);
-      --glass-button-shadow-color: rgba(0, 0, 0, 0.46);
-      --glass-button-shadow-hover: rgba(0, 0, 0, 0.52);
-      --glass-button-shadow-pressed: rgba(0, 0, 0, 0.5);
-    }
-  }
-  @media (prefers-reduced-transparency: reduce) {
-    .glass-button {
-      backdrop-filter: none;
-      -webkit-backdrop-filter: none;
-      --glass-button-overlay: rgba(255, 255, 255, 0.22);
-      --glass-button-overlay-pressed: rgba(255, 255, 255, 0.3);
-      background-color: var(--glass-button-overlay);
-    }
-  }
-  @media (prefers-reduced-transparency: reduce) and (prefers-color-scheme: dark) {
-    .glass-button {
-      --glass-button-overlay: rgba(0, 0, 0, 0.38);
-      --glass-button-overlay-pressed: rgba(0, 0, 0, 0.46);
-      background-color: var(--glass-button-overlay);
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .glass-button {
-      transition: background-color 0.2s ease, color 0.2s ease;
-    }
-    .glass-button.is-pressed,
-    .glass-button:active {
-      transform: none;
-    }
-  }
-  .glass-emoji-pill {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.25));
-    border: 1px solid rgba(255, 255, 255, 0.45);
-    box-shadow: 0 12px 24px rgba(255, 200, 134, 0.25);
-  }
-  .glass-badge {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.25));
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    color: #896c2f;
-  }
-  .glass-history-badge {
-    background: linear-gradient(135deg, rgba(213, 243, 235, 0.75), rgba(160, 222, 206, 0.55));
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    color: #145947;
-    box-shadow: 0 8px 18px rgba(118, 168, 158, 0.22);
-  }
-  .glass-table thead {
-    background: linear-gradient(180deg, rgba(203, 238, 226, 0.65), rgba(184, 227, 218, 0.55));
-    color: #0f4f3e;
-  }
-  .glass-table tbody tr:hover {
-    background: rgba(211, 242, 233, 0.4);
-  }
-</style>
-
 <?php if (!empty($popupNotification)): ?>
   <?php
     $scopeKey = $popupNotification['session_scope'] === 'morning'
@@ -247,7 +52,7 @@ require 'header.php';
     $modalScope = sprintf(__('notification_popup_scope'), __($scopeKey));
   ?>
   <div id="notification-modal" role="dialog" aria-modal="true" class="fixed inset-0 z-40 flex items-center justify-center bg-black/40 px-4" data-notification-id="<?= $popupNotification['id'] ?>" data-csrf="<?= $_SESSION['csrf_token']; ?>">
-    <div class="glass-card relative w-full max-w-lg rounded-2xl p-6">
+    <div class="glass-surface glass-card relative w-full max-w-lg rounded-2xl p-6">
       <button type="button" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 focus:outline-none" data-close aria-label="<?= __('notification_popup_close_label') ?>">
         &times;
       </button>
@@ -265,7 +70,7 @@ require 'header.php';
 <?php endif; ?>
 
 <main class="dashboard-gradient min-h-[75vh] flex flex-col items-center justify-center px-2 py-8">
-  <div class="glass-shell w-full max-w-xl mx-auto rounded-2xl px-6 py-8">
+  <div class="glass-surface glass-shell w-full max-w-xl mx-auto rounded-2xl px-6 py-8">
     <h2 class="text-center text-2xl md:text-3xl font-bold text-mint-text mb-2" style="font-family:'Montserrat',sans-serif;">
       <?= sprintf(__('welcome'), htmlspecialchars($user['full_name'])) ?>
     </h2>
@@ -278,7 +83,7 @@ require 'header.php';
       </div>
     <?php endif; ?>
     <section class="mb-6">
-      <article class="glass-card flex flex-col rounded-2xl p-6">
+      <article class="glass-surface glass-card flex flex-col rounded-2xl p-6">
         <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h3 class="text-lg font-semibold text-mint-text"><?= __('student_class_section_title') ?></h3>
@@ -286,9 +91,9 @@ require 'header.php';
           </div>
         </div>
         <div class="mt-5 grid gap-4 md:grid-cols-2">
-          <div class="glass-subcard flex flex-col rounded-xl p-5 transition">
+          <div class="glass-surface glass-card glass-card--sub flex flex-col rounded-xl p-5">
             <div class="flex items-start gap-3">
-              <span class="glass-emoji-pill flex h-12 w-12 items-center justify-center rounded-full text-2xl" aria-hidden="true">🌞</span>
+              <span class="glass-pill glass-emoji-pill flex h-12 w-12 items-center justify-center rounded-full text-2xl" aria-hidden="true">🌞</span>
               <div>
                 <h4 class="text-lg font-semibold text-mint-text"><?= __('morning_class') ?></h4>
                 <p class="text-sm font-medium text-emerald-700"><?= __('morning_class_time') ?></p>
@@ -304,9 +109,9 @@ require 'header.php';
               </a>
             </div>
           </div>
-          <div class="glass-subcard flex flex-col rounded-xl p-5 transition">
+          <div class="glass-surface glass-card glass-card--sub flex flex-col rounded-xl p-5">
             <div class="flex items-start gap-3">
-              <span class="glass-emoji-pill flex h-12 w-12 items-center justify-center rounded-full text-2xl" aria-hidden="true">🌙</span>
+              <span class="glass-pill glass-emoji-pill flex h-12 w-12 items-center justify-center rounded-full text-2xl" aria-hidden="true">🌙</span>
               <div>
                 <h4 class="text-lg font-semibold text-mint-text"><?= __('evening_class') ?></h4>
                 <p class="text-sm font-medium text-emerald-700"><?= __('evening_class_time') ?></p>
@@ -326,16 +131,16 @@ require 'header.php';
       </article>
     </section>
     <section class="mb-6 space-y-4">
-      <article class="glass-card flex h-full flex-col rounded-2xl p-5 transition">
+      <article class="glass-surface glass-card flex h-full flex-col rounded-2xl p-5">
         <div class="flex items-start justify-between gap-3">
-          <div class="flex items-start gap-3">
-            <span class="glass-emoji-pill flex h-12 w-12 items-center justify-center rounded-full text-2xl" aria-hidden="true">🧘</span>
+            <div class="flex items-start gap-3">
+              <span class="glass-pill glass-emoji-pill flex h-12 w-12 items-center justify-center rounded-full text-2xl" aria-hidden="true">🧘</span>
             <div>
               <h3 class="text-lg font-semibold text-mint-text"><?= __('student_journal_card_title') ?></h3>
               <p class="text-sm text-gray-600"><?= __('student_journal_card_subtitle') ?></p>
             </div>
           </div>
-          <span class="glass-badge inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide">
+          <span class="glass-pill glass-badge inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide">
             <?= __('student_journal_card_badge') ?>
           </span>
         </div>
@@ -352,10 +157,10 @@ require 'header.php';
           </a>
         </div>
       </article>
-      <article class="glass-card flex h-full flex-col rounded-2xl p-5 transition">
+      <article class="glass-surface glass-card flex h-full flex-col rounded-2xl p-5">
         <div class="flex items-start justify-between gap-3">
-          <div class="flex items-start gap-3">
-            <span class="glass-emoji-pill flex h-12 w-12 items-center justify-center rounded-full text-2xl" aria-hidden="true">📚</span>
+            <div class="flex items-start gap-3">
+              <span class="glass-pill glass-emoji-pill flex h-12 w-12 items-center justify-center rounded-full text-2xl" aria-hidden="true">📚</span>
             <div>
               <h3 class="text-lg font-semibold text-mint-text"><?= __('student_materials_card_title') ?></h3>
               <p class="text-sm text-gray-600"><?= __('student_materials_card_subtitle') ?></p>
@@ -388,13 +193,13 @@ require 'header.php';
           <h5 class="text-lg font-semibold text-mint-text"><?= __('recent_history') ?></h5>
           <p class="text-sm text-gray-500"><?= sprintf(__('history_table_description'), $historyLimit) ?></p>
         </div>
-        <span class="glass-history-badge inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide">
+        <span class="glass-pill glass-badge glass-history-badge inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide">
           <?= sprintf(__('history_table_total'), $attendanceCount) ?>
         </span>
       </div>
       <?php if (!empty($historySessions)): ?>
         <div class="mt-4 overflow-x-auto">
-          <table class="glass-table min-w-full overflow-hidden rounded-2xl text-sm">
+          <table class="glass-surface glass-table min-w-full overflow-hidden rounded-2xl text-sm">
             <thead class="text-left">
               <tr>
                 <th scope="col" class="px-4 py-3 font-semibold uppercase tracking-wide"><?= __('session') ?></th>
