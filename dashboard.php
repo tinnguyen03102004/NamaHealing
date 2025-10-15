@@ -76,30 +76,137 @@ require 'header.php';
     backdrop-filter: blur(14px);
   }
   .glass-button {
+    --glass-button-overlay: rgba(255, 255, 255, 0.08);
+    --glass-button-overlay-pressed: rgba(255, 255, 255, 0.16);
+    --glass-button-border-color: rgba(255, 255, 255, 0.28);
+    --glass-button-shadow-color: rgba(0, 0, 0, 0.32);
+    --glass-button-shadow-hover: rgba(0, 0, 0, 0.36);
+    --glass-button-shadow-pressed: rgba(0, 0, 0, 0.35);
+    --glass-button-label-color: rgba(17, 24, 32, 0.92);
     position: relative;
-    background: linear-gradient(135deg, rgba(166, 232, 205, 0.85), rgba(121, 209, 195, 0.65));
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    box-shadow: 0 12px 28px rgba(102, 176, 158, 0.28);
-    color: #0f4f3e !important;
+    z-index: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: max(3.67rem, 58px);
+    padding: clamp(0.75rem, 0.7rem + 0.4vw, 1rem) clamp(1.3rem, 1.05rem + 0.9vw, 1.85rem);
+    border-radius: 1.333rem;
+    border: 1.33px solid var(--glass-button-border-color);
+    background-color: var(--glass-button-overlay);
+    color: var(--glass-button-label-color) !important;
+    font-family: "SF Pro Text", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-weight: 600;
+    font-size: clamp(1rem, 0.97rem + 0.15vw, 1.125rem);
+    line-height: 1.25;
+    letter-spacing: 0.01em;
+    text-decoration: none;
     text-shadow: none;
-    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+    backdrop-filter: saturate(180%) blur(24px);
+    -webkit-backdrop-filter: saturate(180%) blur(24px);
+    box-shadow: 0 8px 12px var(--glass-button-shadow-color);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+    touch-action: manipulation;
+  }
+  .glass-button::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(circle at 30% 0%, rgba(255, 255, 255, 0.55), transparent 65%);
+    opacity: 0.7;
+    mix-blend-mode: screen;
+    transition: opacity 0.2s ease;
   }
   .glass-button:hover {
-    background: linear-gradient(135deg, rgba(117, 204, 180, 0.95), rgba(74, 172, 152, 0.8));
-    box-shadow: 0 16px 34px rgba(91, 168, 150, 0.35);
-    transform: translateY(-1px);
-    color: #ffffff !important;
+    box-shadow: 0 14px 18px var(--glass-button-shadow-hover);
+  }
+  .glass-button:hover::before {
+    opacity: 0.9;
   }
   .glass-button:focus-visible {
-    outline: 3px solid rgba(101, 189, 168, 0.55);
-    outline-offset: 2px;
+    outline: 3px solid rgba(82, 192, 169, 0.55);
+    outline-offset: 4px;
+  }
+  .glass-button.is-pressed,
+  .glass-button:active {
+    transform: scale(0.98);
+    background-color: var(--glass-button-overlay-pressed);
+    box-shadow: 0 6px 12px var(--glass-button-shadow-pressed);
+  }
+  .glass-button.is-pressed::before,
+  .glass-button:active::before {
+    opacity: 1;
   }
   .glass-button[aria-disabled="true"],
   .glass-button[disabled],
   .glass-button.disabled {
-    background: linear-gradient(135deg, rgba(210, 231, 226, 0.65), rgba(192, 221, 216, 0.45));
-    color: rgba(15, 79, 62, 0.55) !important;
+    cursor: not-allowed;
+    --glass-button-overlay: rgba(255, 255, 255, 0.28);
+    --glass-button-overlay-pressed: rgba(255, 255, 255, 0.32);
+    --glass-button-border-color: rgba(255, 255, 255, 0.2);
+    --glass-button-label-color: rgba(17, 24, 32, 0.45);
     box-shadow: none;
+  }
+  @media (prefers-color-scheme: dark) {
+    .glass-button {
+      --glass-button-overlay: rgba(0, 0, 0, 0.12);
+      --glass-button-overlay-pressed: rgba(0, 0, 0, 0.2);
+      --glass-button-border-color: rgba(255, 255, 255, 0.14);
+      --glass-button-label-color: rgba(255, 255, 255, 0.92);
+      --glass-button-shadow-color: rgba(0, 0, 0, 0.4);
+      --glass-button-shadow-hover: rgba(0, 0, 0, 0.45);
+      --glass-button-shadow-pressed: rgba(0, 0, 0, 0.45);
+    }
+    .glass-button::before {
+      background: radial-gradient(circle at 30% 0%, rgba(255, 255, 255, 0.35), transparent 70%);
+    }
+  }
+  @media (prefers-contrast: more) {
+    .glass-button {
+      --glass-button-overlay: rgba(255, 255, 255, 0.16);
+      --glass-button-overlay-pressed: rgba(255, 255, 255, 0.24);
+      border-width: 1.5px;
+      --glass-button-shadow-color: rgba(0, 0, 0, 0.4);
+      --glass-button-shadow-hover: rgba(0, 0, 0, 0.45);
+      --glass-button-shadow-pressed: rgba(0, 0, 0, 0.42);
+      box-shadow: 0 12px 16px var(--glass-button-shadow-color);
+    }
+  }
+  @media (prefers-contrast: more) and (prefers-color-scheme: dark) {
+    .glass-button {
+      --glass-button-overlay: rgba(0, 0, 0, 0.24);
+      --glass-button-overlay-pressed: rgba(0, 0, 0, 0.32);
+      --glass-button-shadow-color: rgba(0, 0, 0, 0.46);
+      --glass-button-shadow-hover: rgba(0, 0, 0, 0.52);
+      --glass-button-shadow-pressed: rgba(0, 0, 0, 0.5);
+    }
+  }
+  @media (prefers-reduced-transparency: reduce) {
+    .glass-button {
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      --glass-button-overlay: rgba(255, 255, 255, 0.22);
+      --glass-button-overlay-pressed: rgba(255, 255, 255, 0.3);
+      background-color: var(--glass-button-overlay);
+    }
+  }
+  @media (prefers-reduced-transparency: reduce) and (prefers-color-scheme: dark) {
+    .glass-button {
+      --glass-button-overlay: rgba(0, 0, 0, 0.38);
+      --glass-button-overlay-pressed: rgba(0, 0, 0, 0.46);
+      background-color: var(--glass-button-overlay);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .glass-button {
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+    .glass-button.is-pressed,
+    .glass-button:active {
+      transform: none;
+    }
   }
   .glass-emoji-pill {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.25));
@@ -151,7 +258,7 @@ require 'header.php';
         <div><?= $modalCreated ?></div>
       </div>
       <div class="mt-5 flex justify-end">
-        <button type="button" class="glass-button rounded-full px-4 py-2 text-sm font-semibold" data-close><?= __('notification_popup_dismiss') ?></button>
+        <button type="button" class="glass-button" data-close><?= __('notification_popup_dismiss') ?></button>
       </div>
     </div>
   </div>
@@ -192,7 +299,7 @@ require 'header.php';
             </p>
             <div class="mt-auto pt-4">
               <a href="join.php?s=morning"
-                 class="glass-button inline-flex w-full items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold">
+                 class="glass-button w-full">
                  <?= __('join_morning') ?>
               </a>
             </div>
@@ -210,7 +317,7 @@ require 'header.php';
             </p>
             <div class="mt-auto pt-4">
               <a href="join.php?s=evening"
-                 class="glass-button inline-flex w-full items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold">
+                 class="glass-button w-full">
                  <?= __('join_evening') ?>
               </a>
             </div>
@@ -237,7 +344,7 @@ require 'header.php';
         </p>
         <div class="mt-auto space-y-3 pt-4">
           <a href="student_journal.php"
-             class="glass-button inline-flex w-full items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold">
+             class="glass-button w-full">
             <?= __('student_journal_card_button') ?>
           </a>
           <a href="student_journal.php#guide" class="inline-flex items-center justify-center text-sm font-medium text-mint-text hover:text-emerald-700">
@@ -266,7 +373,7 @@ require 'header.php';
         </p>
         <div class="mt-auto pt-4">
           <a href="student_materials.php"
-             class="glass-button inline-flex w-full items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold <?= $materialsUnlocked ? '' : 'cursor-not-allowed opacity-75' ?>"
+             class="glass-button w-full <?= $materialsUnlocked ? '' : 'cursor-not-allowed opacity-75' ?>"
              data-materials-link
              data-locked="<?= $materialsUnlocked ? '0' : '1' ?>"
              <?= $materialsUnlocked ? '' : 'aria-disabled="true"' ?>>
@@ -326,6 +433,66 @@ require 'header.php';
     </div>
   </div>
 </main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const canVibrate = typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function';
+  const vibrate = function () {
+    if (!canVibrate) {
+      return;
+    }
+    try {
+      navigator.vibrate(10);
+    } catch (error) {
+      // Ignore vibration errors silently to avoid interrupting the interaction.
+    }
+  };
+
+  document.querySelectorAll('.glass-button').forEach(function (button) {
+    const isInteractive = function () {
+      return button.getAttribute('aria-disabled') !== 'true' && !button.hasAttribute('disabled') && !button.classList.contains('disabled');
+    };
+
+    const setPressed = function (pressed) {
+      button.classList.toggle('is-pressed', pressed);
+      if (pressed && isInteractive()) {
+        vibrate();
+      }
+    };
+
+    button.addEventListener('pointerdown', function (event) {
+      if (event.button !== 0 && event.pointerType === 'mouse') {
+        return;
+      }
+      if (!isInteractive()) {
+        return;
+      }
+      setPressed(true);
+    });
+
+    const resetPressed = function () {
+      setPressed(false);
+    };
+
+    ['pointerup', 'pointercancel', 'pointerleave', 'blur'].forEach(function (evt) {
+      button.addEventListener(evt, resetPressed);
+    });
+
+    button.addEventListener('keydown', function (event) {
+      if (!isInteractive()) {
+        return;
+      }
+      if (event.key === 'Enter' || event.key === ' ') {
+        setPressed(true);
+      }
+    });
+
+    button.addEventListener('keyup', function () {
+      resetPressed();
+    });
+  });
+});
+</script>
 
 <?php if (!$materialsUnlocked): ?>
 <script>
