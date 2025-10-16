@@ -1,3 +1,91 @@
+/* ======= Dashboard Glass 2.0 ======= */
+:root{
+  --mint-0:#F2FBF8; --mint-1:#E6F6F1; --mint-2:#D6EFE8; --mint-3:#9DCFC3; --mint-4:#7CC1A9;
+  --ink:#374151; --ink-soft:#5B6B65; --accent:#F4C27A; --deep:#2E554D;
+  --r:16px; /* radius mới */
+}
+
+/* Nền tổng thể nhẹ hơn, có chiều sâu */
+body{
+  background:
+    radial-gradient(1200px 800px at 70% 20%, rgba(255,255,255,.8), transparent 70%),
+    radial-gradient(900px 600px at 10% 70%, rgba(255,255,255,.6), transparent 60%),
+    linear-gradient(180deg, var(--mint-1), var(--mint-2));
+  color: var(--ink);
+}
+
+/* Card “kính” mờ – bo 16px, đổ bóng mềm */
+.glass-surface{
+  background: color-mix(in srgb, #fff 66%, var(--mint-0) 34%);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(46,85,77,.18);
+  border-radius: var(--r);
+  box-shadow: 0 6px 24px rgba(46,85,77,.15), 0 1px 0 rgba(255,255,255,.7) inset;
+}
+
+/* Card cấp trong nhỏ hơn, bóng nhẹ hơn để tạo phân cấp */
+.glass-card{
+  border-radius: var(--r);
+  box-shadow: 0 4px 14px rgba(46,85,77,.12);
+}
+
+/* Header nhỏ cho tiêu đề nhóm (ví dụ: ‘Lớp thiền’) */
+.glass-subheader{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:.5rem .875rem; margin:-.25rem -.25rem .5rem;
+  background: rgba(255,255,255,.55);
+  border: 1px solid rgba(46,85,77,.12);
+  border-radius: calc(var(--r) - 6px);
+}
+
+/* Khoảng thở tổng thể cho vùng dashboard */
+.dashboard-shell{ max-width: 880px; margin: 56px auto 72px; padding: 8px; }
+
+/* Typography mềm và thoáng hơn */
+h1{ font-size:32px; line-height:1.2; letter-spacing:.004em; }
+h2, .section-title{ font-size:20px; line-height:1.35; color: var(--deep); }
+p, .text{ font-size:15px; line-height:1.6; color: var(--ink-soft); }
+
+/* Badge thông tin (ví dụ: Nhật ký hằng ngày) */
+.badge{ display:inline-flex; align-items:center; gap:.4rem;
+  font-size:12px; padding:.25rem .6rem; border-radius:999px;
+  background: color-mix(in srgb, var(--accent) 20%, #fff 80%);
+  border:1px solid color-mix(in srgb, var(--accent) 45%, #000 5%);
+}
+
+/* Nút hành động – CTA mint; có trạng thái phụ xám */
+.glass-button{
+  display:inline-flex; align-items:center; justify-content:center; gap:.5rem;
+  min-height:44px; padding:.625rem 1.1rem; width:100%;
+  font-weight:600; letter-spacing:.01em;
+  border-radius: calc(var(--r) - 4px);
+  border:1px solid color-mix(in srgb, var(--deep) 25%, #fff 80%);
+  background: linear-gradient(180deg, var(--mint-4), var(--mint-3));
+  color:#fff; box-shadow: 0 6px 16px rgba(46,85,77,.20), inset 0 1px 0 rgba(255,255,255,.65);
+  transition: transform .08s ease, box-shadow .2s ease, filter .2s ease;
+}
+.glass-button:hover{ transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(46,85,77,.22), inset 0 1px 0 rgba(255,255,255,.7); filter: saturate(1.05);
+}
+.glass-button:active{ transform: translateY(0); box-shadow: 0 6px 16px rgba(46,85,77,.18); }
+.glass-button.secondary{
+  background: linear-gradient(180deg, #71717a, #63636b);
+  border-color: rgba(0,0,0,.12);
+}
+
+/* Nút sáng/tối có icon trái (nếu có) */
+.btn-icon{ display:inline-flex; align-items:center; gap:.5rem; }
+.btn-sun::before{ content:'☀️'; }
+.btn-moon::before{ content:'🌙'; }
+
+/* Khoảng cách giữa 2 thẻ lớp sáng/tối */
+.class-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:14px; }
+@media (max-width: 640px){
+  .dashboard-shell{ margin: 32px auto 56px; padding: 4px; }
+  .class-grid{ grid-template-columns: 1fr; gap:10px; }
+  h1{ font-size:28px; }
+}
+
 /*! tailwindcss v4.1.11 | MIT License | https://tailwindcss.com */
 @layer properties;
 .fixed {
