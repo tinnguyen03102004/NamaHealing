@@ -78,6 +78,7 @@ return [
     'evening' => 'Tối',
     'no_history' => 'Chưa có lịch sử',
     'first_timer_lock_message' => 'Học viên mới vui lòng vào sớm 5 phút trước giờ học hoặc quay lại vào buổi học tiếp theo.',
+    'first_timer_block_window_message' => 'Học viên mới vui lòng vào lớp sớm 5 phút để thầy hướng dẫn hoặc quay lại vào buổi tiếp theo.',
     'history_joined_description' => 'Đã tham gia buổi %s',
     'no_history_hint' => 'Khi bạn tham gia lớp thiền đầu tiên, dòng thời gian này sẽ ghi lại hành trình của bạn.',
     'not_class_time' => 'Hiện chưa đến giờ học, vui lòng quay lại sau',
