@@ -104,7 +104,7 @@ require 'header.php';
             </p>
             <div class="mt-auto pt-4">
               <a href="join.php?s=morning"
-                 class="glass-button w-full">
+                 class="glass-button btn-icon btn-sun w-full">
                  <?= __('join_morning') ?>
               </a>
             </div>
@@ -122,7 +122,7 @@ require 'header.php';
             </p>
             <div class="mt-auto pt-4">
               <a href="join.php?s=evening"
-                 class="glass-button w-full">
+                 class="glass-button btn-icon btn-moon secondary w-full">
                  <?= __('join_evening') ?>
               </a>
             </div>

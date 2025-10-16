@@ -37,11 +37,11 @@ require_once __DIR__ . '/i18n.php';
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="/style.css?v=<?php echo filemtime(__DIR__.'/style.css'); ?>">
-  <!-- Google Fonts: Cormorant Garamond (logo) + Montserrat (content) + Noto Sans (notifications) -->
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Google Fonts: Manrope (primary) + Cormorant Garamond (logo) + Montserrat/Noto Sans (fallbacks) -->
+  <link href='https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&display=swap' rel='stylesheet'>
   <style>
     body {
-      font-family: 'Montserrat', 'Noto Sans', Arial, sans-serif !important;
+      font-family: 'Manrope','Montserrat','Noto Sans',Arial,sans-serif !important;
     }
     .logo-text {
       font-family: serif !important;
@@ -49,7 +49,7 @@ require_once __DIR__ . '/i18n.php';
       font-weight: 500;
     }
     .font-heading, h1, h2, h3, h4, h5, h6 {
-      font-family: 'Montserrat', 'Noto Sans', Arial, sans-serif !important;
+      font-family: 'Manrope','Montserrat','Noto Sans',Arial,sans-serif !important;
       font-weight: 700;
       letter-spacing: .01em;
     }
