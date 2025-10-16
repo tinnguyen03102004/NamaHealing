@@ -36,7 +36,7 @@ require_once __DIR__ . '/i18n.php';
   <?php endif; ?>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="/style.css?v=<?php echo filemtime(__DIR__.'/style.css'); ?>">
   <!-- Google Fonts: Cormorant Garamond (logo) + Montserrat (content) + Noto Sans (notifications) -->
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
