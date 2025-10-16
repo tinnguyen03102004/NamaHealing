@@ -77,6 +77,7 @@ return [
     'morning' => 'Morning',
     'evening' => 'Night',
     'no_history' => 'No history',
+    'first_timer_lock_message' => 'New students are kindly asked to join 5 minutes before class starts or come back in the next session.',
     'history_joined_description' => 'Joined the %s session',
     'no_history_hint' => 'Your meditation journey will appear here after you join a class.',
     'not_class_time' => 'It is not class time yet, please come back later',

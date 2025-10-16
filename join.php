@@ -33,6 +33,61 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $uid = $_SESSION['uid'];
 if (!in_array($session, ['morning', 'evening'])) $session = 'morning';
 
+// --- Rule: New students (no history) are locked from T-5m -> T_end+20m ---
+date_default_timezone_set('Asia/Ho_Chi_Minh');
+$nowTs = time();
+if ($session === 'morning') {
+    $startTs = strtotime('today 06:00');
+    $endTs   = strtotime('today 06:40');
+} else {
+    $startTs = strtotime('today 20:45');
+    $endTs   = strtotime('today 21:30');
+}
+$lockFrom = $startTs - 5 * 60;
+$lockTo   = $endTs + 20 * 60;
+
+$hasHistory = false;
+try {
+    $stmt = $db->prepare("SELECT 1 FROM sessions WHERE user_id=? LIMIT 1");
+    $stmt->execute([$uid]);
+    $hasHistory = (bool) $stmt->fetchColumn();
+} catch (Throwable $e) {
+    $hasHistory = false;
+}
+
+if (!$hasHistory && $nowTs >= $lockFrom && $nowTs <= $lockTo) {
+    $langAttr = htmlspecialchars($_SESSION['lang'] ?? 'vi', ENT_QUOTES, 'UTF-8');
+    $title = $session === 'morning' ? __('join_morning') : __('join_evening');
+    $safeTitle = htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
+    $message = __('first_timer_lock_message');
+    $safeMessage = htmlspecialchars($message, ENT_QUOTES, 'UTF-8');
+    echo <<<HTML
+<!DOCTYPE html>
+<html lang="{$langAttr}">
+<head>
+{$gtm_head}
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{$safeTitle}</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<style>body{font-family:'Montserrat',sans-serif;}</style>
+</head>
+<body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-emerald-100">
+{$gtm_body}
+<main class="bg-white rounded-2xl shadow-lg p-6 mx-4 text-center max-w-md">
+  <h1 class="text-xl font-semibold text-emerald-700 mb-3">{$safeTitle}</h1>
+  <p class="text-base text-gray-700 leading-relaxed mb-4">{$safeMessage}</p>
+  <a href="dashboard.php" class="inline-block px-5 py-2 rounded-full bg-emerald-600 text-white hover:bg-emerald-700 transition">OK</a>
+</main>
+</body>
+</html>
+HTML;
+    exit;
+}
+
 // Check for canceled session
 $db->exec("CREATE TABLE IF NOT EXISTS session_cancellations (
     date DATE NOT NULL,
