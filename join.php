@@ -33,34 +33,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $uid = $_SESSION['uid'];
 if (!in_array($session, ['morning', 'evening'])) $session = 'morning';
 
-// --- Rule: New students (no history) are locked from T-5m -> T_end+20m ---
 date_default_timezone_set('Asia/Ho_Chi_Minh');
+
+try {
+    $attendanceCount = (int)$db->query("SELECT COUNT(*) FROM sessions WHERE user_id=" . (int)$uid)->fetchColumn();
+} catch (Throwable $e) {
+    $attendanceCount = 0;
+}
+
+$isFirstTimer = ($attendanceCount === 0);
 $nowTs = time();
 if ($session === 'morning') {
-    $startTs = strtotime('today 06:00');
-    $endTs   = strtotime('today 06:40');
+    $blockStart = strtotime('today 05:55');
+    $blockEnd = strtotime('today 06:55');
 } else {
-    $startTs = strtotime('today 20:45');
-    $endTs   = strtotime('today 21:30');
-}
-$lockFrom = $startTs - 5 * 60;
-$lockTo   = $endTs + 20 * 60;
-
-$hasHistory = false;
-try {
-    $stmt = $db->prepare("SELECT 1 FROM sessions WHERE user_id=? LIMIT 1");
-    $stmt->execute([$uid]);
-    $hasHistory = (bool) $stmt->fetchColumn();
-} catch (Throwable $e) {
-    $hasHistory = false;
+    $blockStart = strtotime('today 20:40');
+    $blockEnd = strtotime('today 21:40');
 }
 
-if (!$hasHistory && $nowTs >= $lockFrom && $nowTs <= $lockTo) {
+if ($isFirstTimer && $nowTs >= $blockStart && $nowTs <= $blockEnd) {
     $langAttr = htmlspecialchars($_SESSION['lang'] ?? 'vi', ENT_QUOTES, 'UTF-8');
     $title = $session === 'morning' ? __('join_morning') : __('join_evening');
     $safeTitle = htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
-    $message = __('first_timer_lock_message');
+    $message = __('first_timer_block_window_message');
     $safeMessage = htmlspecialchars($message, ENT_QUOTES, 'UTF-8');
+    $buttonLabel = __('back_to_dashboard');
+    $safeButtonLabel = htmlspecialchars($buttonLabel, ENT_QUOTES, 'UTF-8');
     echo <<<HTML
 <!DOCTYPE html>
 <html lang="{$langAttr}">
@@ -77,10 +75,10 @@ if (!$hasHistory && $nowTs >= $lockFrom && $nowTs <= $lockTo) {
 </head>
 <body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-emerald-100">
 {$gtm_body}
-<main class="bg-white rounded-2xl shadow-lg p-6 mx-4 text-center max-w-md">
+<main class="bg-white/90 backdrop-blur rounded-2xl shadow-lg p-6 mx-4 text-center max-w-md">
   <h1 class="text-xl font-semibold text-emerald-700 mb-3">{$safeTitle}</h1>
-  <p class="text-base text-gray-700 leading-relaxed mb-4">{$safeMessage}</p>
-  <a href="dashboard.php" class="inline-block px-5 py-2 rounded-full bg-emerald-600 text-white hover:bg-emerald-700 transition">OK</a>
+  <p class="text-base text-gray-700 leading-relaxed mb-5">{$safeMessage}</p>
+  <a href="dashboard.php" class="inline-flex items-center justify-center px-5 py-2 rounded-full bg-emerald-600 text-white hover:bg-emerald-700 transition">{$safeButtonLabel}</a>
 </main>
 </body>
 </html>

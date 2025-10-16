@@ -29,6 +29,13 @@ $materialsUnlocked = $attendanceCount > 0;
 $materialsFlash = $_SESSION['materials_error'] ?? '';
 unset($_SESSION['materials_error']);
 
+date_default_timezone_set('Asia/Ho_Chi_Minh');
+$nowTs = time();
+$morningBlockWindow = $nowTs >= strtotime('today 05:55') && $nowTs <= strtotime('today 06:55');
+$eveningBlockWindow = $nowTs >= strtotime('today 20:40') && $nowTs <= strtotime('today 21:40');
+$firstTimerMorningBlock = $attendanceCount === 0 && $morningBlockWindow;
+$firstTimerEveningBlock = $attendanceCount === 0 && $eveningBlockWindow;
+
 // Thông báo
 notifications_setup($db);
 $notifications = notifications_fetch_active($db);
@@ -104,9 +111,15 @@ require 'header.php';
             </p>
             <div class="mt-auto pt-4">
               <a href="join.php?s=morning"
-                 class="glass-button btn-icon btn-sun w-full">
+                 class="glass-button btn-icon btn-sun w-full <?= $firstTimerMorningBlock ? 'cursor-not-allowed opacity-60 pointer-events-none' : '' ?>"
+                 <?= $firstTimerMorningBlock ? 'aria-disabled="true" tabindex="-1"' : '' ?>>
                  <?= __('join_morning') ?>
               </a>
+              <?php if ($firstTimerMorningBlock): ?>
+                <p class="mt-3 text-sm text-amber-600 leading-relaxed">
+                  <?= __('first_timer_block_window_message') ?>
+                </p>
+              <?php endif; ?>
             </div>
           </div>
           <div class="glass-surface glass-card glass-card--sub flex flex-col rounded-xl p-5">
@@ -122,9 +135,15 @@ require 'header.php';
             </p>
             <div class="mt-auto pt-4">
               <a href="join.php?s=evening"
-                 class="glass-button btn-icon btn-moon secondary w-full">
+                 class="glass-button btn-icon btn-moon secondary w-full <?= $firstTimerEveningBlock ? 'cursor-not-allowed opacity-60 pointer-events-none' : '' ?>"
+                 <?= $firstTimerEveningBlock ? 'aria-disabled="true" tabindex="-1"' : '' ?>>
                  <?= __('join_evening') ?>
               </a>
+              <?php if ($firstTimerEveningBlock): ?>
+                <p class="mt-3 text-sm text-amber-600 leading-relaxed">
+                  <?= __('first_timer_block_window_message') ?>
+                </p>
+              <?php endif; ?>
             </div>
           </div>
         </div>
