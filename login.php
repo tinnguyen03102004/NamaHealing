@@ -35,10 +35,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Kiểm tra thông tin tài khoản
     $model = new NamaHealing\Models\UserModel($db);
     $user  = $model->findByIdentifier($identifier);
-    if ($user 
-        && password_verify($password, $user['password']) 
-        && in_array($user['role'], NamaHealing\Models\UserModel::ALLOWED_ROLES, true)) 
-    {
+    if ($user && in_array($user['role'], NamaHealing\Models\UserModel::ALLOWED_ROLES, true)) {
+        $isStudent = $user['role'] === 'student';
+        $validPassword = password_verify($password, $user['password']);
+
+        if (!$isStudent && !$validPassword) {
+            $user = null;
+        }
+    } else {
+        $user = null;
+    }
+
+    if ($user) {
         // Đăng nhập thành công => tạo session và chuyển hướng
         session_regenerate_id(true);
         $_SESSION['uid']  = $user['id'];
@@ -95,9 +103,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label class="block text-sm font-medium text-[#285F57] mb-1">
           <?= __('password_label') ?>
         </label>
-        <input name="password" type="password" required
+        <input name="password" type="password"
           class="w-full px-4 py-2 border-2 border-[#9dcfc3] rounded-lg bg-gray-50 text-[#374151] focus:outline-none focus:border-[#76a89e] focus:bg-white transition"
           placeholder="<?= __('password_placeholder') ?>" />
+        <p class="mt-1 text-xs text-gray-500">
+          <?= __('password_hint') ?>
+        </p>
       </div>
       <button class="w-full mt-2 rounded-lg bg-[#9dcfc3] text-[#285F57] font-semibold py-2 shadow hover:bg-[#76a89e] hover:text-white transition">
         <?= __('login_button') ?>

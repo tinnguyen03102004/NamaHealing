@@ -63,12 +63,16 @@ class UserModel {
         string $fullName,
         string $email,
         string $phone,
-        string $password,
+        ?string $password = null,
         int $remaining = 0
     ): int {
         self::assertRole('student');
         $phone = self::cleanPhone($phone);
-        $hash = password_hash($password, PASSWORD_ALGO);
+        $passwordToHash = $password;
+        if ($passwordToHash === null || $passwordToHash === '') {
+            $passwordToHash = bin2hex(random_bytes(8));
+        }
+        $hash = password_hash($passwordToHash, PASSWORD_ALGO);
         $stmt = $this->pdo->prepare(
             "INSERT INTO users (full_name, email, phone, password, role, remaining) " .
             "VALUES (:full_name, :email, :phone, :pass, 'student', :remaining)"
