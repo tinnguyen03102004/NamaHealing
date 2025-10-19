@@ -19,10 +19,6 @@
         <label class="block mb-1"><?= __('phone_label') ?></label>
         <input type="text" name="phone" required class="w-full px-4 py-2 border rounded-lg" />
       </div>
-      <div>
-        <label class="block mb-1"><?= __('password_label') ?></label>
-        <input type="password" name="password" required class="w-full px-4 py-2 border rounded-lg" />
-      </div>
       <button class="w-full bg-[#9dcfc3] text-[#285F57] font-semibold py-2 rounded-lg">Đăng ký</button>
     </form>
   </div>

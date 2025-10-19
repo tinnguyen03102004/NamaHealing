@@ -19,15 +19,14 @@ class SelfRegisterController {
             $email    = trim($_POST['email'] ?? '');
             $phone    = trim($_POST['phone'] ?? '');
             $phone    = preg_replace('/\D+/', '', $phone);
-            $pass     = $_POST['password'] ?? '';
-            if (!$fullName || !$email || !$phone || !$pass) {
+            if (!$fullName || !$email || !$phone) {
                 $err = \__('err_required_fields');
             } else {
                 $model = new UserModel($this->db);
                 if ($model->findByIdentifier($phone) || $model->findByIdentifier($email)) {
                     $err = \__('err_email_exists');
                 } else {
-                    $model->createStudent($fullName, $email, $phone, $pass);
+                    $model->createStudent($fullName, $email, $phone);
                     header('Location: welcome.php');
                     exit;
                 }
