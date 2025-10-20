@@ -150,13 +150,44 @@ if ($remain <= 0) {
 }
 
 if ($shouldCount) {
-    // Kiểm tra xem đã ghi nhận buổi này trong hôm nay chưa
-    $stmt = $db->prepare("SELECT 1 FROM sessions WHERE user_id=? AND session=? AND DATE(created_at)=CURDATE()");
-    $stmt->execute([$uid, $session]);
-    if (!$stmt->fetchColumn()) {
-        // Trừ buổi, lưu lịch sử
-        $db->prepare("UPDATE users SET remaining=remaining-1 WHERE id=?")->execute([$uid]);
-        $db->prepare("INSERT INTO sessions(user_id, session) VALUES (?,?)")->execute([$uid, $session]);
+    try {
+        $startedTransaction = false;
+        if (!$db->inTransaction()) {
+            $db->beginTransaction();
+            $startedTransaction = true;
+        }
+
+        // Khóa bản ghi học viên để tránh bị trừ buổi nhiều lần khi truy cập đồng thời
+        $lockStmt = $db->prepare('SELECT remaining FROM users WHERE id=? FOR UPDATE');
+        $lockStmt->execute([$uid]);
+        $lockedRemaining = $lockStmt->fetchColumn();
+
+        if ($lockedRemaining === false) {
+            if ($startedTransaction && $db->inTransaction()) {
+                $db->rollBack();
+            }
+            throw new RuntimeException('User not found while counting session');
+        }
+
+        // Kiểm tra xem đã ghi nhận buổi này trong hôm nay chưa
+        $stmt = $db->prepare("SELECT 1 FROM sessions WHERE user_id=? AND session=? AND DATE(created_at)=CURDATE()");
+        $stmt->execute([$uid, $session]);
+        $alreadyCounted = (bool)$stmt->fetchColumn();
+
+        if (!$alreadyCounted && (int)$lockedRemaining > 0) {
+            // Trừ buổi, lưu lịch sử
+            $db->prepare('UPDATE users SET remaining=remaining-1 WHERE id=?')->execute([$uid]);
+            $db->prepare('INSERT INTO sessions(user_id, session) VALUES (?,?)')->execute([$uid, $session]);
+        }
+
+        if ($startedTransaction && $db->inTransaction()) {
+            $db->commit();
+        }
+    } catch (Throwable $e) {
+        if ($startedTransaction && $db->inTransaction()) {
+            $db->rollBack();
+        }
+        throw $e;
     }
 }
 
