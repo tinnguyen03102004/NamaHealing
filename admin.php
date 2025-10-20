@@ -12,10 +12,13 @@ $notifyDeleted = false;
 $notifySuccess = false;
 $zoomUpdated = false;
 $vipStatusUpdated = !empty($_SESSION['vip_status_flash'] ?? false);
+$firstSessionUpdated = !empty($_SESSION['first_session_flash'] ?? false);
 unset($_SESSION['vip_status_flash']);
+unset($_SESSION['first_session_flash']);
 
 notifications_setup($db);
 ensure_users_has_vip($db);
+ensure_users_has_first_session_flag($db);
 ensure_zoom_links_audience($db);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_notification'])) {
@@ -152,6 +155,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_vip'])) {
         $stmt = $db->prepare('UPDATE users SET is_vip = ? WHERE id = ?');
         $stmt->execute([$value ? 1 : 0, $studentId]);
         $_SESSION['vip_status_flash'] = true;
+        $redirect = 'admin.php';
+        if (!empty($_SERVER['QUERY_STRING'])) {
+            $redirect .= '?' . $_SERVER['QUERY_STRING'];
+        }
+        header('Location: ' . $redirect);
+        exit;
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['mark_first_session'])) {
+    csrf_check($_POST['csrf_token'] ?? null);
+    $studentId = (int)$_POST['mark_first_session'];
+    $value = (int)($_POST['first_session_value'] ?? 0);
+    if ($studentId > 0) {
+        $stmt = $db->prepare('UPDATE users SET first_session_completed = ? WHERE id = ?');
+        $stmt->execute([$value ? 1 : 0, $studentId]);
+        $_SESSION['first_session_flash'] = true;
         $redirect = 'admin.php';
         if (!empty($_SERVER['QUERY_STRING'])) {
             $redirect .= '?' . $_SERVER['QUERY_STRING'];
@@ -483,12 +503,17 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <summary>Bảng học viên</summary>
     <div class="admin-section__content">
       <div class="overflow-x-auto rounded-xl shadow-2xl shadow-[#76a89e26] bg-white/95">
+        <?php if ($firstSessionUpdated): ?>
+          <div class="mx-4 mt-4 mb-3 rounded-lg bg-emerald-100 text-emerald-700 px-4 py-2 text-sm font-medium">
+            <?= __('first_session_status_updated') ?>
+          </div>
+        <?php endif; ?>
         <?php if ($vipStatusUpdated): ?>
           <div class="mx-4 mt-4 mb-3 rounded-lg bg-emerald-100 text-emerald-700 px-4 py-2 text-sm font-medium">
             <?= __('vip_status_updated') ?>
           </div>
         <?php endif; ?>
-        <table class="w-full min-w-[650px] text-sm border-separate border-spacing-y-1">
+        <table class="w-full min-w-[760px] text-sm border-separate border-spacing-y-1">
           <thead>
             <tr class="bg-mint/10 text-mint-text text-base font-semibold">
               <th class="py-2 px-2 sm:px-3 rounded-tl-xl whitespace-nowrap"><?= __('tbl_id') ?></th>
@@ -496,6 +521,7 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
               <th class="py-2 px-2 sm:px-3 whitespace-nowrap"><?= __('tbl_email') ?></th>
               <th class="py-2 px-2 sm:px-3 whitespace-nowrap"><?= __('tbl_phone') ?></th>
               <th class="py-2 px-2 sm:px-3 text-center whitespace-nowrap"><?= __('tbl_remaining') ?></th>
+              <th class="py-2 px-2 sm:px-3 text-center whitespace-nowrap"><?= __('tbl_first_session') ?></th>
               <th class="py-2 px-2 sm:px-3 text-center whitespace-nowrap"><?= __('tbl_type') ?></th>
               <th class="py-2 px-2 sm:px-3 rounded-tr-xl text-center whitespace-nowrap"><?= __('tbl_actions') ?></th>
             </tr>
@@ -503,7 +529,7 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
           <tbody>
           <?php if (empty($students)): ?>
             <tr>
-              <td colspan="7" class="py-5 text-center text-gray-400"><?= __('not_found') ?></td>
+              <td colspan="8" class="py-5 text-center text-gray-400"><?= __('not_found') ?></td>
             </tr>
           <?php else: foreach ($students as $row): ?>
             <tr class="hover:bg-mint/5 transition">
@@ -513,6 +539,22 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
               <td class="px-2 sm:px-3 py-2"><?= htmlspecialchars($row['phone']) ?></td>
               <td class="px-2 sm:px-3 py-2 text-center font-semibold <?= $row['remaining'] == 0 ? 'text-red-600' : 'text-mint-text' ?>">
                 <?= $row['remaining'] ?>
+              </td>
+              <?php $firstSessionCompleted = db_bool($row['first_session_completed'] ?? null); ?>
+              <td class="px-2 sm:px-3 py-2 text-center">
+                <div class="flex flex-col items-center gap-2">
+                  <span class="inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold <?= $firstSessionCompleted ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-600' ?>">
+                    <?= $firstSessionCompleted ? __('first_session_done_badge') : __('first_session_not_done_badge') ?>
+                  </span>
+                  <form method="post" class="flex flex-col items-center gap-1 text-xs">
+                    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
+                    <input type="hidden" name="mark_first_session" value="<?= $row['id'] ?>">
+                    <input type="hidden" name="first_session_value" value="<?= $firstSessionCompleted ? 0 : 1 ?>">
+                    <button class="rounded border <?= $firstSessionCompleted ? 'border-gray-300 text-gray-600 hover:bg-gray-100' : 'border-emerald-400 text-emerald-600 hover:bg-emerald-50' ?> px-3 py-1 font-medium transition" type="submit">
+                      <?= $firstSessionCompleted ? __('unmark_first_session_button') : __('mark_first_session_button') ?>
+                    </button>
+                  </form>
+                </div>
               </td>
               <td class="px-2 sm:px-3 py-2">
                 <?php $isVip = db_bool($row['is_vip'] ?? null); ?>

@@ -2,16 +2,20 @@
 define('REQUIRE_LOGIN', true);
 require 'config.php';
 require_once __DIR__ . '/helpers/Notifications.php';
+require_once __DIR__ . '/helpers/Schema.php';
+require_once __DIR__ . '/helpers/Value.php';
 if (!isset($_SESSION['uid']) || $_SESSION['role'] !== 'student') {
     header('Location: login.php');
     exit;
 }
 // Lấy thông tin học viên
 $uid = $_SESSION['uid'];
-$stmt = $db->prepare("SELECT full_name, remaining FROM users WHERE id=?");
+ensure_users_has_first_session_flag($db);
+$stmt = $db->prepare("SELECT full_name, remaining, first_session_completed FROM users WHERE id=?");
 $stmt->execute([$uid]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 $remain = $user['remaining'] ?? 0;
+$firstSessionCompleted = db_bool($user['first_session_completed'] ?? null);
 if ($remain <= 0) {
     header('Location: welcome.php');
     exit;
@@ -25,7 +29,7 @@ $historySessions = $historyStmt->fetchAll(PDO::FETCH_ASSOC);
 $attendanceStmt = $db->prepare("SELECT COUNT(*) FROM sessions WHERE user_id=?");
 $attendanceStmt->execute([$uid]);
 $attendanceCount = (int) $attendanceStmt->fetchColumn();
-$materialsUnlocked = $attendanceCount > 0;
+$materialsUnlocked = $attendanceCount > 0 || $firstSessionCompleted;
 $materialsFlash = $_SESSION['materials_error'] ?? '';
 unset($_SESSION['materials_error']);
 
@@ -33,8 +37,8 @@ date_default_timezone_set('Asia/Ho_Chi_Minh');
 $nowTs = time();
 $morningBlockWindow = $nowTs >= strtotime('today 05:55') && $nowTs <= strtotime('today 06:55');
 $eveningBlockWindow = $nowTs >= strtotime('today 20:40') && $nowTs <= strtotime('today 21:40');
-$firstTimerMorningBlock = $attendanceCount === 0 && $morningBlockWindow;
-$firstTimerEveningBlock = $attendanceCount === 0 && $eveningBlockWindow;
+$firstTimerMorningBlock = $attendanceCount === 0 && !$firstSessionCompleted && $morningBlockWindow;
+$firstTimerEveningBlock = $attendanceCount === 0 && !$firstSessionCompleted && $eveningBlockWindow;
 
 // Thông báo
 notifications_setup($db);

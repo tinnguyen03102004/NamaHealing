@@ -2,6 +2,8 @@
 define('REQUIRE_LOGIN', true);
 require 'config.php';
 require_once __DIR__ . '/i18n.php';
+require_once __DIR__ . '/helpers/Schema.php';
+require_once __DIR__ . '/helpers/Value.php';
 
 if (!isset($_SESSION['uid']) || ($_SESSION['role'] ?? '') !== 'student') {
     header('Location: login.php');
@@ -9,11 +11,16 @@ if (!isset($_SESSION['uid']) || ($_SESSION['role'] ?? '') !== 'student') {
 }
 
 $uid = $_SESSION['uid'];
+$firstSessionCompleted = false;
+ensure_users_has_first_session_flag($db);
+$flagStmt = $db->prepare('SELECT first_session_completed FROM users WHERE id = ?');
+$flagStmt->execute([$uid]);
+$firstSessionCompleted = db_bool($flagStmt->fetchColumn());
 $attendanceStmt = $db->prepare('SELECT COUNT(*) FROM sessions WHERE user_id = ?');
 $attendanceStmt->execute([$uid]);
 $attendanceCount = (int) $attendanceStmt->fetchColumn();
 
-if ($attendanceCount === 0) {
+if ($attendanceCount === 0 && !$firstSessionCompleted) {
     $_SESSION['materials_error'] = __('student_materials_locked_flash');
     header('Location: dashboard.php');
     exit;
