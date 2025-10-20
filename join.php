@@ -21,6 +21,7 @@ if (!isset($_SESSION['uid']) || $_SESSION['role'] !== 'student') {
 }
 
 ensure_users_has_vip($db);
+ensure_users_has_first_session_flag($db);
 ensure_zoom_links_audience($db);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -33,6 +34,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $uid = $_SESSION['uid'];
 if (!in_array($session, ['morning', 'evening'])) $session = 'morning';
 
+$stmt = $db->prepare('SELECT remaining, is_vip, first_session_completed FROM users WHERE id=?');
+$stmt->execute([$uid]);
+$userInfo = $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
+$remain = (int)($userInfo['remaining'] ?? 0);
+$isVip = db_bool($userInfo['is_vip'] ?? null);
+$firstSessionCompleted = db_bool($userInfo['first_session_completed'] ?? null);
+
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 
 try {
@@ -41,7 +49,7 @@ try {
     $attendanceCount = 0;
 }
 
-$isFirstTimer = ($attendanceCount === 0);
+$isFirstTimer = ($attendanceCount === 0 && !$firstSessionCompleted);
 $nowTs = time();
 if ($session === 'morning') {
     $blockStart = strtotime('today 05:55');
@@ -138,11 +146,6 @@ function should_count_session(string $session): bool {
 $shouldCount = should_count_session($session);
 
 // Kiểm tra số buổi còn lại và trạng thái VIP
-$stmt = $db->prepare("SELECT remaining, is_vip FROM users WHERE id=?");
-$stmt->execute([$uid]);
-$userInfo = $stmt->fetch(PDO::FETCH_ASSOC);
-$remain = (int)($userInfo['remaining'] ?? 0);
-$isVip = db_bool($userInfo['is_vip'] ?? null);
 
 if ($remain <= 0) {
     header('Location: welcome.php');
@@ -176,7 +179,7 @@ if ($shouldCount) {
 
         if (!$alreadyCounted && (int)$lockedRemaining > 0) {
             // Trừ buổi, lưu lịch sử
-            $db->prepare('UPDATE users SET remaining=remaining-1 WHERE id=?')->execute([$uid]);
+            $db->prepare('UPDATE users SET remaining=remaining-1, first_session_completed=1 WHERE id=?')->execute([$uid]);
             $db->prepare('INSERT INTO sessions(user_id, session) VALUES (?,?)')->execute([$uid, $session]);
         }
 

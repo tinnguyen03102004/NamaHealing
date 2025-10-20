@@ -14,6 +14,28 @@ if (!function_exists('ensure_users_has_vip')) {
     }
 }
 
+if (!function_exists('ensure_users_has_first_session_flag')) {
+    function ensure_users_has_first_session_flag(PDO $db): void {
+        try {
+            $db->query('SELECT first_session_completed FROM users LIMIT 1');
+        } catch (PDOException $e) {
+            $alterStatements = [
+                "ALTER TABLE users ADD COLUMN first_session_completed TINYINT(1) NOT NULL DEFAULT 0 AFTER is_vip",
+                "ALTER TABLE users ADD COLUMN first_session_completed TINYINT(1) NOT NULL DEFAULT 0 AFTER remaining",
+            ];
+
+            foreach ($alterStatements as $sql) {
+                try {
+                    $db->exec($sql);
+                    break;
+                } catch (PDOException $ignored) {
+                    // Column may already exist or the referenced column might not be available yet.
+                }
+            }
+        }
+    }
+}
+
 if (!function_exists('ensure_zoom_links_audience')) {
     function ensure_zoom_links_audience(PDO $db): void {
         try {
