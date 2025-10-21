@@ -1,3 +1,0 @@
-<IfModule mod_headers.c>
-Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://source.zoom.us; style-src 'self' 'unsafe-inline' https://source.zoom.us; connect-src 'self' https://*.zoom.us https://source.zoom.us; img-src 'self' data: blob: https:; frame-src https://*.zoom.us; worker-src blob:"
-</IfModule>
