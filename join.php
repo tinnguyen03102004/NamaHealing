@@ -90,7 +90,7 @@ if ($isFirstTimer && $nowTs >= $blockStart && $nowTs <= $blockEnd) {
 <body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-emerald-100">
 {$gtm_body}
 <main class="bg-white/90 backdrop-blur rounded-2xl shadow-lg p-6 mx-4 text-center max-w-md">
-  <h1 class="text-xl font-semibold text-emerald-700 mb-3">{$safeTitle}</h1>
+  <h1 class="text-2xl font-semibold text-slate-900 mb-3">{$safeTitle}</h1>
   <p class="text-base text-gray-700 leading-relaxed mb-5">{$safeMessage}</p>
   <a href="dashboard.php" class="inline-flex items-center justify-center px-5 py-2 rounded-full bg-emerald-600 text-white hover:bg-emerald-700 transition">{$safeButtonLabel}</a>
 </main>
@@ -214,6 +214,7 @@ function render_zoom_app_redirect(
     $safeOpenAppLabel = htmlspecialchars($openAppLabel, ENT_QUOTES, 'UTF-8');
     $safeFallbackLabel = htmlspecialchars($fallbackLabel, ENT_QUOTES, 'UTF-8');
     $safeBackLabel = htmlspecialchars($backLabel, ENT_QUOTES, 'UTF-8');
+    $overlayNotice = htmlspecialchars(__('zoom_opening_app_notice'), ENT_QUOTES, 'UTF-8');
     $pageTitle = $safeMessage;
     $appUrlJson = json_encode($appUrl, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
     if ($appUrlJson === false) {
@@ -240,16 +241,52 @@ function render_zoom_app_redirect(
 </head>
 <body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-emerald-100">
 {$gtmBody}
+<div id="zoom-app-opening-overlay" class="fixed inset-0 z-40 hidden items-center justify-center bg-slate-900/70 backdrop-blur-sm" role="alert" aria-live="assertive" aria-hidden="true">
+  <div class="mx-6 max-w-sm rounded-2xl bg-white px-6 py-5 text-center shadow-xl">
+    <div class="mx-auto mb-4 h-12 w-12 animate-spin rounded-full border-4 border-emerald-500 border-t-transparent"></div>
+    <p class="text-base font-semibold text-slate-800">{$overlayNotice}</p>
+  </div>
+</div>
+<script>
+  (function() {
+    var overlay = document.getElementById('zoom-app-opening-overlay');
+    function showOverlay() {
+      if (!overlay) {
+        return;
+      }
+      overlay.setAttribute('aria-hidden', 'false');
+      overlay.classList.remove('hidden');
+      overlay.classList.add('flex');
+    }
+    window.showZoomAppOpeningOverlay = showOverlay;
+    function bindTriggers() {
+      var triggers = document.querySelectorAll('[data-zoom-app-trigger]');
+      if (triggers && typeof triggers.length === 'number') {
+        Array.prototype.forEach.call(triggers, function(trigger) {
+          trigger.addEventListener('click', showOverlay);
+        });
+      }
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', bindTriggers);
+    } else {
+      bindTriggers();
+    }
+  })();
+</script>
 <main class="bg-white/90 backdrop-blur rounded-2xl shadow-lg p-6 mx-4 text-center max-w-md">
-  <h1 class="text-xl font-semibold text-emerald-700 mb-4">{$safeMessage}</h1>
+  <h1 class="text-2xl font-semibold text-slate-900 mb-4">{$safeMessage}</h1>
   <div class="flex flex-col gap-3">
-    <a href="{$safeAppUrl}" class="inline-flex items-center justify-center rounded-full bg-emerald-600 px-5 py-2 text-base font-medium text-white shadow transition hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">{$safeOpenAppLabel}</a>
+    <a href="{$safeAppUrl}" data-zoom-app-trigger class="inline-flex items-center justify-center rounded-full bg-emerald-600 px-5 py-2 text-base font-medium text-white shadow transition hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">{$safeOpenAppLabel}</a>
     <a href="{$safeFallbackUrl}" class="inline-flex items-center justify-center rounded-full border border-emerald-500 px-5 py-2 text-base font-medium text-emerald-700 transition hover:bg-emerald-50 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">{$safeFallbackLabel}</a>
   </div>
   <a href="dashboard.php" class="mt-6 inline-flex items-center justify-center text-sm font-medium text-slate-600 hover:text-emerald-600 transition">{$safeBackLabel}</a>
 </main>
 <script>
   (function() {
+    if (typeof window.showZoomAppOpeningOverlay === 'function') {
+      window.showZoomAppOpeningOverlay();
+    }
     var appUrl = {$appUrlJson};
     var fallbackUrl = {$fallbackUrlJson};
     try {
@@ -301,6 +338,7 @@ if ($mode === 'choose') {
     $safeWebButtonLabel = htmlspecialchars($webButtonLabel, ENT_QUOTES, 'UTF-8');
     $safeAppButtonLabel = htmlspecialchars($appButtonLabel, ENT_QUOTES, 'UTF-8');
     $safeBackLabel = htmlspecialchars($backLabel, ENT_QUOTES, 'UTF-8');
+    $overlayNotice = htmlspecialchars(__('zoom_opening_app_notice'), ENT_QUOTES, 'UTF-8');
 
     $webJoinUrl = 'join.php?' . http_build_query(['s' => $session, 'mode' => 'web']);
     $appJoinUrl = 'join.php?' . http_build_query(['s' => $session, 'mode' => 'app']);
@@ -323,14 +361,47 @@ if ($mode === 'choose') {
 </head>
 <body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-emerald-100">
 {$gtm_body}
+<div id="zoom-app-opening-overlay" class="fixed inset-0 z-40 hidden items-center justify-center bg-slate-900/70 backdrop-blur-sm" role="alert" aria-live="assertive" aria-hidden="true">
+  <div class="mx-6 max-w-sm rounded-2xl bg-white px-6 py-5 text-center shadow-xl">
+    <div class="mx-auto mb-4 h-12 w-12 animate-spin rounded-full border-4 border-emerald-500 border-t-transparent"></div>
+    <p class="text-base font-semibold text-slate-800">{$overlayNotice}</p>
+  </div>
+</div>
+<script>
+  (function() {
+    var overlay = document.getElementById('zoom-app-opening-overlay');
+    function showOverlay() {
+      if (!overlay) {
+        return;
+      }
+      overlay.setAttribute('aria-hidden', 'false');
+      overlay.classList.remove('hidden');
+      overlay.classList.add('flex');
+    }
+    window.showZoomAppOpeningOverlay = showOverlay;
+    function bindTriggers() {
+      var triggers = document.querySelectorAll('[data-zoom-app-trigger]');
+      if (triggers && typeof triggers.length === 'number') {
+        Array.prototype.forEach.call(triggers, function(trigger) {
+          trigger.addEventListener('click', showOverlay);
+        });
+      }
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', bindTriggers);
+    } else {
+      bindTriggers();
+    }
+  })();
+</script>
 <main class="bg-white/90 backdrop-blur rounded-2xl shadow-lg p-6 mx-4 text-center max-w-md">
   <p class="text-sm font-semibold uppercase tracking-[0.35em] text-emerald-500 mb-2">{$safeSessionLabel}</p>
   <p class="text-xs text-slate-500 mb-4">{$safeSessionTime}</p>
-  <h1 class="text-2xl font-semibold text-emerald-700 mb-3">{$safeHeading}</h1>
+  <h1 class="text-3xl font-semibold text-slate-900 mb-3">{$safeHeading}</h1>
   <p class="text-base text-slate-700 leading-relaxed mb-6">{$safeSubtitle}</p>
   <div class="flex flex-col gap-3">
     <a href="{$safeWebJoinUrl}" class="inline-flex items-center justify-center rounded-full bg-emerald-600 px-5 py-2 text-base font-medium text-white shadow transition hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">{$safeWebButtonLabel}</a>
-    <a href="{$safeAppJoinUrl}" class="inline-flex items-center justify-center rounded-full border border-emerald-500 px-5 py-2 text-base font-medium text-emerald-700 transition hover:bg-emerald-50 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">{$safeAppButtonLabel}</a>
+    <a href="{$safeAppJoinUrl}" data-zoom-app-trigger class="inline-flex items-center justify-center rounded-full border border-emerald-500 px-5 py-2 text-base font-medium text-emerald-700 transition hover:bg-emerald-50 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">{$safeAppButtonLabel}</a>
   </div>
   <a href="dashboard.php" class="mt-6 inline-flex items-center justify-center text-sm font-medium text-slate-600 hover:text-emerald-600 transition">{$safeBackLabel}</a>
 </main>
@@ -431,9 +502,11 @@ if ($meetingId) {
 }
 
 if ($mode === 'app') {
-    $redirectUrl = str_replace(["\r", "\n"], '', (string)$appUrl);
-    header('Location: ' . $redirectUrl);
-    exit;
+    $redirectMessage = __('zoom_redirecting');
+    $openAppLabel = __('zoom_open_in_app');
+    $fallbackLabel = __('zoom_redirect_open_in_browser');
+    $backLabel = __('back_to_dashboard');
+    render_zoom_app_redirect($gtm_head, $gtm_body, $appUrl, $url, $languageCode, $redirectMessage, $openAppLabel, $fallbackLabel, $backLabel);
 }
 
 $zoomSdkCredentials = (function (): array {
@@ -488,6 +561,7 @@ $loadingText = htmlspecialchars(__('zoom_join_loading'), ENT_QUOTES, 'UTF-8');
 $errorText = htmlspecialchars(__('zoom_join_error'), ENT_QUOTES, 'UTF-8');
 $backLabel = htmlspecialchars(__('back_to_dashboard'), ENT_QUOTES, 'UTF-8');
 $safeAppUrl = htmlspecialchars($appUrl, ENT_QUOTES, 'UTF-8');
+$overlayNotice = htmlspecialchars(__('zoom_opening_app_notice'), ENT_QUOTES, 'UTF-8');
 
 $jsConfig = json_encode([
     'meetingNumber' => (string)$meetingId,
@@ -567,15 +641,48 @@ echo <<<HTML
 </head>
 <body>
 {$gtm_body}
+<div id="zoom-app-opening-overlay" class="fixed inset-0 z-40 hidden items-center justify-center bg-slate-900/70 backdrop-blur-sm" role="alert" aria-live="assertive" aria-hidden="true">
+  <div class="mx-6 max-w-sm rounded-2xl bg-white px-6 py-5 text-center shadow-xl">
+    <div class="mx-auto mb-4 h-12 w-12 animate-spin rounded-full border-4 border-emerald-500 border-t-transparent"></div>
+    <p class="text-base font-semibold text-slate-800">{$overlayNotice}</p>
+  </div>
+</div>
+<script>
+  (function() {
+    var overlay = document.getElementById('zoom-app-opening-overlay');
+    function showOverlay() {
+      if (!overlay) {
+        return;
+      }
+      overlay.setAttribute('aria-hidden', 'false');
+      overlay.classList.remove('hidden');
+      overlay.classList.add('flex');
+    }
+    window.showZoomAppOpeningOverlay = showOverlay;
+    function bindTriggers() {
+      var triggers = document.querySelectorAll('[data-zoom-app-trigger]');
+      if (triggers && typeof triggers.length === 'number') {
+        Array.prototype.forEach.call(triggers, function(trigger) {
+          trigger.addEventListener('click', showOverlay);
+        });
+      }
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', bindTriggers);
+    } else {
+      bindTriggers();
+    }
+  })();
+</script>
 <div class="flex flex-col min-h-screen">
   <header id="status-bar" class="shadow-sm">
     <div class="mx-auto w-full max-w-5xl px-4 py-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
       <div>
         <p class="text-xs uppercase tracking-[0.2em] text-slate-500">Zoom Meeting</p>
-        <p id="join-status" role="status" aria-live="polite" class="text-base font-semibold text-emerald-700">{$loadingText}</p>
+        <p id="join-status" role="status" aria-live="polite" class="text-base font-semibold text-slate-900">{$loadingText}</p>
       </div>
       <div class="flex flex-wrap gap-3">
-        <a id="open-app-button" href="{$safeAppUrl}" class="inline-flex items-center justify-center rounded-full bg-emerald-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2" target="_blank" rel="noopener">{$openAppLabel}</a>
+        <a id="open-app-button" href="{$safeAppUrl}" data-zoom-app-trigger class="inline-flex items-center justify-center rounded-full bg-emerald-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2" target="_blank" rel="noopener">{$openAppLabel}</a>
         <a href="dashboard.php" class="inline-flex items-center justify-center rounded-full border border-emerald-500 px-4 py-2 text-sm font-medium text-emerald-700 transition hover:bg-emerald-50 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">{$backLabel}</a>
       </div>
     </div>
