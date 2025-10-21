@@ -34,6 +34,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $uid = $_SESSION['uid'];
 if (!in_array($session, ['morning', 'evening'])) $session = 'morning';
 
+$modeParam = $_POST['mode'] ?? $_GET['mode'] ?? '';
+$mode = strtolower(trim((string)$modeParam));
+if ($mode === '' || !in_array($mode, ['web', 'app'], true)) {
+    $mode = 'choose';
+}
+
 $stmt = $db->prepare('SELECT remaining, is_vip, first_session_completed, COALESCE(full_name, "") AS full_name FROM users WHERE id=?');
 $stmt->execute([$uid]);
 $userInfo = $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
@@ -143,16 +149,12 @@ function should_count_session(string $session): bool {
     }
     return ($now >= $start - 10 * 60) && ($now <= $start + 45 * 60);
 }
-$shouldCount = should_count_session($session);
 
-// Kiểm tra số buổi còn lại và trạng thái VIP
+function persist_session_usage(PDO $db, int $uid, string $session): void {
+    if (!should_count_session($session)) {
+        return;
+    }
 
-if ($remain <= 0) {
-    header('Location: welcome.php');
-    exit;
-}
-
-if ($shouldCount) {
     try {
         $startedTransaction = false;
         if (!$db->inTransaction()) {
@@ -187,12 +189,158 @@ if ($shouldCount) {
             $db->commit();
         }
     } catch (Throwable $e) {
-        if ($startedTransaction && $db->inTransaction()) {
+        if (isset($startedTransaction) && $startedTransaction && $db->inTransaction()) {
             $db->rollBack();
         }
         throw $e;
     }
 }
+
+function render_zoom_app_redirect(
+    string $gtmHead,
+    string $gtmBody,
+    string $appUrl,
+    string $fallbackUrl,
+    string $languageCode,
+    string $message,
+    string $openAppLabel,
+    string $fallbackLabel,
+    string $backLabel
+): void {
+    $langAttr = htmlspecialchars($languageCode, ENT_QUOTES, 'UTF-8');
+    $safeMessage = htmlspecialchars($message, ENT_QUOTES, 'UTF-8');
+    $safeAppUrl = htmlspecialchars($appUrl, ENT_QUOTES, 'UTF-8');
+    $safeFallbackUrl = htmlspecialchars($fallbackUrl, ENT_QUOTES, 'UTF-8');
+    $safeOpenAppLabel = htmlspecialchars($openAppLabel, ENT_QUOTES, 'UTF-8');
+    $safeFallbackLabel = htmlspecialchars($fallbackLabel, ENT_QUOTES, 'UTF-8');
+    $safeBackLabel = htmlspecialchars($backLabel, ENT_QUOTES, 'UTF-8');
+    $pageTitle = $safeMessage;
+    $appUrlJson = json_encode($appUrl, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+    if ($appUrlJson === false) {
+        $appUrlJson = 'null';
+    }
+    $fallbackUrlJson = json_encode($fallbackUrl, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+    if ($fallbackUrlJson === false) {
+        $fallbackUrlJson = 'null';
+    }
+
+    echo <<<HTML
+<!DOCTYPE html>
+<html lang="{$langAttr}">
+<head>
+{$gtmHead}
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{$pageTitle}</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<style>body{font-family:'Montserrat',sans-serif;}</style>
+</head>
+<body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-emerald-100">
+{$gtmBody}
+<main class="bg-white/90 backdrop-blur rounded-2xl shadow-lg p-6 mx-4 text-center max-w-md">
+  <h1 class="text-xl font-semibold text-emerald-700 mb-4">{$safeMessage}</h1>
+  <div class="flex flex-col gap-3">
+    <a href="{$safeAppUrl}" class="inline-flex items-center justify-center rounded-full bg-emerald-600 px-5 py-2 text-base font-medium text-white shadow transition hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">{$safeOpenAppLabel}</a>
+    <a href="{$safeFallbackUrl}" class="inline-flex items-center justify-center rounded-full border border-emerald-500 px-5 py-2 text-base font-medium text-emerald-700 transition hover:bg-emerald-50 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">{$safeFallbackLabel}</a>
+  </div>
+  <a href="dashboard.php" class="mt-6 inline-flex items-center justify-center text-sm font-medium text-slate-600 hover:text-emerald-600 transition">{$safeBackLabel}</a>
+</main>
+<script>
+  (function() {
+    var appUrl = {$appUrlJson};
+    var fallbackUrl = {$fallbackUrlJson};
+    try {
+      window.location.href = appUrl;
+    } catch (error) {
+      console.warn('Failed to open Zoom app link automatically', error);
+    }
+    setTimeout(function() {
+      try {
+        window.location.href = fallbackUrl;
+      } catch (error) {
+        console.warn('Failed to open Zoom fallback link automatically', error);
+      }
+    }, 2000);
+  })();
+</script>
+</body>
+</html>
+HTML;
+    exit;
+}
+
+// Kiểm tra số buổi còn lại và trạng thái VIP
+
+if ($remain <= 0) {
+    header('Location: welcome.php');
+    exit;
+}
+
+$languageCode = $_SESSION['lang'] ?? 'vi';
+
+if ($mode === 'choose') {
+    $langAttr = htmlspecialchars($languageCode, ENT_QUOTES, 'UTF-8');
+    $sessionTitle = $session === 'morning' ? __('join_morning') : __('join_evening');
+    $pageTitle = sprintf(__('join_choose_page_title'), $sessionTitle);
+    $heading = sprintf(__('join_choose_heading'), $sessionTitle);
+    $subtitle = __('join_choose_subheading');
+    $sessionLabel = $session === 'morning' ? __('morning_class') : __('evening_class');
+    $sessionTime = $session === 'morning' ? __('morning_class_time') : __('evening_class_time');
+    $webButtonLabel = __('join_choose_web_button');
+    $appButtonLabel = __('join_choose_app_button');
+    $backLabel = __('back_to_dashboard');
+
+    $safePageTitle = htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8');
+    $safeHeading = htmlspecialchars($heading, ENT_QUOTES, 'UTF-8');
+    $safeSubtitle = htmlspecialchars($subtitle, ENT_QUOTES, 'UTF-8');
+    $safeSessionLabel = htmlspecialchars($sessionLabel, ENT_QUOTES, 'UTF-8');
+    $safeSessionTime = htmlspecialchars($sessionTime, ENT_QUOTES, 'UTF-8');
+    $safeWebButtonLabel = htmlspecialchars($webButtonLabel, ENT_QUOTES, 'UTF-8');
+    $safeAppButtonLabel = htmlspecialchars($appButtonLabel, ENT_QUOTES, 'UTF-8');
+    $safeBackLabel = htmlspecialchars($backLabel, ENT_QUOTES, 'UTF-8');
+
+    $webJoinUrl = 'join.php?' . http_build_query(['s' => $session, 'mode' => 'web']);
+    $appJoinUrl = 'join.php?' . http_build_query(['s' => $session, 'mode' => 'app']);
+    $safeWebJoinUrl = htmlspecialchars($webJoinUrl, ENT_QUOTES, 'UTF-8');
+    $safeAppJoinUrl = htmlspecialchars($appJoinUrl, ENT_QUOTES, 'UTF-8');
+
+    echo <<<HTML
+<!DOCTYPE html>
+<html lang="{$langAttr}">
+<head>
+{$gtm_head}
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{$safePageTitle}</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<style>body{font-family:'Montserrat',sans-serif;}</style>
+</head>
+<body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-emerald-100">
+{$gtm_body}
+<main class="bg-white/90 backdrop-blur rounded-2xl shadow-lg p-6 mx-4 text-center max-w-md">
+  <p class="text-sm font-semibold uppercase tracking-[0.35em] text-emerald-500 mb-2">{$safeSessionLabel}</p>
+  <p class="text-xs text-slate-500 mb-4">{$safeSessionTime}</p>
+  <h1 class="text-2xl font-semibold text-emerald-700 mb-3">{$safeHeading}</h1>
+  <p class="text-base text-slate-700 leading-relaxed mb-6">{$safeSubtitle}</p>
+  <div class="flex flex-col gap-3">
+    <a href="{$safeWebJoinUrl}" class="inline-flex items-center justify-center rounded-full bg-emerald-600 px-5 py-2 text-base font-medium text-white shadow transition hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">{$safeWebButtonLabel}</a>
+    <a href="{$safeAppJoinUrl}" class="inline-flex items-center justify-center rounded-full border border-emerald-500 px-5 py-2 text-base font-medium text-emerald-700 transition hover:bg-emerald-50 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">{$safeAppButtonLabel}</a>
+  </div>
+  <a href="dashboard.php" class="mt-6 inline-flex items-center justify-center text-sm font-medium text-slate-600 hover:text-emerald-600 transition">{$safeBackLabel}</a>
+</main>
+</body>
+</html>
+HTML;
+    exit;
+}
+
+persist_session_usage($db, (int)$uid, $session);
 
 $db->exec("CREATE TABLE IF NOT EXISTS zoom_links (
     session VARCHAR(10) NOT NULL,
@@ -282,6 +430,14 @@ if ($meetingId) {
     }
 }
 
+if ($mode === 'app') {
+    $redirectMessage = __('zoom_redirecting');
+    $openAppLabel = __('zoom_open_in_app');
+    $fallbackLabel = __('zoom_redirect_open_in_browser');
+    $backLabel = __('back_to_dashboard');
+    render_zoom_app_redirect($gtm_head, $gtm_body, $appUrl, $url, $languageCode, $redirectMessage, $openAppLabel, $fallbackLabel, $backLabel);
+}
+
 $zoomSdkCredentials = (function (): array {
     $key = '';
     $secret = '';
@@ -307,12 +463,11 @@ $zoomSdkCredentials = (function (): array {
 $canUseWebSdk = $meetingId && $zoomSdkKey !== '' && $zoomSdkSecret !== '';
 
 if (!$canUseWebSdk) {
-    $fallbackUrl = $url;
-    echo "<!DOCTYPE html><html><head>{$gtm_head}<meta charset='utf-8'><title>Redirecting...</title>";
-    echo "<script>window.location.href=" . json_encode($appUrl) . ";";
-    echo "setTimeout(function(){window.location.href=" . json_encode($fallbackUrl) . ";},2000);";
-    echo "</script></head><body>{$gtm_body}<p>Redirecting to Zoom...</p></body></html>";
-    exit;
+    $redirectMessage = __('zoom_redirecting');
+    $openAppLabel = __('zoom_open_in_app');
+    $fallbackLabel = __('zoom_redirect_open_in_browser');
+    $backLabel = __('back_to_dashboard');
+    render_zoom_app_redirect($gtm_head, $gtm_body, $appUrl, $url, $languageCode, $redirectMessage, $openAppLabel, $fallbackLabel, $backLabel);
 }
 
 $displayName = trim((string)($userInfo['full_name'] ?? ''));
