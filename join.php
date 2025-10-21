@@ -267,8 +267,28 @@ if ($meetingId) {
     }
 }
 
-$zoomSdkKey = trim((string)($_ENV['ZOOM_SDK_CLIENT_ID'] ?? ''));
-$zoomSdkSecret = trim((string)($_ENV['ZOOM_SDK_CLIENT_SECRET'] ?? ''));
+$zoomSdkCredentials = (function (): array {
+    $key = '';
+    $secret = '';
+
+    if (defined('ZOOM_SDK_KEY')) {
+        $key = trim((string)ZOOM_SDK_KEY);
+    }
+    if ($key === '') {
+        $key = trim((string)($_ENV['ZOOM_SDK_KEY'] ?? $_ENV['ZOOM_SDK_CLIENT_ID'] ?? ''));
+    }
+
+    if (defined('ZOOM_SDK_SECRET')) {
+        $secret = trim((string)ZOOM_SDK_SECRET);
+    }
+    if ($secret === '') {
+        $secret = trim((string)($_ENV['ZOOM_SDK_SECRET'] ?? $_ENV['ZOOM_SDK_CLIENT_SECRET'] ?? ''));
+    }
+
+    return [$key, $secret];
+})();
+
+[$zoomSdkKey, $zoomSdkSecret] = $zoomSdkCredentials;
 $canEmbedZoom = $meetingId && $zoomSdkKey !== '' && $zoomSdkSecret !== '';
 
 if (!$canEmbedZoom) {
@@ -292,11 +312,6 @@ $zoomLanguageMap = [
     'uk' => 'uk-UA',
 ];
 $zoomLanguage = $zoomLanguageMap[$languageCode] ?? 'en-US';
-$csrfToken = $_SESSION['csrf_token'] ?? '';
-$scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
-$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-$leaveUrl = $scheme . $host . '/dashboard.php';
-
 $langAttr = htmlspecialchars($languageCode, ENT_QUOTES, 'UTF-8');
 $title = $session === 'morning' ? __('join_morning') : __('join_evening');
 $safeTitle = htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
@@ -312,24 +327,18 @@ $jsConfig = json_encode([
     'meetingNumber' => (string)$meetingId,
     'passcode' => (string)$pwd,
     'userName' => $displayName,
-    'sdkKey' => $zoomSdkKey,
     'language' => $zoomLanguage,
-    'csrfToken' => $csrfToken,
-    'leaveUrl' => $leaveUrl,
     'appUrl' => $appUrl,
 ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 $loadingTextJson = json_encode(__('zoom_join_loading'));
 $errorTextJson = json_encode(__('zoom_join_error'));
 $openAppLabelJson = json_encode(__('zoom_open_in_app'));
 
-$zoomSdkVersion = '2.22.0';
+$zoomSdkVersion = '4.0.7';
 $zoomCdnBase = "https://source.zoom.us/{$zoomSdkVersion}";
 $zoomCssUrl = "{$zoomCdnBase}/css/zoom-meeting-embedded.min.css";
 $zoomReactUrl = "{$zoomCdnBase}/lib/vendor/react.min.js";
 $zoomReactDomUrl = "{$zoomCdnBase}/lib/vendor/react-dom.min.js";
-$zoomReduxUrl = "{$zoomCdnBase}/lib/vendor/redux.min.js";
-$zoomReduxThunkUrl = "{$zoomCdnBase}/lib/vendor/redux-thunk.min.js";
-$zoomLodashUrl = "{$zoomCdnBase}/lib/vendor/lodash.min.js";
 $zoomSdkUrl = "{$zoomCdnBase}/zoom-meeting-embedded-{$zoomSdkVersion}.min.js";
 
 echo <<<HTML
@@ -373,9 +382,6 @@ echo <<<HTML
 <script type="application/json" id="zoom-config">{$jsConfig}</script>
 <script src="{$zoomReactUrl}" onerror="console.error('Failed to load Zoom Meeting SDK dependency: react.min.js', event)"></script>
 <script src="{$zoomReactDomUrl}" onerror="console.error('Failed to load Zoom Meeting SDK dependency: react-dom.min.js', event)"></script>
-<script src="{$zoomReduxUrl}" onerror="console.error('Failed to load Zoom Meeting SDK dependency: redux.min.js', event)"></script>
-<script src="{$zoomReduxThunkUrl}" onerror="console.error('Failed to load Zoom Meeting SDK dependency: redux-thunk.min.js', event)"></script>
-<script src="{$zoomLodashUrl}" onerror="console.error('Failed to load Zoom Meeting SDK dependency: lodash.min.js', event)"></script>
 <script src="{$zoomSdkUrl}" onerror="console.error('Failed to load Zoom Meeting SDK bundle', event)"></script>
 <script>
   const zoomConfig = JSON.parse(document.getElementById('zoom-config').textContent);
@@ -385,31 +391,21 @@ echo <<<HTML
     openApp: {$openAppLabelJson}
   };
   const statusEl = document.getElementById('join-status');
+  const fallbackMessage = 'SDK not loaded. ' + messages.openApp + '.';
   statusEl.textContent = messages.loading;
 
   async function joinMeeting() {
-    if (!window.ZoomMtgEmbedded) {
-      statusEl.textContent = messages.error + ' (SDK not loaded)';
+    const client = window.ZoomMtgEmbedded?.createClient?.();
+    if (!client) {
+      statusEl.textContent = fallbackMessage;
       return;
     }
-    const client = window.ZoomMtgEmbedded.createClient();
     const meetingSDKElement = document.getElementById('meetingSDKElement');
     try {
       await client.init({
         zoomAppRoot: meetingSDKElement,
-        language: zoomConfig.language,
-        customize: {
-          meetingInfo: ['topic', 'host', 'mn', 'password'],
-          toolbar: {
-            buttons: [
-              {
-                text: messages.openApp,
-                className: 'zoom-app-link',
-                onClick: () => window.open(zoomConfig.appUrl, '_blank', 'noopener')
-              }
-            ]
-          }
-        }
+        language: zoomConfig.language || 'vi-VN',
+        patchJsMedia: true,
       });
 
       const response = await fetch('zoom_signature.php', {
@@ -418,8 +414,7 @@ echo <<<HTML
         credentials: 'same-origin',
         body: JSON.stringify({
           meetingNumber: zoomConfig.meetingNumber,
-          role: 0,
-          csrf_token: zoomConfig.csrfToken
+          role: 0
         })
       });
 
@@ -437,13 +432,14 @@ echo <<<HTML
         sdkKey: data.sdkKey,
         meetingNumber: zoomConfig.meetingNumber,
         password: zoomConfig.passcode,
-        userName: zoomConfig.userName,
-        leaveUrl: zoomConfig.leaveUrl
+        userName: zoomConfig.userName
       });
       statusEl.textContent = '';
     } catch (error) {
       console.error(error);
-      statusEl.textContent = messages.error + ' ' + (error && error.message ? error.message : '');
+      const detail = error && error.message ? error.message : '';
+      statusEl.textContent = messages.error + (detail ? ' ' + detail : '');
+      statusEl.textContent += ' ' + fallbackMessage;
     }
   }
 
