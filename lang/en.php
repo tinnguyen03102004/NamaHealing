@@ -287,6 +287,7 @@ return [
     'zoom_join_loading' => 'Joining the room…',
     'zoom_join_error' => 'Error joining the room.',
     'zoom_redirecting' => 'Opening Zoom...',
+    'zoom_opening_app_notice' => 'We are opening the Zoom app, please wait a moment...',
     'zoom_redirect_open_in_browser' => 'Open the Zoom link in browser',
     'journal_student_label' => 'Student',
     'journal_teacher_label' => 'Teacher',

@@ -287,6 +287,7 @@ return [
     'zoom_join_loading' => 'Đang vào phòng…',
     'zoom_join_error' => 'Lỗi khi vào phòng.',
     'zoom_redirecting' => 'Đang mở Zoom...',
+    'zoom_opening_app_notice' => 'Ứng dụng Zoom đang được mở, vui lòng chờ trong giây lát...',
     'zoom_redirect_open_in_browser' => 'Mở bản Zoom trên trình duyệt',
     'journal_student_label' => 'Học viên',
     'journal_teacher_label' => 'Giáo viên',

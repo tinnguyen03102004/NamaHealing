@@ -287,6 +287,7 @@ return [
     'zoom_join_loading' => 'Вхід до кімнати…',
     'zoom_join_error' => 'Помилка входу до кімнати.',
     'zoom_redirecting' => 'Відкриваємо Zoom...',
+    'zoom_opening_app_notice' => 'Відкриваємо застосунок Zoom, будь ласка, зачекайте...',
     'zoom_redirect_open_in_browser' => 'Відкрити Zoom у браузері',
     'journal_student_label' => 'Студент',
     'journal_teacher_label' => 'Викладач',
