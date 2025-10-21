@@ -395,10 +395,10 @@ if ($mode === 'choose') {
   })();
 </script>
 <main class="bg-white/90 backdrop-blur rounded-2xl shadow-lg p-6 mx-4 text-center max-w-md">
-  <p class="text-sm font-semibold uppercase tracking-[0.35em] text-emerald-500 mb-2">{$safeSessionLabel}</p>
-  <p class="text-xs text-slate-500 mb-4">{$safeSessionTime}</p>
-  <h1 class="text-3xl font-semibold text-slate-900 mb-3">{$safeHeading}</h1>
-  <p class="text-base text-slate-700 leading-relaxed mb-6">{$safeSubtitle}</p>
+  <p class="text-lg font-semibold uppercase tracking-[0.25em] text-emerald-600 mb-1">{$safeSessionLabel}</p>
+  <p class="text-sm text-slate-500 mb-4">{$safeSessionTime}</p>
+  <h1 class="text-2xl font-semibold text-slate-800 mb-3">{$safeHeading}</h1>
+  <p class="text-base text-slate-600 leading-relaxed mb-6">{$safeSubtitle}</p>
   <div class="flex flex-col gap-3">
     <a href="{$safeWebJoinUrl}" class="inline-flex items-center justify-center rounded-full bg-emerald-600 px-5 py-2 text-base font-medium text-white shadow transition hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">{$safeWebButtonLabel}</a>
     <a href="{$safeAppJoinUrl}" data-zoom-app-trigger class="inline-flex items-center justify-center rounded-full border border-emerald-500 px-5 py-2 text-base font-medium text-emerald-700 transition hover:bg-emerald-50 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">{$safeAppButtonLabel}</a>
