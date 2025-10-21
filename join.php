@@ -521,7 +521,6 @@ echo <<<HTML
         sdkKey: signaturePayload.sdkKey,
         meetingNumber: zoomConfig.meetingNumber,
         passWord: zoomConfig.passcode,
-        password: zoomConfig.passcode,
         userName: zoomConfig.userName,
         success: resolve,
         error: reject,
