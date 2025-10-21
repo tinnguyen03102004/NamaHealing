@@ -431,11 +431,9 @@ if ($meetingId) {
 }
 
 if ($mode === 'app') {
-    $redirectMessage = __('zoom_redirecting');
-    $openAppLabel = __('zoom_open_in_app');
-    $fallbackLabel = __('zoom_redirect_open_in_browser');
-    $backLabel = __('back_to_dashboard');
-    render_zoom_app_redirect($gtm_head, $gtm_body, $appUrl, $url, $languageCode, $redirectMessage, $openAppLabel, $fallbackLabel, $backLabel);
+    $redirectUrl = str_replace(["\r", "\n"], '', (string)$appUrl);
+    header('Location: ' . $redirectUrl);
+    exit;
 }
 
 $zoomSdkCredentials = (function (): array {
