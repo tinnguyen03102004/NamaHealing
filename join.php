@@ -256,14 +256,29 @@ if (isset($parsed['path']) && preg_match('/\/j\/(\d+)/', $parsed['path'], $m)) {
     $meetingId = $m[1];
 }
 $pwd = $queryParams['pwd'] ?? ($queryParams['passcode'] ?? '');
+$registrantToken = $queryParams['tk'] ?? '';
+$zakToken = $queryParams['zak'] ?? '';
 $appUrl = $url;
 if ($meetingId) {
+    $appUrlParams = [];
+    if ($pwd !== '') {
+        $appUrlParams['pwd'] = $pwd;
+    }
+    if ($registrantToken !== '') {
+        $appUrlParams['tk'] = $registrantToken;
+    }
+    if ($zakToken !== '') {
+        $appUrlParams['zak'] = $zakToken;
+    }
+
+    $appUrlQuery = http_build_query($appUrlParams);
+
     if (str_contains($ua, 'iphone') || str_contains($ua, 'ipad') || str_contains($ua, 'ipod')) {
-        $appUrl = "zoomus://zoom.us/join?confno={$meetingId}" . ($pwd ? "&pwd={$pwd}" : '');
+        $appUrl = "zoomus://zoom.us/join?confno={$meetingId}" . ($appUrlQuery ? "&{$appUrlQuery}" : '');
     } elseif (str_contains($ua, 'android')) {
-        $appUrl = "zoomus://zoom.us/wc/join/{$meetingId}" . ($pwd ? "?pwd={$pwd}" : '');
+        $appUrl = "zoomus://zoom.us/wc/join/{$meetingId}" . ($appUrlQuery ? "?{$appUrlQuery}" : '');
     } else {
-        $appUrl = "zoommtg://zoom.us/join?confno={$meetingId}" . ($pwd ? "&pwd={$pwd}" : '');
+        $appUrl = "zoommtg://zoom.us/join?confno={$meetingId}" . ($appUrlQuery ? "&{$appUrlQuery}" : '');
     }
 }
 
@@ -324,6 +339,8 @@ $safeAppUrl = htmlspecialchars($appUrl, ENT_QUOTES, 'UTF-8');
 $jsConfig = json_encode([
     'meetingNumber' => (string)$meetingId,
     'passcode' => (string)$pwd,
+    'registrantToken' => (string)$registrantToken,
+    'zakToken' => (string)$zakToken,
     'userName' => $displayName,
     'language' => $zoomLanguage,
     'appUrl' => $appUrl,
@@ -499,7 +516,7 @@ echo <<<HTML
 
   function joinClient(signaturePayload) {
     return new Promise((resolve, reject) => {
-      window.ZoomMtg.join({
+      const joinConfig = {
         signature: signaturePayload.signature,
         sdkKey: signaturePayload.sdkKey,
         meetingNumber: zoomConfig.meetingNumber,
@@ -508,7 +525,17 @@ echo <<<HTML
         userName: zoomConfig.userName,
         success: resolve,
         error: reject,
-      });
+      };
+
+      if (zoomConfig.registrantToken) {
+        joinConfig.tk = zoomConfig.registrantToken;
+      }
+
+      if (zoomConfig.zakToken) {
+        joinConfig.zak = zoomConfig.zakToken;
+      }
+
+      window.ZoomMtg.join(joinConfig);
     });
   }
 
