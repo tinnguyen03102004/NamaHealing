@@ -322,6 +322,16 @@ $loadingTextJson = json_encode(__('zoom_join_loading'));
 $errorTextJson = json_encode(__('zoom_join_error'));
 $openAppLabelJson = json_encode(__('zoom_open_in_app'));
 
+$zoomSdkVersion = '2.22.0';
+$zoomCdnBase = "https://source.zoom.us/{$zoomSdkVersion}";
+$zoomCssUrl = "{$zoomCdnBase}/css/zoom-meeting-embedded.min.css";
+$zoomReactUrl = "{$zoomCdnBase}/lib/vendor/react.min.js";
+$zoomReactDomUrl = "{$zoomCdnBase}/lib/vendor/react-dom.min.js";
+$zoomReduxUrl = "{$zoomCdnBase}/lib/vendor/redux.min.js";
+$zoomReduxThunkUrl = "{$zoomCdnBase}/lib/vendor/redux-thunk.min.js";
+$zoomLodashUrl = "{$zoomCdnBase}/lib/vendor/lodash.min.js";
+$zoomSdkUrl = "{$zoomCdnBase}/zoom-meeting-embedded-{$zoomSdkVersion}.min.js";
+
 echo <<<HTML
 <!DOCTYPE html>
 <html lang="{$langAttr}">
@@ -334,7 +344,7 @@ echo <<<HTML
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="https://source.zoom.us/2.18.5/css/zoom-meeting-embedded.min.css">
+<link rel="stylesheet" href="{$zoomCssUrl}">
 <style>
   body { font-family: 'Montserrat', sans-serif; background: linear-gradient(135deg, #f0fdf4, #dcfce7); }
   #meetingSDKElement { width: 100%; height: 100%; }
@@ -361,12 +371,12 @@ echo <<<HTML
   </div>
 </main>
 <script type="application/json" id="zoom-config">{$jsConfig}</script>
-<script src="https://source.zoom.us/2.18.5/lib/vendor/react.min.js"></script>
-<script src="https://source.zoom.us/2.18.5/lib/vendor/react-dom.min.js"></script>
-<script src="https://source.zoom.us/2.18.5/lib/vendor/redux.min.js"></script>
-<script src="https://source.zoom.us/2.18.5/lib/vendor/redux-thunk.min.js"></script>
-<script src="https://source.zoom.us/2.18.5/lib/vendor/lodash.min.js"></script>
-<script src="https://source.zoom.us/2.18.5/zoom-meeting-embedded-2.18.5.min.js"></script>
+<script src="{$zoomReactUrl}" onerror="console.error('Failed to load Zoom Meeting SDK dependency: react.min.js', event)"></script>
+<script src="{$zoomReactDomUrl}" onerror="console.error('Failed to load Zoom Meeting SDK dependency: react-dom.min.js', event)"></script>
+<script src="{$zoomReduxUrl}" onerror="console.error('Failed to load Zoom Meeting SDK dependency: redux.min.js', event)"></script>
+<script src="{$zoomReduxThunkUrl}" onerror="console.error('Failed to load Zoom Meeting SDK dependency: redux-thunk.min.js', event)"></script>
+<script src="{$zoomLodashUrl}" onerror="console.error('Failed to load Zoom Meeting SDK dependency: lodash.min.js', event)"></script>
+<script src="{$zoomSdkUrl}" onerror="console.error('Failed to load Zoom Meeting SDK bundle', event)"></script>
 <script>
   const zoomConfig = JSON.parse(document.getElementById('zoom-config').textContent);
   const messages = {
