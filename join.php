@@ -442,7 +442,143 @@ echo <<<HTML
 <script src="{$zoomLodashUrl}" onerror="console.error('Failed to load Zoom Meeting SDK dependency: lodash.min.js', event)"></script>
 <script src="{$zoomSdkUrl}" onerror="console.error('Failed to load Zoom Meeting SDK bundle', event)"></script>
 <script>
-  const zoomConfig = JSON.parse(document.getElementById('zoom-config').textContent);
+  const zoomConfigElement = document.getElementById('zoom-config');
+  const initialZoomConfig = zoomConfigElement ? JSON.parse(zoomConfigElement.textContent) : {};
+  const zoomClientStateStorageKey = 'namahealing_zoom_client_view_state';
+  let zoomConfig = { ...initialZoomConfig };
+  let openAppButtonCache = null;
+
+  function getOpenAppButton() {
+    if (!openAppButtonCache) {
+      openAppButtonCache = document.getElementById('open-app-button');
+    }
+    return openAppButtonCache;
+  }
+
+  function applyOpenAppLink() {
+    const button = getOpenAppButton();
+    if (!button) {
+      return;
+    }
+    const url = typeof zoomConfig.appUrl === 'string' ? zoomConfig.appUrl : '';
+    if (url) {
+      button.setAttribute('href', url);
+    }
+  }
+
+  function persistZoomConfig() {
+    if (typeof window.sessionStorage === 'undefined') {
+      return;
+    }
+
+    const payload = {
+      meetingNumber: zoomConfig.meetingNumber,
+      passcode: zoomConfig.passcode ?? '',
+      registrantToken: zoomConfig.registrantToken ?? '',
+      zakToken: zoomConfig.zakToken ?? '',
+      userName: zoomConfig.userName ?? '',
+      language: zoomConfig.language ?? '',
+      appUrl: zoomConfig.appUrl ?? '',
+    };
+
+    try {
+      window.sessionStorage.setItem(zoomClientStateStorageKey, JSON.stringify(payload));
+    } catch (error) {
+      console.warn('Failed to persist Zoom client state', error);
+    }
+  }
+
+  function mergeZoomConfig(update) {
+    if (!update || typeof update !== 'object') {
+      return false;
+    }
+
+    const allowedKeys = ['passcode', 'registrantToken', 'zakToken', 'userName', 'language', 'appUrl'];
+    let changed = false;
+
+    for (const key of allowedKeys) {
+      if (!Object.prototype.hasOwnProperty.call(update, key)) {
+        continue;
+      }
+
+      const nextValue = update[key];
+      if (typeof nextValue === 'undefined') {
+        continue;
+      }
+
+      const valueToAssign = typeof nextValue === 'string' ? nextValue : '';
+      if (zoomConfig[key] !== valueToAssign) {
+        zoomConfig[key] = valueToAssign;
+        changed = true;
+      }
+    }
+
+    if (changed) {
+      persistZoomConfig();
+      applyOpenAppLink();
+    }
+
+    return changed;
+  }
+
+  (function restoreZoomClientState() {
+    if (typeof window.sessionStorage === 'undefined') {
+      return;
+    }
+
+    let storedStateRaw = null;
+    try {
+      storedStateRaw = window.sessionStorage.getItem(zoomClientStateStorageKey);
+    } catch (error) {
+      console.warn('Failed to access stored Zoom client state', error);
+      return;
+    }
+
+    if (!storedStateRaw) {
+      return;
+    }
+
+    try {
+      const parsedState = JSON.parse(storedStateRaw);
+      if (parsedState && typeof parsedState === 'object' && parsedState.meetingNumber === zoomConfig.meetingNumber) {
+        mergeZoomConfig(parsedState);
+      }
+    } catch (error) {
+      console.warn('Failed to parse stored Zoom client state', error);
+    }
+  })();
+
+  function exportZoomConfig() {
+    return { ...zoomConfig };
+  }
+
+  function updateZoomConfig(update) {
+    mergeZoomConfig(update);
+    return exportZoomConfig();
+  }
+
+  function resetZoomConfig() {
+    zoomConfig = { ...initialZoomConfig };
+    applyOpenAppLink();
+    if (typeof window.sessionStorage !== 'undefined') {
+      try {
+        window.sessionStorage.removeItem(zoomClientStateStorageKey);
+      } catch (error) {
+        console.warn('Failed to clear stored Zoom client state', error);
+      }
+    }
+    return exportZoomConfig();
+  }
+
+  window.ZoomClientView = {
+    getConfig: exportZoomConfig,
+    updateConfig: updateZoomConfig,
+    resetConfig: resetZoomConfig,
+    persist: persistZoomConfig,
+  };
+
+  applyOpenAppLink();
+
   const messages = {
     connecting: {$loadingTextJson},
     error: {$errorTextJson},
@@ -559,12 +695,17 @@ echo <<<HTML
     setStatus('', false);
   }
 
-  const openAppButton = document.getElementById('open-app-button');
+  const openAppButton = getOpenAppButton();
   if (openAppButton) {
     openAppButton.addEventListener('click', () => {
+      persistZoomConfig();
       setStatus(messages.openApp, false);
     });
   }
+
+  window.addEventListener('beforeunload', () => {
+    persistZoomConfig();
+  });
 
   if (!window.ZoomMtg || typeof window.ZoomMtg.init !== 'function') {
     setStatus(messages.error, true);
