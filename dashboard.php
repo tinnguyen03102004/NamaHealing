@@ -46,6 +46,7 @@ $notifications = notifications_fetch_active($db);
 $unreadCount = notifications_unread_count($db, $uid);
 $popupNotification = notifications_unread_cancellation($db, $uid);
 
+$hideStudentJournalLink = true;
 require 'header.php';
 ?>
 
