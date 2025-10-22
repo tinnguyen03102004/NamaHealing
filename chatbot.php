@@ -5,8 +5,10 @@ include 'header.php';
 ?>
 <main class="flex flex-col items-center min-h-screen px-4 pt-4 pb-20">
   <div class="w-full max-w-lg flex flex-col flex-1">
-    <h1 class="text-2xl font-semibold text-center sticky top-20 sm:top-16 bg-white z-20 px-4 py-3 shadow">
-      <?= __('chatbot_title') ?>
+    <h1 class="chatbot-title text-center sticky top-20 sm:top-16 bg-transparent z-20 px-4 py-6">
+      <span class="chatbot-title-inner">
+        <?= __('chatbot_title') ?>
+      </span>
     </h1>
     <div id="chat-log" class="flex-1 overflow-y-auto space-y-3 pb-4 pt-16">
       <div id="greeting" class="text-center text-gray-500 bg-white border border-gray-200 rounded-lg p-4">
@@ -22,6 +24,45 @@ include 'header.php';
   </form>
 </main>
 <style>
+  .chatbot-title {
+    font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: #285F57;
+  }
+  .chatbot-title-inner {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 2.5rem;
+    border-radius: 9999px;
+    border: 2px solid #9dcfc3;
+    background: linear-gradient(135deg, rgba(157, 207, 195, 0.18), rgba(255, 255, 255, 0.95));
+    box-shadow: 0 15px 35px rgba(40, 95, 87, 0.18);
+    position: relative;
+    overflow: hidden;
+  }
+  .chatbot-title-inner::before {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    border-radius: inherit;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    opacity: 0.9;
+    pointer-events: none;
+  }
+  .chatbot-title-inner::after {
+    content: '';
+    position: absolute;
+    top: -40%;
+    left: -10%;
+    width: 80%;
+    height: 180%;
+    background: radial-gradient(circle at top, rgba(255, 255, 255, 0.5), transparent 70%);
+    transform: rotate(12deg);
+    pointer-events: none;
+  }
   .typing { display:flex; gap:4px; }
   .typing span {
     width:6px; height:6px;
