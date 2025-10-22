@@ -26,22 +26,23 @@ include 'header.php';
 <style>
   .chatbot-title {
     font-family: 'Cormorant Garamond', 'Times New Roman', serif;
-    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
     font-weight: 500;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.05em;
     color: #285F57;
   }
   .chatbot-title-inner {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0.75rem 2.5rem;
+    padding: 0.5rem 1.75rem;
     border-radius: 9999px;
     border: 2px solid #9dcfc3;
     background: linear-gradient(135deg, rgba(157, 207, 195, 0.18), rgba(255, 255, 255, 0.95));
     box-shadow: 0 15px 35px rgba(40, 95, 87, 0.18);
     position: relative;
     overflow: hidden;
+    white-space: nowrap;
   }
   .chatbot-title-inner::before {
     content: '';
