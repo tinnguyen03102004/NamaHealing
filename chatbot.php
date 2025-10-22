@@ -4,12 +4,14 @@ $pageTitle = __('chatbot');
 include 'header.php';
 ?>
 <main class="flex flex-col items-center min-h-screen px-4 pt-4 pb-20">
-  <h1 class="text-2xl font-semibold mb-4 w-full max-w-lg text-center">
-    <?= __('chatbot_title') ?>
-  </h1>
-  <div id="chat-log" class="w-full max-w-lg flex-1 overflow-y-auto space-y-3 pb-4">
-    <div id="greeting" class="text-center text-gray-500 bg-white border border-gray-200 rounded-lg p-4">
-      <?= __('chatbot_greeting') ?>
+  <div class="w-full max-w-lg flex flex-col flex-1">
+    <h1 class="text-2xl font-semibold text-center sticky top-0 bg-white z-20 px-4 py-3 shadow">
+      <?= __('chatbot_title') ?>
+    </h1>
+    <div id="chat-log" class="flex-1 overflow-y-auto space-y-3 pb-4 pt-16">
+      <div id="greeting" class="text-center text-gray-500 bg-white border border-gray-200 rounded-lg p-4">
+        <?= __('chatbot_greeting') ?>
+      </div>
     </div>
   </div>
   <form id="chat-form" class="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-lg flex gap-2 px-4 py-3 bg-white border-t border-gray-200 shadow-md z-10" style="padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));">
