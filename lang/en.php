@@ -172,7 +172,7 @@ return [
     'home_docs_chant' => 'Chanting Books',
     'home_docs_reference' => 'Reference Books',
     'chatbot' => 'Chatbot',
-    'chatbot_title' => 'Trợ lý Thiền NamaHealing',
+    'chatbot_title' => 'Trợ lý lớp Thiền NamaHealing',
     'chatbot_greeting' => 'NamaHealing Bot - Meditation class support',
     'chatbot_placeholder' => 'Type your question…',
     'chatbot_send' => 'Send',

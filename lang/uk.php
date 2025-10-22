@@ -172,7 +172,7 @@ return [
     'home_docs_chant' => 'Книги мантр',
     'home_docs_reference' => 'Довідкова література',
     'chatbot' => 'Чат-бот',
-    'chatbot_title' => 'Trợ lý Thiền NamaHealing',
+    'chatbot_title' => 'Trợ lý lớp Thiền NamaHealing',
     'chatbot_greeting' => 'NamaHealing Bot - Підтримка класу медитації для зцілення',
     'chatbot_placeholder' => 'Введіть ваше питання…',
     'chatbot_send' => 'Надіслати',
