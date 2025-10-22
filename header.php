@@ -74,11 +74,7 @@ require_once __DIR__ . '/i18n.php';
                   <?= __('login_button') ?>
                 </a>
               <?php else: ?>
-                <?php if (($_SESSION['role'] ?? '') === 'student' && empty($hideStudentJournalLink)): ?>
-                  <a href="student_journal.php" class="px-4 py-2 min-h-[40px] text-base rounded-full border border-[#9dcfc3] hover:bg-[#9dcfc3] hover:text-white transition flex items-center justify-center">
-                    Nhật ký
-                  </a>
-                <?php elseif (($_SESSION['role'] ?? '') === 'teacher'): ?>
+                <?php if (($_SESSION['role'] ?? '') === 'teacher'): ?>
                   <a href="teacher_dashboard.php" class="px-4 py-2 min-h-[40px] text-base rounded-full border border-[#9dcfc3] hover:bg-[#9dcfc3] hover:text-white transition flex items-center justify-center">
                     Teacher
                   </a>
