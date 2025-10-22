@@ -25,14 +25,23 @@ require_once __DIR__ . '/i18n.php';
   <?php if (!empty($metaDescription)): ?>
     <meta name="description" content="<?= htmlspecialchars($metaDescription) ?>">
   <?php endif; ?>
-  <?php if (!empty($pageTitle)): ?>
-    <meta property="og:title" content="<?= htmlspecialchars($pageTitle) ?>">
+  <?php
+    $ogTitle = $metaOgTitle ?? $pageTitle ?? '';
+    if (!empty($ogTitle)):
+  ?>
+    <meta property="og:title" content="<?= htmlspecialchars($ogTitle) ?>">
   <?php endif; ?>
   <?php if (!empty($metaDescription)): ?>
     <meta property="og:description" content="<?= htmlspecialchars($metaDescription) ?>">
   <?php endif; ?>
   <?php if (!empty($metaImage)): ?>
     <meta property="og:image" content="<?= htmlspecialchars($metaImage) ?>">
+  <?php endif; ?>
+  <?php if (!empty($metaUrl)): ?>
+    <meta property="og:url" content="<?= htmlspecialchars($metaUrl) ?>">
+  <?php endif; ?>
+  <?php if (!empty($metaOgType)): ?>
+    <meta property="og:type" content="<?= htmlspecialchars($metaOgType) ?>">
   <?php endif; ?>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
