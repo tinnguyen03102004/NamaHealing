@@ -5,7 +5,7 @@ include 'header.php';
 ?>
 <main class="flex flex-col items-center min-h-screen px-4 pt-4 pb-20">
   <div class="w-full max-w-lg flex flex-col flex-1">
-    <h1 class="text-2xl font-semibold text-center sticky top-0 bg-white z-20 px-4 py-3 shadow">
+    <h1 class="text-2xl font-semibold text-center sticky top-20 sm:top-16 bg-white z-20 px-4 py-3 shadow">
       <?= __('chatbot_title') ?>
     </h1>
     <div id="chat-log" class="flex-1 overflow-y-auto space-y-3 pb-4 pt-16">
