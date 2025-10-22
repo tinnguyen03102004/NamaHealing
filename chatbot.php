@@ -224,6 +224,8 @@ include 'header.php';
   @keyframes bounce { 0%,80%,100%{transform:translateY(0);} 40%{transform:translateY(-6px);} }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/emoji-toolkit@6.7.0/lib/js/emoji-toolkit.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('chat-form');
@@ -241,7 +243,49 @@ document.addEventListener('DOMContentLoaded', () => {
   const renderer = new marked.Renderer();
   renderer.link = (href, title, text) =>
     `<a href="${href}" target="_blank" rel="noopener noreferrer">${text}</a>`;
-  marked.setOptions({ breaks: true, mangle: false, headerIds: false, renderer });
+  marked.setOptions({
+    gfm: true,
+    breaks: true,
+    smartLists: true,
+    mangle: false,
+    headerIds: false,
+    renderer
+  });
+
+  const emojiToolkit = window.emojiToolkit;
+  const convertEmojiShortcodes = (text) => {
+    if (!text) return '';
+    if (emojiToolkit && typeof emojiToolkit.shortnameToUnicode === 'function') {
+      return emojiToolkit.shortnameToUnicode(text);
+    }
+    return text;
+  };
+
+  const domPurifyConfig = (() => {
+    if (window.DOMPurify && typeof window.DOMPurify.getDefaultConfig === 'function') {
+      const defaultConfig = window.DOMPurify.getDefaultConfig();
+      const allowedTags = new Set([...(defaultConfig.ALLOWED_TAGS || []), 'table', 'thead', 'tbody', 'tr', 'th', 'td', 'input']);
+      const allowedAttrs = new Set([...(defaultConfig.ALLOWED_ATTR || []), 'align', 'colspan', 'rowspan', 'type', 'checked', 'disabled']);
+      return {
+        ...defaultConfig,
+        ALLOWED_TAGS: Array.from(allowedTags),
+        ALLOWED_ATTR: Array.from(allowedAttrs)
+      };
+    }
+    return {
+      ALLOWED_TAGS: ['a', 'abbr', 'b', 'blockquote', 'br', 'code', 'dd', 'del', 'div', 'dl', 'dt', 'em', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'i', 'img', 'input', 'kbd', 'li', 'mark', 'ol', 'p', 'pre', 's', 'span', 'strong', 'sub', 'sup', 'table', 'tbody', 'td', 'th', 'thead', 'tr', 'u', 'ul'],
+      ALLOWED_ATTR: ['href', 'title', 'target', 'rel', 'class', 'id', 'src', 'alt', 'align', 'colspan', 'rowspan', 'type', 'checked', 'disabled']
+    };
+  })();
+
+  const renderMarkdown = (markdown) => {
+    const withEmoji = convertEmojiShortcodes(markdown);
+    const html = marked.parse(withEmoji);
+    if (window.DOMPurify && typeof window.DOMPurify.sanitize === 'function') {
+      return window.DOMPurify.sanitize(html, domPurifyConfig);
+    }
+    return html;
+  };
 
   const previewCache = new Map();
 
@@ -315,12 +359,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const bubble = document.createElement('div');
     if (role === 'user') {
       bubble.className = 'message-bubble message-bubble-user text-white px-4 py-2 rounded-2xl shadow-md max-w-[85%] sm:max-w-[65%] md:max-w-[55%] whitespace-pre-wrap break-words pr-12';
-      bubble.textContent = raw;
+      bubble.textContent = convertEmojiShortcodes(raw);
     } else {
       bubble.className = 'message-bubble message-bubble-bot text-gray-800 px-4 py-3 rounded-2xl shadow-sm max-w-[95%] sm:max-w-[75%] md:max-w-[70%] whitespace-pre-wrap leading-relaxed pr-12 bot-message';
-      bubble.innerHTML = marked.parse(raw);
+      bubble.innerHTML = renderMarkdown(raw);
     }
-    const copyButton = createCopyButton(() => raw);
+    const copyButton = createCopyButton(() => convertEmojiShortcodes(raw));
     bubble.appendChild(copyButton);
     row.appendChild(bubble);
     return { row, bubble };
