@@ -204,9 +204,6 @@ $currentUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' 
     <div class="title-wrapper">
         <p class="subtitle">VO TRONG NGHIA</p>
         <h1 class="site-title font-semibold">NAMA HEALING</h1>
-        <div class="cta-button mt-4">
-          <a href="ukraine_meditation.php" class="px-4 py-2 rounded-full bg-emerald-600 text-white font-semibold hover:bg-emerald-700"><?= __('ukraine_title') ?></a>
-        </div>
         <nav class="main-nav" aria-label="Điều hướng chính">
           <ul>
             <li><a href="#" id="open-class-modal"><?= __('home_nav_class') ?></a></li>
