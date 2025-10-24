@@ -81,6 +81,12 @@ $currentUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' 
       color:#e0e6df;
       opacity:.83;
       font-weight: 400;
+      text-decoration:none;
+      display:inline-block;
+      cursor:pointer;
+    }
+    .subtitle:hover{
+      opacity:1;
     }
     .site-title{
       font-family:'Cormorant Garamond',serif;
@@ -89,6 +95,13 @@ $currentUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' 
       margin:0 0 2.1rem 0;
       color:#fff;
       text-shadow: 0 4px 22px #26505044, 0 1px 0 #fff9;
+      text-decoration:none;
+      display:inline-block;
+      cursor:pointer;
+      transition:opacity .23s;
+    }
+    .site-title:hover{
+      opacity:.92;
     }
     .main-nav > ul{
       list-style:none;
@@ -202,11 +215,10 @@ $currentUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' 
   <!-- ============ HERO ============ -->
   <main class="hero">
     <div class="title-wrapper">
-        <p class="subtitle">VO TRONG NGHIA</p>
-        <h1 class="site-title font-semibold">NAMA HEALING</h1>
+        <a href="story.php" class="subtitle">VO TRONG NGHIA</a>
+        <a href="story.php#class" class="site-title font-semibold">NAMA HEALING</a>
         <nav class="main-nav" aria-label="Điều hướng chính">
           <ul>
-            <li><a href="#" id="open-class-modal"><?= __('home_nav_class') ?></a></li>
             <li><a href="#" id="open-register-modal"><?= __('home_nav_register') ?></a></li>
             <li><a href="articles.php"><?= __('home_nav_articles') ?></a></li>
             <li><a href="videos.php"><?= __('home_nav_videos') ?></a></li>
@@ -226,30 +238,6 @@ $currentUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' 
         </nav>
     </div>
   </main>
-
-  <!-- Modal: Giới thiệu Lớp học & Võ Trọng Nghĩa -->
-  <div id="class-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 hidden">
-    <div class="bg-white rounded-2xl w-[96vw] max-w-lg p-4 sm:p-6 relative shadow-2xl overflow-y-auto max-h-[95vh] flex flex-col items-center">
-      <button id="close-class-modal" class="absolute top-2 right-2 w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-xl font-bold">&times;</button>
-      <div class="w-full flex items-center justify-center pt-7">
-        <img src="VTN.jpg" alt="Võ Trọng Nghĩa" class="rounded-xl shadow-lg object-cover w-full max-w-[340px] h-auto border border-green-100">
-      </div>
-        <div class="w-full px-4 sm:px-7 py-4 flex flex-col justify-center items-center">
-          <h2 class="text-2xl font-semibold text-green-800 mb-2 text-center">NamaHealing</h2>
-        <div class="text-base leading-relaxed text-gray-800 space-y-3 text-left sm:text-justify">
-          <p><?= __('class_p1') ?></p>
-          <p><?= __('class_p2') ?></p>
-          <p><?= __('class_p3') ?></p>
-          <p class="italic text-green-700 font-medium"><?= __('class_p4') ?></p>
-        </div>
-        <div class="text-center mt-5">
-          <a href="#" id="to-register" class="inline-block px-6 py-2.5 min-h-[40px] rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium transition flex items-center justify-center">
-            <?= __('register_now') ?>
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- Modal: Hướng dẫn đăng ký lớp học -->
   <div id="register-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 hidden">
@@ -311,18 +299,6 @@ $currentUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' 
   </div>
 
   <script>
-    // ---- Modal Giới thiệu lớp học ----
-    document.getElementById('open-class-modal').onclick = function(e) {
-      e.preventDefault();
-      document.getElementById('class-modal').classList.remove('hidden');
-    };
-    document.getElementById('close-class-modal').onclick = function() {
-      document.getElementById('class-modal').classList.add('hidden');
-    };
-    document.getElementById('class-modal').onclick = function(e) {
-      if(e.target === this) this.classList.add('hidden');
-    };
-
     // ---- Modal Đăng ký ----
     document.getElementById('open-register-modal').onclick = function(e) {
       e.preventDefault();
@@ -335,12 +311,6 @@ $currentUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' 
       if(e.target === this) this.classList.add('hidden');
     };
 
-    // Chuyển từ modal giới thiệu sang modal đăng ký khi bấm nút "Tôi muốn đăng ký ngay"
-    document.getElementById('to-register').onclick = function(e) {
-      e.preventDefault();
-      document.getElementById('class-modal').classList.add('hidden');
-      document.getElementById('register-modal').classList.remove('hidden');
-    };
   </script>
 
   <?php include 'footer.php'; ?>
