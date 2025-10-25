@@ -42,7 +42,8 @@ class UserModel {
             $identifier = self::cleanPhone($identifier);
         }
         $stmt = $this->pdo->prepare(
-            "SELECT * FROM users WHERE email = :id OR phone = :id LIMIT 1"
+            "SELECT * FROM users WHERE email = :id OR phone = :id " .
+            "ORDER BY remaining DESC, id DESC LIMIT 1"
         );
         $stmt->execute([':id' => $identifier]);
         $u = $stmt->fetch(PDO::FETCH_ASSOC);
