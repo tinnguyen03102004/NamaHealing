@@ -10,6 +10,7 @@ return [
     'identifier_placeholder' => 'Enter email or phone...',
     'password_placeholder' => 'Leave blank if you are a student...',
     'password_hint' => 'Students can leave this blank; admins and teachers must enter their password.',
+    'admin_toggle_label' => 'I am an admin/teacher',
     'phone_placeholder' => 'Enter phone number...',
     'no_account' => "Don't have an account?",
     'register_link' => 'Sign up',
