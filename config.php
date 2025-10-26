@@ -78,11 +78,18 @@ if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
-function csrf_check(?string $token): void {
-    if (!isset($_SESSION['csrf_token']) || !is_string($token) || !hash_equals($_SESSION['csrf_token'], $token)) {
+function csrf_check(?string $token, bool $exitOnFailure = true): bool
+{
+    $isValid = isset($_SESSION['csrf_token'])
+        && is_string($token)
+        && hash_equals($_SESSION['csrf_token'], $token);
+
+    if (!$isValid && $exitOnFailure) {
         http_response_code(400);
         exit('Invalid CSRF token');
     }
+
+    return $isValid;
 }
 
 // Nạp file đa ngôn ngữ (nếu có)

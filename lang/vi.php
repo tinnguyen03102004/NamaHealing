@@ -15,6 +15,7 @@ return [
     'no_account' => 'Chưa có tài khoản?',
     'register_link' => 'Đăng ký',
     'login_error' => 'Không tìm thấy tài khoản hoặc thông tin chưa chính xác.',
+    'csrf_error' => 'Phiên đăng nhập đã hết hạn, vui lòng thử lại.',
     'welcome_code_label' => 'Mã học viên',
     'welcome_code_placeholder' => 'Nhập mã học viên...',
     'welcome_code_submit' => 'Xác nhận mã',
