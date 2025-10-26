@@ -377,7 +377,7 @@ include 'header.php';
         <h1><?= __('story_page_title') ?></h1>
         <p class="lead"><?= __('class_p3') ?></p>
         <div class="hero-actions">
-          <a class="btn-primary" href="home.php#register-modal"><?= __('register_now') ?></a>
+          <a class="btn-primary" href="https://namahealing.com/register.php"><?= __('register_now') ?></a>
           <a class="btn-secondary" href="#teacher"><?= __('story_secondary_cta') ?></a>
         </div>
       </div>
@@ -507,7 +507,7 @@ include 'header.php';
         </li>
       </ol>
       <div class="cta">
-        <a class="btn-primary" href="home.php#register-modal"><?= __('register_now') ?></a>
+        <a class="btn-primary" href="https://namahealing.com/register.php"><?= __('register_now') ?></a>
       </div>
       <p class="cta-note">
         <?= __('register_support') ?>
