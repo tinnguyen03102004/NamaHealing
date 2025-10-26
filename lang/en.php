@@ -15,6 +15,7 @@ return [
     'no_account' => "Don't have an account?",
     'register_link' => 'Sign up',
     'login_error' => 'We could not verify the account details provided.',
+    'csrf_error' => 'Your login session has expired. Please try again.',
     'welcome_code_label' => 'Student code',
     'welcome_code_placeholder' => 'Enter your student code...',
     'welcome_code_submit' => 'Confirm code',

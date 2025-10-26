@@ -22,57 +22,60 @@ if (isset($_SESSION['uid'])) {
 $err = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Kiểm tra token CSRF từ form
-    csrf_check($_POST['csrf_token'] ?? null);
+    if (!csrf_check($_POST['csrf_token'] ?? null, false)) {
+        $err = __('csrf_error');
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    } else {
+        // Lấy và chuẩn hóa định danh (email hoặc số điện thoại)
+        $identifier = trim($_POST['identifier'] ?? '');
+        if (!str_contains($identifier, '@')) {
+            // Nếu không chứa '@' => coi như số ĐT, loại bỏ ký tự không phải số
+            $identifier = preg_replace('/\D+/', '', $identifier);
+        }
+        $password = $_POST['password'] ?? '';
 
-    // Lấy và chuẩn hóa định danh (email hoặc số điện thoại)
-    $identifier = trim($_POST['identifier'] ?? '');
-    if (!str_contains($identifier, '@')) {
-        // Nếu không chứa '@' => coi như số ĐT, loại bỏ ký tự không phải số
-        $identifier = preg_replace('/\D+/', '', $identifier);
-    }
-    $password = $_POST['password'] ?? '';
+        // Kiểm tra thông tin tài khoản
+        $model = new NamaHealing\Models\UserModel($db);
+        $user  = $model->findByIdentifier($identifier);
+        if ($user && in_array($user['role'], NamaHealing\Models\UserModel::ALLOWED_ROLES, true)) {
+            $isStudent = $user['role'] === 'student';
+            $validPassword = password_verify($password, $user['password']);
 
-    // Kiểm tra thông tin tài khoản
-    $model = new NamaHealing\Models\UserModel($db);
-    $user  = $model->findByIdentifier($identifier);
-    if ($user && in_array($user['role'], NamaHealing\Models\UserModel::ALLOWED_ROLES, true)) {
-        $isStudent = $user['role'] === 'student';
-        $validPassword = password_verify($password, $user['password']);
-
-        if (!$isStudent && !$validPassword) {
+            if (!$isStudent && !$validPassword) {
+                $user = null;
+            }
+        } else {
             $user = null;
         }
-    } else {
-        $user = null;
-    }
 
-    if ($user) {
-        // Đăng nhập thành công => tạo session và chuyển hướng
-        session_regenerate_id(true);
-        $_SESSION['uid']  = $user['id'];
-        $_SESSION['role'] = $user['role'];
+        if ($user) {
+            // Đăng nhập thành công => tạo session và chuyển hướng
+            session_regenerate_id(true);
+            $_SESSION['uid']  = $user['id'];
+            $_SESSION['role'] = $user['role'];
 
-        remember_issue_token($db, (int)$user['id']);
+            remember_issue_token($db, (int)$user['id']);
 
-        // Xác định URL đích sau đăng nhập
-        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
-        $host     = $_SERVER['HTTP_HOST'] ?? '';
-        if ($user['role'] === 'admin') {
-            $redirectUrl = $protocol . $host . '/admin.php';
-        } elseif ($user['role'] === 'teacher') {
-            $redirectUrl = $protocol . $host . '/teacher_dashboard.php';
-        } else {
-            // role student
-            $redirectUrl = ($user['remaining'] ?? 0) > 0 
-                         ? ($protocol . $host . '/dashboard.php') 
-                         : ($protocol . $host . '/welcome.php');
+            // Xác định URL đích sau đăng nhập
+            $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
+            $host     = $_SERVER['HTTP_HOST'] ?? '';
+            if ($user['role'] === 'admin') {
+                $redirectUrl = $protocol . $host . '/admin.php';
+            } elseif ($user['role'] === 'teacher') {
+                $redirectUrl = $protocol . $host . '/teacher_dashboard.php';
+            } else {
+                // role student
+                $redirectUrl = ($user['remaining'] ?? 0) > 0
+                             ? ($protocol . $host . '/dashboard.php')
+                             : ($protocol . $host . '/welcome.php');
+            }
+            header("Location: $redirectUrl");
+            exit;
         }
-        header("Location: $redirectUrl");
-        exit;
-    }
 
-    // Nếu tới đây nghĩa là đăng nhập thất bại
-    $err = __('login_error');
+        // Nếu tới đây nghĩa là đăng nhập thất bại
+        $err = __('login_error');
+    }
 }
 
 $showPassword = ($_SERVER['REQUEST_METHOD'] === 'POST') && trim($_POST['password'] ?? '') !== '';
