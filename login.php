@@ -75,6 +75,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $err = __('login_error');
 }
 
+$showPassword = ($_SERVER['REQUEST_METHOD'] === 'POST') && trim($_POST['password'] ?? '') !== '';
+
 // Hiển thị giao diện (HTML + PHP)
 ?>
 <?php include 'header.php'; ?>
@@ -99,11 +101,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           class="w-full px-4 py-2 border-2 border-[#9dcfc3] rounded-lg bg-gray-50 text-[#374151] focus:outline-none focus:border-[#76a89e] focus:bg-white transition"
           placeholder="<?= __('identifier_placeholder') ?>" />
       </div>
-      <div>
+      <div class="flex items-center space-x-3">
+        <input id="adminToggle" type="checkbox"<?= $showPassword ? ' checked' : '' ?>
+          class="h-4 w-4 text-[#285F57] border-2 border-[#9dcfc3] rounded focus:ring-[#285F57] focus:outline-none">
+        <label for="adminToggle" class="text-sm text-[#285F57] select-none">
+          <?= __('admin_toggle_label') ?>
+        </label>
+      </div>
+      <div id="passwordWrapper" class="hidden">
         <label class="block text-sm font-medium text-[#285F57] mb-1">
           <?= __('password_label') ?>
         </label>
-        <input name="password" type="password"
+        <input id="passwordInput" name="password" type="password"
           class="w-full px-4 py-2 border-2 border-[#9dcfc3] rounded-lg bg-gray-50 text-[#374151] focus:outline-none focus:border-[#76a89e] focus:bg-white transition"
           placeholder="<?= __('password_placeholder') ?>" />
         <p class="mt-1 text-xs text-gray-500">
@@ -122,4 +131,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
   </div>
 </main>
+<script>
+  (function () {
+    const adminToggle = document.getElementById('adminToggle');
+    const passwordWrapper = document.getElementById('passwordWrapper');
+    const passwordInput = document.getElementById('passwordInput');
+
+    if (!adminToggle || !passwordWrapper || !passwordInput) {
+      return;
+    }
+
+    const updateVisibility = () => {
+      const shouldShow = adminToggle.checked;
+      passwordWrapper.classList.toggle('hidden', !shouldShow);
+      if (shouldShow) {
+        passwordInput.focus();
+      } else {
+        passwordInput.value = '';
+      }
+    };
+
+    adminToggle.addEventListener('change', updateVisibility);
+    updateVisibility();
+  })();
+</script>
+<noscript>
+  <style>
+    #passwordWrapper {
+      display: block !important;
+    }
+  </style>
+</noscript>
 <?php include 'footer.php'; ?>

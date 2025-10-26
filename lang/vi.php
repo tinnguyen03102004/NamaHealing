@@ -10,6 +10,7 @@ return [
     'identifier_placeholder' => 'Nhập email hoặc SĐT...',
     'password_placeholder' => 'Để trống nếu bạn là học viên...',
     'password_hint' => 'Học viên không cần nhập mật khẩu. Admin và giáo viên vui lòng điền mật khẩu như bình thường.',
+    'admin_toggle_label' => 'Tôi là admin/giáo viên',
     'phone_placeholder' => 'Nhập số điện thoại...',
     'no_account' => 'Chưa có tài khoản?',
     'register_link' => 'Đăng ký',
