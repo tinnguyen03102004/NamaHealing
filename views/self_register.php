@@ -1,7 +1,8 @@
 <?php include 'header.php'; ?>
 <main class="min-h-[75vh] flex items-center justify-center py-12">
   <div class="w-full max-w-md bg-white/90 rounded-xl shadow-lg p-8">
-    <h2 class="text-center text-2xl font-bold mb-6">Đăng ký tài khoản</h2>
+    <h2 class="text-center text-2xl font-bold mb-4">Đăng ký tài khoản</h2>
+    <p class="text-center text-gray-600 mb-6">Tham gia thiền cùng thầy Võ Trọng Nghĩa để sớm cải thiện sức khỏe tâm lý.</p>
     <?php if (!empty($err)): ?>
       <div class="text-red-600 text-sm mb-4"><?= htmlspecialchars($err) ?></div>
     <?php endif; ?>
