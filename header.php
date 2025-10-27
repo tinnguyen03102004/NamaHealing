@@ -1,5 +1,25 @@
 <?php
 require_once __DIR__ . '/i18n.php';
+
+$notifications = isset($notifications) && is_array($notifications) ? $notifications : null;
+$unreadCount = isset($unreadCount) && is_numeric($unreadCount) ? (int) $unreadCount : null;
+
+if (isset($_SESSION['uid']) && ($_SESSION['role'] ?? '') === 'student') {
+  if (isset($db) && $db instanceof PDO) {
+    require_once __DIR__ . '/helpers/Notifications.php';
+    if ($notifications === null) {
+      $notifications = notifications_fetch_active($db);
+    }
+    if ($unreadCount === null || $unreadCount < 0) {
+      $unreadCount = notifications_unread_count($db, (int) $_SESSION['uid']);
+    }
+  }
+  $notifications = $notifications ?? [];
+  $unreadCount = $unreadCount ?? 0;
+} else {
+  $notifications = [];
+  $unreadCount = 0;
+}
 ?>
 <!DOCTYPE html>
 <html lang="<?= $_SESSION['lang'] ?? 'vi' ?>">
@@ -62,6 +82,11 @@ require_once __DIR__ . '/i18n.php';
       font-weight: 700;
       letter-spacing: .01em;
     }
+    .notification-button,
+    .notification-dropdown,
+    .notification-dropdown * {
+      font-family: 'Manrope','Montserrat','Noto Sans',Arial,sans-serif !important;
+    }
   </style>
 </head>
 <body class="bg-[#f9fafb] text-[#374151] pt-20 sm:pt-16">
@@ -110,16 +135,16 @@ require_once __DIR__ . '/i18n.php';
       </div>
     </div>
   </header>
-  <?php if (isset($_SESSION['uid']) && $_SESSION['role'] === 'student' && isset($notifications)): ?>
+  <?php if (isset($_SESSION['uid']) && $_SESSION['role'] === 'student'): ?>
     <div class="fixed top-20 right-4 z-50">
       <div class="relative">
-        <button id="notif-btn" data-csrf="<?= $_SESSION['csrf_token']; ?>" class="relative p-2 bg-white rounded-full shadow">
+        <button id="notif-btn" data-csrf="<?= $_SESSION['csrf_token']; ?>" class="relative p-2 bg-white rounded-full shadow notification-button">
           <span class="text-2xl">🔔</span>
           <?php if ($unreadCount > 0): ?>
             <span id="notif-count" class="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs rounded-full px-1"><?= $unreadCount ?></span>
           <?php endif; ?>
         </button>
-        <div id="notif-list" class="hidden absolute right-0 mt-2 w-72 max-w-[90vw] bg-white border border-gray-200 rounded shadow-lg max-h-[80vh] overflow-y-auto text-sm">
+        <div id="notif-list" class="hidden absolute right-0 mt-2 w-72 max-w-[90vw] bg-white border border-gray-200 rounded shadow-lg max-h-[80vh] overflow-y-auto text-sm notification-dropdown">
           <div class="px-4 py-2 font-semibold border-b"><?= __('notifications') ?></div>
           <?php if (!empty($notifications)): foreach ($notifications as $n): ?>
             <?php
