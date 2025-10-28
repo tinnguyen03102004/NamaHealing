@@ -58,10 +58,10 @@ try {
 $isFirstTimer = ($attendanceCount === 0 && !$firstSessionCompleted);
 $nowTs = time();
 if ($session === 'morning') {
-    $blockStart = strtotime('today 05:55');
+    $blockStart = strtotime('today 05:58');
     $blockEnd = strtotime('today 06:55');
 } else {
-    $blockStart = strtotime('today 20:40');
+    $blockStart = strtotime('today 20:43');
     $blockEnd = strtotime('today 21:40');
 }
 
