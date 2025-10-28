@@ -23,13 +23,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($success) {
             if (defined('WELCOME_TEST_MODE') && WELCOME_TEST_MODE === true) {
                 $redirectUrl = 'dashboard.php';
+                $GLOBALS['redirectUrl'] = $redirectUrl;
             } else {
                 header('Location: dashboard.php');
                 exit;
             }
+        } else {
+            $error = __('welcome_code_error');
         }
-
-        $error = __('welcome_code_error');
     } else {
         $error = __('welcome_code_error');
     }
@@ -42,7 +43,7 @@ include 'header.php';
     <div class="space-y-3 text-center">
       <h1 class="text-2xl font-semibold text-[#285F57]">Chào mừng bạn trở lại</h1>
       <p class="text-base text-gray-700 leading-relaxed">
-        Chào mừng bạn đến với lớp thiền NamaHealing. Vui lòng nhập mã học viên để được tặng thêm buổi và vào lớp ngay, hoặc tiếp tục thanh toán theo hướng dẫn bên dưới.
+        Chào mừng bạn đến với lớp thiền NamaHealing. Vui lòng nhập mã quà tặng để được tặng thêm buổi và vào lớp ngay, hoặc tiếp tục thanh toán theo hướng dẫn bên dưới.
       </p>
     </div>
     <?php if ($error): ?>
