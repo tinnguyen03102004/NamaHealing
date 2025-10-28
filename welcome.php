@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $codeValue = trim((string)($_POST['student_code'] ?? ''));
 
     if ($codeValue === 'VTN2025') {
-        $stmt = $db->prepare('UPDATE users SET remaining = remaining + 100 WHERE id = ?');
+        $stmt = $db->prepare('UPDATE users SET remaining = COALESCE(remaining, 0) + 100 WHERE id = ?');
         $success = $stmt->execute([$_SESSION['uid']]);
 
         if ($success) {
