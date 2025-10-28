@@ -116,11 +116,62 @@ function csrf_check(?string $token, bool $exitOnFailure = true): bool
 
     $_SESSION['csrf_error_flash'] = true;
 
-    $redirect = $_SERVER['REQUEST_URI'] ?? '';
-    if (!is_string($redirect) || $redirect === '') {
-        $redirect = 'login.php';
-    } elseif (!str_starts_with($redirect, '/')) {
-        $redirect = '/' . ltrim($redirect, '/');
+    $redirect = null;
+
+    $referer = $_SERVER['HTTP_REFERER'] ?? '';
+    if (is_string($referer) && $referer !== '') {
+        $parts = @parse_url($referer);
+        if ($parts !== false) {
+            $serverHostRaw = $_SERVER['HTTP_HOST'] ?? '';
+            $serverHost = strtolower($serverHostRaw);
+            $serverPort = null;
+            if (str_contains($serverHost, ':')) {
+                [$serverHost, $serverPort] = explode(':', $serverHost, 2);
+            }
+            $serverScheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+
+            $isSameOrigin = true;
+            if (isset($parts['scheme']) && $parts['scheme'] !== '') {
+                $refScheme = strtolower($parts['scheme']);
+                if ($refScheme !== $serverScheme) {
+                    $isSameOrigin = false;
+                }
+            }
+            if (isset($parts['host']) && $parts['host'] !== '') {
+                $refHost = strtolower($parts['host']);
+                if ($refHost !== $serverHost) {
+                    $isSameOrigin = false;
+                } else {
+                    $refPort = isset($parts['port']) ? (string) $parts['port'] : null;
+                    if ($serverPort !== null && $refPort !== null && $refPort !== $serverPort) {
+                        $isSameOrigin = false;
+                    }
+                }
+            }
+
+            if ($isSameOrigin) {
+                $path = $parts['path'] ?? '';
+                if (!is_string($path) || $path === '') {
+                    $path = '/';
+                } elseif (!str_starts_with($path, '/')) {
+                    $path = '/' . ltrim($path, '/');
+                }
+
+                $redirect = $path;
+                if (isset($parts['query']) && $parts['query'] !== '') {
+                    $redirect .= '?' . $parts['query'];
+                }
+            }
+        }
+    }
+
+    if ($redirect === null) {
+        $redirect = $_SERVER['REQUEST_URI'] ?? '';
+        if (!is_string($redirect) || $redirect === '') {
+            $redirect = 'login.php';
+        } elseif (!str_starts_with($redirect, '/')) {
+            $redirect = '/' . ltrim($redirect, '/');
+        }
     }
 
     header('Location: ' . $redirect);
