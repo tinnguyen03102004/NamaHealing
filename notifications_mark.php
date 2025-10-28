@@ -1,5 +1,6 @@
 <?php
 define('REQUIRE_LOGIN', true);
+define('CSRF_JSON_RESPONSE', true);
 require 'config.php';
 require_once __DIR__ . '/helpers/Notifications.php';
 header('Content-Type: application/json');
