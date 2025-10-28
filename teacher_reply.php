@@ -1,5 +1,6 @@
 <?php
 define('REQUIRE_LOGIN', true);
+define('CSRF_JSON_RESPONSE', true);
 require 'config.php';
 
 if (($_SESSION['role'] ?? '') !== 'teacher') {

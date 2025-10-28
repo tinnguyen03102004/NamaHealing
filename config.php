@@ -84,12 +84,47 @@ function csrf_check(?string $token, bool $exitOnFailure = true): bool
         && is_string($token)
         && hash_equals($_SESSION['csrf_token'], $token);
 
-    if (!$isValid && $exitOnFailure) {
-        http_response_code(400);
-        exit('Invalid CSRF token');
+    if ($isValid) {
+        return true;
     }
 
-    return $isValid;
+    // Always rotate the token after a failed validation to avoid clients reusing
+    // an expired token value.
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+
+    if (!$exitOnFailure) {
+        return false;
+    }
+
+    $wantsJson = defined('CSRF_JSON_RESPONSE') && CSRF_JSON_RESPONSE === true;
+    if (!$wantsJson) {
+        $accept = $_SERVER['HTTP_ACCEPT'] ?? '';
+        if (is_string($accept) && stripos($accept, 'application/json') !== false) {
+            $wantsJson = true;
+        }
+    }
+
+    if ($wantsJson) {
+        http_response_code(400);
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode([
+            'status'  => 'error',
+            'message' => 'Invalid CSRF token',
+        ]);
+        exit;
+    }
+
+    $_SESSION['csrf_error_flash'] = true;
+
+    $redirect = $_SERVER['REQUEST_URI'] ?? '';
+    if (!is_string($redirect) || $redirect === '') {
+        $redirect = 'login.php';
+    } elseif (!str_starts_with($redirect, '/')) {
+        $redirect = '/' . ltrim($redirect, '/');
+    }
+
+    header('Location: ' . $redirect);
+    exit;
 }
 
 // Nạp file đa ngôn ngữ (nếu có)

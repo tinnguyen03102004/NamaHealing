@@ -135,6 +135,14 @@ if (isset($_SESSION['uid']) && ($_SESSION['role'] ?? '') === 'student') {
       </div>
     </div>
   </header>
+  <?php if (!empty($_SESSION['csrf_error_flash'])): ?>
+    <div class="max-w-3xl mx-auto mt-24 px-4">
+      <div class="rounded-lg border border-red-200 bg-red-50 text-red-700 px-4 py-3 text-sm font-medium shadow">
+        <?= __('csrf_error') ?>
+      </div>
+    </div>
+    <?php unset($_SESSION['csrf_error_flash']); ?>
+  <?php endif; ?>
   <?php
     if (isset($_SESSION['uid']) && $_SESSION['role'] === 'student' && isset($notifications)):
       $notificationDisplayMode = $notificationDisplayMode ?? 'dropdown';
