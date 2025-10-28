@@ -234,10 +234,9 @@ $stmt = $db->prepare($sql);
 $stmt->execute($params);
 $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $adminTabs = [
+    ['id' => 'students', 'label' => __('admin_tab_students')],
     ['id' => 'zoom', 'label' => __('admin_tab_zoom')],
     ['id' => 'notifications', 'label' => __('admin_tab_notifications')],
-    ['id' => 'filters', 'label' => __('admin_tab_filters')],
-    ['id' => 'students', 'label' => __('admin_tab_students')],
 ];
 ?>
 
@@ -263,10 +262,9 @@ $adminTabs = [
   <?php include __DIR__ . '/views/components/admin/tab-nav.php'; ?>
 
   <div class="admin-panels">
+    <?php $tabId = 'students'; include __DIR__ . '/views/components/admin/section-students.php'; ?>
     <?php $tabId = 'zoom'; include __DIR__ . '/views/components/admin/section-zoom.php'; ?>
     <?php $tabId = 'notifications'; include __DIR__ . '/views/components/admin/section-notifications.php'; ?>
-    <?php $tabId = 'filters'; include __DIR__ . '/views/components/admin/section-filters.php'; ?>
-    <?php $tabId = 'students'; include __DIR__ . '/views/components/admin/section-students.php'; ?>
   </div>
 </main>
 
