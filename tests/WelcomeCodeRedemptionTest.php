@@ -63,4 +63,49 @@ class WelcomeCodeRedemptionTest extends TestCase {
         session_write_close();
         $_SESSION = [];
     }
+
+    public function testRedeemCodeShowsErrorWhenNoRowsUpdated(): void {
+        if (!$this->db) {
+            $this->markTestSkipped('DB not initialised');
+        }
+
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            session_write_close();
+        }
+
+        session_id('welcome-fail-test');
+        session_start();
+        $_SESSION = [
+            'uid' => 999,
+            'role' => 'student',
+            'csrf_token' => bin2hex(random_bytes(16)),
+        ];
+
+        $_POST = [
+            'csrf' => $_SESSION['csrf_token'],
+            'student_code' => 'VTN2025',
+        ];
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+
+        if (!defined('WELCOME_TEST_MODE')) {
+            define('WELCOME_TEST_MODE', true);
+        }
+
+        unset($GLOBALS['redirectUrl']);
+
+        ob_start();
+        include __DIR__ . '/../welcome.php';
+        $output = ob_get_clean();
+
+        $this->assertStringContainsString('Mã quà tặng không chính xác, vui lòng thử lại.', $output);
+        $this->assertArrayNotHasKey('redirectUrl', $GLOBALS);
+
+        $remain = $this->db->query('SELECT remaining FROM users WHERE id=1')->fetchColumn();
+        $this->assertSame('0', (string) $remain);
+
+        $_POST = [];
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        session_write_close();
+        $_SESSION = [];
+    }
 }
