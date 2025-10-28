@@ -18,9 +18,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($codeValue === 'VTN2025') {
         $stmt = $db->prepare('UPDATE users SET remaining = COALESCE(remaining, 0) + 100 WHERE id = ?');
-        $success = $stmt->execute([$_SESSION['uid']]);
+        $executionSucceeded = false;
+        $affectedRows = 0;
+        $failureLogged = false;
+        $logContext = sprintf(
+            'uid=%s, session=%s',
+            (string)($_SESSION['uid'] ?? 'unknown'),
+            session_id() ?: 'none'
+        );
 
-        if ($success) {
+        try {
+            $executionSucceeded = $stmt->execute([$_SESSION['uid']]);
+            if ($executionSucceeded) {
+                $affectedRows = $stmt->rowCount();
+            }
+        } catch (PDOException $e) {
+            error_log(sprintf('[welcome] Code redemption failed (%s): %s', $logContext, $e->getMessage()));
+            $failureLogged = true;
+        }
+
+        if ($executionSucceeded && $affectedRows > 0) {
             if (defined('WELCOME_TEST_MODE') && WELCOME_TEST_MODE === true) {
                 $redirectUrl = 'dashboard.php';
                 $GLOBALS['redirectUrl'] = $redirectUrl;
@@ -29,6 +46,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 exit;
             }
         } else {
+            if (!$failureLogged) {
+                $reason = $executionSucceeded ? 'no rows updated' : 'statement execution failed';
+                error_log(sprintf('[welcome] Code redemption failed (%s): %s', $logContext, $reason));
+            }
             $error = __('welcome_code_error');
         }
     } else {
