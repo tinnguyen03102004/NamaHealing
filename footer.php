@@ -89,18 +89,105 @@ $isChatbotPage = basename($_SERVER['PHP_SELF']) === 'chatbot.php';
     const list = document.getElementById('notif-list');
     const count = document.getElementById('notif-count');
     if (!btn || !list) return;
-    btn.addEventListener('click', e => {
-      e.stopPropagation();
-      list.classList.toggle('hidden');
-      if (!list.classList.contains('hidden')) {
-        fetch('notifications_mark.php', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-          body: 'csrf_token=' + encodeURIComponent(btn.dataset.csrf)
-        }).then(() => { if (count) count.remove(); });
-      }
-    });
-    document.addEventListener('click', () => list.classList.add('hidden'));
+    const displayMode = btn.dataset.display || list.dataset.display || 'dropdown';
+    const csrfToken = btn.dataset.csrf || '';
+
+    const markAsRead = () => {
+      if (!csrfToken) return;
+      fetch('notifications_mark.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'csrf_token=' + encodeURIComponent(csrfToken)
+      }).then(() => { if (count) count.remove(); }).catch(() => {});
+    };
+
+    if (displayMode === 'modal') {
+      let overlay = null;
+
+      const ensureModal = () => {
+        if (overlay) return overlay;
+        overlay = document.createElement('div');
+        overlay.id = 'notif-modal-overlay';
+        overlay.className = 'fixed inset-0 z-50 hidden items-center justify-center bg-black/40 px-4';
+        overlay.setAttribute('role', 'dialog');
+        overlay.setAttribute('aria-modal', 'true');
+        overlay.setAttribute('aria-label', list.dataset.title || 'Notifications');
+        overlay.setAttribute('tabindex', '-1');
+        overlay.innerHTML = `
+          <div class="glass-surface glass-card relative w-full max-w-lg rounded-2xl p-6" role="document">
+            <button type="button" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 focus:outline-none" data-close aria-label="${list.dataset.closeLabel || 'Close'}">&times;</button>
+            <h3 class="text-xl font-semibold text-mint-text mb-3" data-modal-title></h3>
+            <div class="max-h-[60vh] overflow-y-auto text-sm text-gray-700 space-y-4" data-modal-body></div>
+            <div class="mt-4 flex justify-end">
+              <button type="button" class="glass-button" data-dismiss>${list.dataset.dismissLabel || 'Close'}</button>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(overlay);
+
+        const hideModal = () => {
+          overlay.classList.add('hidden');
+          overlay.classList.remove('flex');
+        };
+
+        overlay.querySelectorAll('[data-close]').forEach(el => {
+          el.addEventListener('click', event => {
+            event.preventDefault();
+            hideModal();
+          });
+        });
+        overlay.querySelectorAll('[data-dismiss]').forEach(el => {
+          el.addEventListener('click', event => {
+            event.preventDefault();
+            hideModal();
+          });
+        });
+        overlay.addEventListener('click', event => {
+          if (event.target === overlay) {
+            hideModal();
+          }
+        });
+        document.addEventListener('keydown', event => {
+          if (event.key === 'Escape' && !overlay.classList.contains('hidden')) {
+            hideModal();
+          }
+        });
+
+        return overlay;
+      };
+
+      const openModal = () => {
+        const modal = ensureModal();
+        const title = modal.querySelector('[data-modal-title]');
+        const body = modal.querySelector('[data-modal-body]');
+        if (title) title.textContent = list.dataset.title || '';
+        if (body) body.innerHTML = list.innerHTML;
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        const closeButton = modal.querySelector('[data-close]');
+        if (closeButton) {
+          closeButton.focus();
+        } else {
+          modal.focus();
+        }
+        markAsRead();
+      };
+
+      btn.addEventListener('click', event => {
+        event.preventDefault();
+        event.stopPropagation();
+        openModal();
+      });
+    } else {
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        list.classList.toggle('hidden');
+        if (!list.classList.contains('hidden')) {
+          markAsRead();
+        }
+      });
+      document.addEventListener('click', () => list.classList.add('hidden'));
+    }
   }
 
   function initNotificationModal() {
