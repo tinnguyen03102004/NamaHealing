@@ -134,18 +134,50 @@ p, .text{ font-size:15px; line-height:1.6; color: var(--ink-soft); }
   box-shadow: 0 10px 25px -20px rgba(32, 69, 61, 0.6);
 }
 
+.admin-students-table-shell {
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(118, 168, 158, 0.28);
+  box-shadow: 0 24px 50px -30px rgba(32, 69, 61, 0.45);
+  overflow: hidden;
+}
+
+.admin-students-table-scroll {
+  max-height: clamp(26rem, 62vh, 42rem);
+  overflow-y: auto;
+  position: relative;
+  scrollbar-gutter: stable;
+}
+
 .admin-students-toolbar {
   position: sticky;
-  top: 5.5rem;
-  z-index: 20;
+  top: 0;
+  z-index: 10;
   display: grid;
   gap: 0.85rem;
-  padding: 0.9rem 1rem;
-  border-radius: 0.8rem;
-  background: rgba(255, 255, 255, 0.94);
-  border: 1px solid rgba(118, 168, 158, 0.28);
-  box-shadow: 0 18px 35px -28px rgba(32, 69, 61, 0.4);
+  padding: 1rem 1.25rem;
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid rgba(118, 168, 158, 0.25);
+  box-shadow: 0 12px 28px -24px rgba(32, 69, 61, 0.45);
   backdrop-filter: blur(8px);
+}
+
+.admin-students-table-wrapper {
+  padding: 1rem 1.25rem 1.5rem;
+  overflow-x: auto;
+}
+
+.admin-students-table-frame {
+  min-width: 100%;
+}
+
+.admin-students-message {
+  margin-bottom: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.85rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  box-shadow: 0 12px 24px -20px rgba(16, 68, 54, 0.35);
 }
 
 .admin-students-toolbar__form {
@@ -205,8 +237,7 @@ p, .text{ font-size:15px; line-height:1.6; color: var(--ink-soft); }
 
 @media (max-width: 640px) {
   .admin-students-toolbar {
-    top: 4.25rem;
-    padding: 0.8rem;
+    padding: 0.85rem 1rem;
   }
 
   .admin-students-toolbar__reset {
