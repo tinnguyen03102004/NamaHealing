@@ -1,16 +1,39 @@
 <?php
 $sectionKey = htmlspecialchars($tabId ?? 'students', ENT_QUOTES, 'UTF-8');
+$studentCount = count($students);
+$countLabelKey = $studentCount === 1 ? 'admin_students_result_count_single' : 'admin_students_result_count';
+$countLabel = sprintf(__($countLabelKey), $studentCount);
+
+$filterChips = [];
+if ($keyword !== '') {
+    $filterChips[] = sprintf(__('admin_filters_keyword_badge'), htmlspecialchars($keyword, ENT_QUOTES, 'UTF-8'));
+}
+if ($status === 'active' || $status === 'expired') {
+    $statusLabels = [
+        'active'  => __('filter_active'),
+        'expired' => __('filter_expired'),
+    ];
+    $statusLabel = $statusLabels[$status] ?? '';
+    if ($statusLabel !== '') {
+        $filterChips[] = sprintf(__('admin_filters_status_badge'), htmlspecialchars($statusLabel, ENT_QUOTES, 'UTF-8'));
+    }
+}
 ?>
 <section class="admin-panel-section" data-tab-content="<?= $sectionKey ?>" id="tab-panel-<?= $sectionKey ?>" role="tabpanel" aria-labelledby="tab-button-<?= $sectionKey ?>">
   <div class="admin-panel-card">
-    <h3 class="admin-panel-card__title"><?= __('admin_filters_section_title') ?></h3>
-    <form class="admin-panel-form" method="get">
-      <div class="flex flex-col sm:flex-row items-center gap-3">
-        <input type="text" name="q"
+    <div class="admin-panel-card__header">
+      <h3 class="admin-panel-card__title"><?= __('admin_students_section_title') ?></h3>
+      <span class="admin-result-chip" aria-live="polite"><?= $countLabel ?></span>
+    </div>
+    <div class="admin-students-toolbar">
+      <form class="admin-students-toolbar__form" method="get">
+        <label class="sr-only" for="admin-filter-keyword"><?= __('search_placeholder') ?></label>
+        <input id="admin-filter-keyword" type="text" name="q"
           class="rounded-md border border-mint px-3 py-2 focus:border-mint-dark focus:ring-mint w-full sm:w-52 text-sm"
           placeholder="<?= __('search_placeholder') ?>"
           value="<?= htmlspecialchars($keyword) ?>">
-        <select name="status"
+        <label class="sr-only" for="admin-filter-status"><?= __('admin_filters_status_label') ?></label>
+        <select id="admin-filter-status" name="status"
           class="rounded-md border border-mint px-3 py-2 focus:border-mint-dark focus:ring-mint text-sm w-full sm:w-36">
           <option value="all"    <?= $status==='all'    ? 'selected' : '' ?>><?= __('filter_all') ?></option>
           <option value="active" <?= $status==='active' ? 'selected' : '' ?>><?= __('filter_active') ?></option>
@@ -19,11 +42,19 @@ $sectionKey = htmlspecialchars($tabId ?? 'students', ENT_QUOTES, 'UTF-8');
         <button class="rounded-lg bg-mint text-mint-text font-semibold px-4 py-2 text-sm shadow hover:bg-mint-dark hover:text-white transition w-full sm:w-auto">
           <?= __('filter_button') ?>
         </button>
+      </form>
+      <div class="admin-students-toolbar__filters">
+        <?php if (!empty($filterChips)): ?>
+          <span class="admin-students-toolbar__filters-label"><?= __('admin_filters_applied_label') ?>:</span>
+          <?php foreach ($filterChips as $chip): ?>
+            <span class="admin-filter-chip"><?= $chip ?></span>
+          <?php endforeach; ?>
+        <?php else: ?>
+          <span class="admin-students-toolbar__filters-label"><?= __('admin_filters_no_active') ?></span>
+        <?php endif; ?>
+        <a class="admin-students-toolbar__reset" href="admin.php"><?= __('clear_filter') ?></a>
       </div>
-    </form>
-  </div>
-  <div class="admin-panel-card">
-    <h3 class="admin-panel-card__title"><?= __('admin_students_section_title') ?></h3>
+    </div>
     <div class="overflow-x-auto rounded-xl shadow-2xl shadow-[#76a89e26] bg-white/95">
       <?php if ($firstSessionUpdated): ?>
         <div class="mx-4 mt-4 mb-3 rounded-lg bg-emerald-100 text-emerald-700 px-4 py-2 text-sm font-medium">
