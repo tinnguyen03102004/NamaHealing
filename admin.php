@@ -206,6 +206,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_session'])) {
     }
 }
 
+$cancelledSessions = [];
+try {
+    $stmt = $db->query("SELECT date, session FROM session_cancellations ORDER BY date DESC, session ASC");
+    $cancelledSessions = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    $cancelledSessions = [];
+}
+
 require 'header.php';
 
 // --- XỬ LÝ LỌC ---
