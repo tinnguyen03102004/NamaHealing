@@ -67,7 +67,7 @@ if (isset($_SESSION['uid']) && ($_SESSION['role'] ?? '') === 'student') {
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="/style.css?v=<?php echo filemtime(__DIR__.'/style.css'); ?>">
   <!-- Google Fonts: Manrope (primary) + Cormorant Garamond (logo) + Montserrat/Noto Sans (fallbacks) -->
-  <link href='https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&display=swap' rel='stylesheet'>
+  <link href='https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&display=swap&subset=latin,latin-ext,vietnamese' rel='stylesheet'>
   <style>
     body {
       font-family: 'Manrope','Montserrat','Noto Sans',Arial,sans-serif !important;
@@ -85,7 +85,7 @@ if (isset($_SESSION['uid']) && ($_SESSION['role'] ?? '') === 'student') {
     .notification-button,
     .notification-dropdown,
     .notification-dropdown * {
-      font-family: 'Manrope','Montserrat','Noto Sans',Arial,sans-serif !important;
+      font-family: 'Manrope','Montserrat','Noto Sans','Helvetica Neue',Helvetica,Arial,sans-serif !important;
     }
   </style>
 </head>
