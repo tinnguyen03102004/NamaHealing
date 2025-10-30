@@ -51,5 +51,55 @@ $sectionKey = htmlspecialchars($tabId ?? 'zoom', ENT_QUOTES, 'UTF-8');
         <button name="cancel_action" value="remove" class="rounded-lg border border-mint text-mint-text font-medium px-4 py-2 text-sm hover:bg-mint hover:text-white transition"><?= __('cancel_delete_button') ?></button>
       </div>
     </form>
+
+    <div class="mt-6">
+      <h4 class="text-base font-semibold text-mint-text mb-3"><?= __('cancel_list_title') ?></h4>
+      <?php if (!empty($cancelledSessions)): ?>
+        <div class="overflow-x-auto">
+          <table class="min-w-[360px] w-full border-collapse text-sm text-left text-gray-600">
+            <thead class="bg-mint/20 text-mint-text uppercase tracking-wide text-xs">
+              <tr>
+                <th class="py-2 px-2 sm:px-3 rounded-tl-xl whitespace-nowrap"><?= __('cancel_list_date') ?></th>
+                <th class="py-2 px-2 sm:px-3 whitespace-nowrap"><?= __('cancel_list_session') ?></th>
+                <th class="py-2 px-2 sm:px-3 rounded-tr-xl text-center whitespace-nowrap"><?= __('cancel_list_actions') ?></th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php foreach ($cancelledSessions as $item): ?>
+                <?php
+                  $rawDate = $item['date'] ?? '';
+                  $displayDate = $rawDate;
+                  try {
+                      $dt = new DateTime($rawDate);
+                      $displayDate = $dt->format('d/m/Y');
+                  } catch (Exception $e) {
+                      $displayDate = $rawDate;
+                  }
+                  $sessionKey = ($item['session'] ?? '') === 'evening' ? 'evening' : 'morning';
+                ?>
+                <tr class="hover:bg-mint/5 transition">
+                  <td class="px-2 sm:px-3 py-2 whitespace-nowrap"><?= htmlspecialchars($displayDate, ENT_QUOTES, 'UTF-8') ?></td>
+                  <td class="px-2 sm:px-3 py-2 whitespace-nowrap"><?= __('cancel_list_session_label_' . $sessionKey) ?></td>
+                  <td class="px-2 sm:px-3 py-2 text-center">
+                    <form method="post" class="inline-flex">
+                      <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
+                      <input type="hidden" name="cancel_session" value="1">
+                      <input type="hidden" name="cancel_action" value="remove">
+                      <input type="hidden" name="cancel_date" value="<?= htmlspecialchars($rawDate, ENT_QUOTES, 'UTF-8') ?>">
+                      <input type="hidden" name="cancel_session_type" value="<?= htmlspecialchars($sessionKey, ENT_QUOTES, 'UTF-8') ?>">
+                      <button class="rounded bg-red-100 text-red-700 px-3 py-1 text-xs font-semibold shadow hover:bg-red-400 hover:text-white transition" type="submit">
+                        <?= __('cancel_list_delete_button') ?>
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+              <?php endforeach; ?>
+            </tbody>
+          </table>
+        </div>
+      <?php else: ?>
+        <p class="text-sm text-gray-500"><?= __('cancel_list_empty') ?></p>
+      <?php endif; ?>
+    </div>
   </div>
 </section>
