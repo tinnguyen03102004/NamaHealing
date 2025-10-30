@@ -495,7 +495,11 @@ if ($meetingId) {
     if (str_contains($ua, 'iphone') || str_contains($ua, 'ipad') || str_contains($ua, 'ipod')) {
         $appUrl = "zoomus://zoom.us/join?confno={$meetingId}" . ($appUrlQuery ? "&{$appUrlQuery}" : '');
     } elseif (str_contains($ua, 'android')) {
-        $appUrl = "zoomus://zoom.us/wc/join/{$meetingId}" . ($appUrlQuery ? "?{$appUrlQuery}" : '');
+        $androidJoinQuery = http_build_query(array_merge(
+            ['action' => 'join', 'confno' => $meetingId],
+            $appUrlParams
+        ));
+        $appUrl = "zoomus://zoom.us/join" . ($androidJoinQuery ? "?{$androidJoinQuery}" : '');
     } else {
         $appUrl = "zoommtg://zoom.us/join?confno={$meetingId}" . ($appUrlQuery ? "&{$appUrlQuery}" : '');
     }
