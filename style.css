@@ -215,9 +215,32 @@ p, .text{ font-size:15px; line-height:1.6; color: var(--ink-soft); }
 }
 
 .admin-student-actions {
-  position: relative;
   display: flex;
+  flex-wrap: wrap;
   justify-content: flex-end;
+  align-items: center;
+  gap: 0.65rem;
+  row-gap: 0.75rem;
+}
+
+.admin-student-actions__primary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.admin-student-actions__inline-form {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.admin-student-actions__secondary {
+  position: relative;
 }
 
 .admin-student-actions__toggle {
@@ -244,64 +267,21 @@ p, .text{ font-size:15px; line-height:1.6; color: var(--ink-soft); }
   flex-shrink: 0;
 }
 
+
 .admin-student-actions__menu {
-  position: relative;
-  width: 100%;
-  max-width: min(720px, 100%);
-  margin: 0;
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  min-width: 12rem;
   border-radius: 0.85rem;
   border: 1px solid rgba(148, 163, 184, 0.25);
   background: #ffffff;
-  box-shadow: 0 28px 60px -32px rgba(15, 52, 44, 0.35);
-  padding: 1.1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.1rem;
-  z-index: 5;
-}
-
-.admin-student-actions-row {
-  background: rgba(248, 253, 251, 0.9);
-}
-
-.admin-student-actions-row > td {
-  padding: 1.1rem 1.25rem 1.35rem;
-}
-
-.admin-student-actions-row.is-open > td {
-  border-top: 1px solid rgba(148, 163, 184, 0.2);
-}
-
-.admin-student-actions__group {
+  box-shadow: 0 24px 50px -28px rgba(15, 52, 44, 0.35);
+  padding: 0.75rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-}
-
-.admin-student-actions__group-label {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  font-weight: 700;
-  color: #6b7280;
-}
-
-.admin-student-actions__form {
-  display: flex;
-  flex-direction: column;
-  gap: 0.45rem;
-}
-
-.admin-student-actions__form-fields {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-}
-
-.admin-student-actions__form-label {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #4b5563;
+  z-index: 10;
 }
 
 .admin-student-actions__input {
@@ -367,15 +347,18 @@ p, .text{ font-size:15px; line-height:1.6; color: var(--ink-soft); }
   box-shadow: 0 20px 42px -28px rgba(239, 68, 68, 0.6);
 }
 
-.admin-student-actions__hint {
-  font-size: 0.75rem;
-  color: #6b7280;
-}
-
 .admin-student-actions__error {
   font-size: 0.8rem;
   color: #b91c1c;
   font-weight: 500;
+}
+
+@media (max-width: 640px) {
+  .admin-student-actions,
+  .admin-student-actions__primary,
+  .admin-student-actions__inline-form {
+    justify-content: flex-start;
+  }
 }
 
 .admin-student-actions__delete-form {

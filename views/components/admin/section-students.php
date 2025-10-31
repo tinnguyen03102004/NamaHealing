@@ -137,43 +137,19 @@ if ($status === 'active' || $status === 'expired') {
                   </td>
                   <td class="px-2 sm:px-3 py-3 align-top admin-student-cell admin-student-cell-actions">
                     <span class="admin-cell-label"><?= __('tbl_actions') ?></span>
-                    <?php $actionsRowId = 'admin-actions-row-' . $row['id']; ?>
-                    <div class="admin-student-actions" data-admin-actions data-admin-actions-target="<?= $actionsRowId ?>">
-                      <button type="button" class="admin-student-actions__toggle" data-admin-actions-toggle aria-expanded="false" aria-controls="<?= $actionsRowId ?>">
-                        <?= __('admin_actions_button') ?>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                          <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.177l3.71-3.946a.75.75 0 111.08 1.04l-4.243 4.51a.75.75 0 01-1.08 0L5.25 8.27a.75.75 0 01-.02-1.06z" clip-rule="evenodd" />
-                        </svg>
-                      </button>
-                      <form method="post" action="delete_user.php" class="admin-student-actions__delete-form" data-admin-delete-form id="delete-form-<?= $row['id'] ?>">
-                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
-                        <input type="hidden" name="id" value="<?= $row['id'] ?>">
-                      </form>
-                    </div>
-                  </td>
-                </tr>
-                <tr class="admin-student-actions-row" data-admin-actions-row id="<?= $actionsRowId ?>" hidden>
-                  <td colspan="8">
-                    <div class="admin-student-actions__menu" data-admin-actions-menu hidden>
-                      <div class="admin-student-actions__group">
-                        <span class="admin-student-actions__group-label"><?= __('admin_action_group_sessions') ?></span>
-                        <form method="post" action="add_sessions.php" class="admin-student-actions__form" data-admin-action-form>
+                    <div class="admin-student-actions" data-admin-actions>
+                      <div class="admin-student-actions__primary">
+                        <form method="post" action="add_sessions.php" class="admin-student-actions__inline-form" data-admin-action-form>
                           <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
                           <input type="hidden" name="uid" value="<?= $row['id'] ?>">
-                          <label class="admin-student-actions__form-label" for="add-session-input-<?= $row['id'] ?>"><?= __('admin_action_add_sessions_label') ?></label>
-                          <div class="admin-student-actions__form-fields">
-                            <input id="add-session-input-<?= $row['id'] ?>" type="number" name="add" value="1" class="admin-student-actions__input" />
-                            <button type="submit" class="admin-student-actions__button admin-student-actions__button--primary">
-                              <?= __('add_sessions') ?>
-                            </button>
-                          </div>
-                          <p class="admin-student-actions__hint"><?= __('admin_action_add_sessions_hint') ?></p>
+                          <label class="sr-only" for="add-session-input-<?= $row['id'] ?>"><?= __('admin_action_add_sessions_label') ?></label>
+                          <input id="add-session-input-<?= $row['id'] ?>" type="number" name="add" value="1" class="admin-student-actions__input" />
+                          <button type="submit" class="admin-student-actions__button admin-student-actions__button--primary">
+                            <?= __('add_sessions') ?>
+                          </button>
                           <p class="admin-student-actions__error" data-admin-action-error data-message="<?= __('admin_action_error') ?>" hidden></p>
                         </form>
-                      </div>
-                      <div class="admin-student-actions__group">
-                        <span class="admin-student-actions__group-label"><?= __('admin_action_group_status') ?></span>
-                        <form method="post" class="admin-student-actions__form" data-admin-action-form>
+                        <form method="post" class="admin-student-actions__inline-form" data-admin-action-form>
                           <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
                           <input type="hidden" name="mark_first_session" value="<?= $row['id'] ?>">
                           <input type="hidden" name="first_session_value" value="<?= $firstSessionCompleted ? 0 : 1 ?>">
@@ -182,7 +158,7 @@ if ($status === 'active' || $status === 'expired') {
                           </button>
                           <p class="admin-student-actions__error" data-admin-action-error data-message="<?= __('admin_action_error') ?>" hidden></p>
                         </form>
-                        <form method="post" class="admin-student-actions__form" data-admin-action-form>
+                        <form method="post" class="admin-student-actions__inline-form" data-admin-action-form>
                           <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
                           <input type="hidden" name="toggle_vip" value="<?= $row['id'] ?>">
                           <input type="hidden" name="vip_value" value="<?= $isVip ? 0 : 1 ?>">
@@ -192,15 +168,26 @@ if ($status === 'active' || $status === 'expired') {
                           <p class="admin-student-actions__error" data-admin-action-error data-message="<?= __('admin_action_error') ?>" hidden></p>
                         </form>
                       </div>
-                      <div class="admin-student-actions__group">
-                        <span class="admin-student-actions__group-label"><?= __('admin_action_group_other') ?></span>
-                        <a href="history.php?id=<?= $row['id'] ?>" class="admin-student-actions__link">
-                          <?= __('history') ?>
-                        </a>
-                        <button type="button" class="admin-student-actions__button admin-student-actions__button--danger" data-admin-delete-trigger data-delete-form="delete-form-<?= $row['id'] ?>" data-student-name="<?= htmlspecialchars($row['full_name']) ?>">
-                          <?= __('delete') ?>
+                      <div class="admin-student-actions__secondary">
+                        <button type="button" class="admin-student-actions__toggle" data-admin-actions-toggle aria-expanded="false">
+                          <?= __('admin_actions_button') ?>
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.177l3.71-3.946a.75.75 0 111.08 1.04l-4.243 4.51a.75.75 0 01-1.08 0L5.25 8.27a.75.75 0 01-.02-1.06z" clip-rule="evenodd" />
+                          </svg>
                         </button>
+                        <div class="admin-student-actions__menu" data-admin-actions-menu hidden>
+                          <a href="history.php?id=<?= $row['id'] ?>" class="admin-student-actions__link">
+                            <?= __('history') ?>
+                          </a>
+                          <button type="button" class="admin-student-actions__button admin-student-actions__button--danger" data-admin-delete-trigger data-delete-form="delete-form-<?= $row['id'] ?>" data-student-name="<?= htmlspecialchars($row['full_name'])?>">
+                            <?= __('delete') ?>
+                          </button>
+                        </div>
                       </div>
+                      <form method="post" action="delete_user.php" class="admin-student-actions__delete-form" data-admin-delete-form id="delete-form-<?= $row['id'] ?>">
+                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
+                        <input type="hidden" name="id" value="<?= $row['id'] ?>">
+                      </form>
                     </div>
                   </td>
                 </tr>
