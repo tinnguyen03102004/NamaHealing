@@ -248,7 +248,7 @@ $adminTabs = [
 ];
 ?>
 
-<main class="mx-auto max-w-6xl mt-24 px-2 sm:px-4">
+<main class="mx-auto max-w-6xl px-2 sm:px-4">
   <!-- Tiêu đề + action -->
   <div class="mb-6 flex flex-col md:flex-row items-start md:items-end justify-between gap-3">
     <div>
