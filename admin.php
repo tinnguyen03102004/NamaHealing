@@ -274,6 +274,7 @@ $adminTabs = [
   </div>
 </main>
 
+<script src="scripts/admin.js?v=<?= filemtime(__DIR__ . '/scripts/admin.js'); ?>"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     var tabsContainer = document.querySelector('[data-admin-tabs]');

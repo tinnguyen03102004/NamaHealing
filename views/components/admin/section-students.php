@@ -69,7 +69,7 @@ if ($status === 'active' || $status === 'expired') {
             </div>
           <?php endif; ?>
           <div class="admin-students-table-frame">
-            <table class="min-w-[700px] w-full border-collapse text-sm text-left text-gray-600">
+            <table class="min-w-[700px] w-full border-collapse text-sm text-left text-gray-600 admin-students-table">
               <thead class="bg-mint/20 text-mint-text uppercase tracking-wide text-xs">
                 <tr>
                   <th class="py-2 px-2 sm:px-3 rounded-tl-xl whitespace-nowrap"><?= __('tbl_id') ?></th>
@@ -88,75 +88,115 @@ if ($status === 'active' || $status === 'expired') {
                   <td colspan="8" class="py-5 text-center text-gray-400"><?= __('not_found') ?></td>
                 </tr>
               <?php else: foreach ($students as $row): ?>
-                <tr class="hover:bg-mint/5 transition">
-                  <td class="px-2 sm:px-3 py-2"><?= $row['id'] ?></td>
-                  <td class="px-2 sm:px-3 py-2"><?= htmlspecialchars($row['full_name']) ?></td>
-                  <td class="px-2 sm:px-3 py-2"><?= htmlspecialchars($row['email']) ?></td>
-                  <td class="px-2 sm:px-3 py-2"><?= htmlspecialchars($row['phone']) ?></td>
-                  <td class="px-2 sm:px-3 py-2 text-center font-semibold <?= $row['remaining'] == 0 ? 'text-red-600' : 'text-mint-text' ?>">
-                    <?= $row['remaining'] ?>
+                <tr class="hover:bg-mint/5 transition admin-student-row" data-student-row>
+                  <td class="px-2 sm:px-3 py-3 align-top admin-student-cell admin-student-cell-id">
+                    <span class="admin-cell-label"><?= __('tbl_id') ?></span>
+                    <span class="admin-cell-value font-semibold text-mint-text">#<?= $row['id'] ?></span>
+                  </td>
+                  <td class="px-2 sm:px-3 py-3 align-top admin-student-cell admin-student-cell-name">
+                    <span class="admin-cell-label"><?= __('tbl_name') ?></span>
+                    <div class="flex flex-col gap-1">
+                      <span class="font-medium text-mint-text admin-student-name-text"><?= htmlspecialchars($row['full_name']) ?></span>
+                      <span class="text-xs text-gray-500 admin-student-id-badge">ID #<?= $row['id'] ?></span>
+                    </div>
+                  </td>
+                  <td class="px-2 sm:px-3 py-3 align-top admin-student-cell admin-student-cell-email">
+                    <span class="admin-cell-label"><?= __('tbl_email') ?></span>
+                    <span class="admin-cell-value break-all"><?= htmlspecialchars($row['email']) ?></span>
+                  </td>
+                  <td class="px-2 sm:px-3 py-3 align-top admin-student-cell admin-student-cell-phone">
+                    <span class="admin-cell-label"><?= __('tbl_phone') ?></span>
+                    <span class="admin-cell-value break-all"><?= htmlspecialchars($row['phone']) ?></span>
+                  </td>
+                  <td class="px-2 sm:px-3 py-3 align-top admin-student-cell admin-student-cell-remaining">
+                    <span class="admin-cell-label"><?= __('tbl_remaining') ?></span>
+                    <span class="admin-cell-value font-semibold <?= $row['remaining'] == 0 ? 'text-red-600' : 'text-mint-text' ?>">
+                      <?= $row['remaining'] ?>
+                    </span>
                   </td>
                   <?php $firstSessionCompleted = db_bool($row['first_session_completed'] ?? null); ?>
-                  <td class="px-2 sm:px-3 py-2 text-center">
-                    <div class="flex flex-col items-center gap-2">
-                      <span class="inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold <?= $firstSessionCompleted ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-600' ?>">
-                        <?= $firstSessionCompleted ? __('first_session_done_badge') : __('first_session_not_done_badge') ?>
-                      </span>
-                      <form method="post" class="flex flex-col items-center gap-1 text-xs">
+                  <td class="px-2 sm:px-3 py-3 align-top admin-student-cell admin-student-cell-first">
+                    <span class="admin-cell-label"><?= __('tbl_first_session') ?></span>
+                    <span class="inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold <?= $firstSessionCompleted ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-600' ?>">
+                      <?= $firstSessionCompleted ? __('first_session_done_badge') : __('first_session_not_done_badge') ?>
+                    </span>
+                  </td>
+                  <?php $isVip = db_bool($row['is_vip'] ?? null); ?>
+                  <td class="px-2 sm:px-3 py-3 align-top admin-student-cell admin-student-cell-type">
+                    <span class="admin-cell-label"><?= __('tbl_type') ?></span>
+                    <span class="inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold <?= $isVip ? 'bg-amber-100 text-amber-700' : 'bg-gray-100 text-gray-600' ?>">
+                      <?php if ($isVip): ?>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4">
+                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        <?= __('vip_badge') ?>
+                      <?php else: ?>
+                        <?= __('standard_badge') ?>
+                      <?php endif; ?>
+                    </span>
+                  </td>
+                  <td class="px-2 sm:px-3 py-3 align-top admin-student-cell admin-student-cell-actions">
+                    <span class="admin-cell-label"><?= __('tbl_actions') ?></span>
+                    <div class="admin-student-actions" data-admin-actions>
+                      <button type="button" class="admin-student-actions__toggle" data-admin-actions-toggle aria-expanded="false">
+                        <?= __('admin_actions_button') ?>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                          <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.177l3.71-3.946a.75.75 0 111.08 1.04l-4.243 4.51a.75.75 0 01-1.08 0L5.25 8.27a.75.75 0 01-.02-1.06z" clip-rule="evenodd" />
+                        </svg>
+                      </button>
+                      <div class="admin-student-actions__menu" data-admin-actions-menu hidden>
+                        <div class="admin-student-actions__group">
+                          <span class="admin-student-actions__group-label"><?= __('admin_action_group_sessions') ?></span>
+                          <form method="post" action="add_sessions.php" class="admin-student-actions__form" data-admin-action-form>
+                            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
+                            <input type="hidden" name="uid" value="<?= $row['id'] ?>">
+                            <label class="admin-student-actions__form-label" for="add-session-input-<?= $row['id'] ?>"><?= __('admin_action_add_sessions_label') ?></label>
+                            <div class="admin-student-actions__form-fields">
+                              <input id="add-session-input-<?= $row['id'] ?>" type="number" name="add" value="1" class="admin-student-actions__input" />
+                              <button type="submit" class="admin-student-actions__button admin-student-actions__button--primary">
+                                <?= __('add_sessions') ?>
+                              </button>
+                            </div>
+                            <p class="admin-student-actions__hint"><?= __('admin_action_add_sessions_hint') ?></p>
+                            <p class="admin-student-actions__error" data-admin-action-error data-message="<?= __('admin_action_error') ?>" hidden></p>
+                          </form>
+                        </div>
+                        <div class="admin-student-actions__group">
+                          <span class="admin-student-actions__group-label"><?= __('admin_action_group_status') ?></span>
+                          <form method="post" class="admin-student-actions__form" data-admin-action-form>
+                            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
+                            <input type="hidden" name="mark_first_session" value="<?= $row['id'] ?>">
+                            <input type="hidden" name="first_session_value" value="<?= $firstSessionCompleted ? 0 : 1 ?>">
+                            <button type="submit" class="admin-student-actions__button">
+                              <?= $firstSessionCompleted ? __('unmark_first_session_button') : __('mark_first_session_button') ?>
+                            </button>
+                            <p class="admin-student-actions__error" data-admin-action-error data-message="<?= __('admin_action_error') ?>" hidden></p>
+                          </form>
+                          <form method="post" class="admin-student-actions__form" data-admin-action-form>
+                            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
+                            <input type="hidden" name="toggle_vip" value="<?= $row['id'] ?>">
+                            <input type="hidden" name="vip_value" value="<?= $isVip ? 0 : 1 ?>">
+                            <button type="submit" class="admin-student-actions__button">
+                              <?= $isVip ? __('remove_vip_button') : __('make_vip_button') ?>
+                            </button>
+                            <p class="admin-student-actions__error" data-admin-action-error data-message="<?= __('admin_action_error') ?>" hidden></p>
+                          </form>
+                        </div>
+                        <div class="admin-student-actions__group">
+                          <span class="admin-student-actions__group-label"><?= __('admin_action_group_other') ?></span>
+                          <a href="history.php?id=<?= $row['id'] ?>" class="admin-student-actions__link">
+                            <?= __('history') ?>
+                          </a>
+                          <button type="button" class="admin-student-actions__button admin-student-actions__button--danger" data-admin-delete-trigger data-delete-form="delete-form-<?= $row['id'] ?>" data-student-name="<?= htmlspecialchars($row['full_name']) ?>">
+                            <?= __('delete') ?>
+                          </button>
+                        </div>
+                      </div>
+                      <form method="post" action="delete_user.php" class="admin-student-actions__delete-form" data-admin-delete-form id="delete-form-<?= $row['id'] ?>">
                         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
-                        <input type="hidden" name="mark_first_session" value="<?= $row['id'] ?>">
-                        <input type="hidden" name="first_session_value" value="<?= $firstSessionCompleted ? 0 : 1 ?>">
-                        <button class="rounded border <?= $firstSessionCompleted ? 'border-gray-300 text-gray-600 hover:bg-gray-100' : 'border-emerald-400 text-emerald-600 hover:bg-emerald-50' ?> px-3 py-1 font-medium transition" type="submit">
-                          <?= $firstSessionCompleted ? __('unmark_first_session_button') : __('mark_first_session_button') ?>
-                        </button>
+                        <input type="hidden" name="id" value="<?= $row['id'] ?>">
                       </form>
                     </div>
-                  </td>
-                  <td class="px-2 sm:px-3 py-2">
-                    <?php $isVip = db_bool($row['is_vip'] ?? null); ?>
-                    <div class="flex flex-col items-center gap-2">
-                      <span class="inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold <?= $isVip ? 'bg-amber-100 text-amber-700' : 'bg-gray-100 text-gray-600' ?>">
-                        <?php if ($isVip): ?>
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                          </svg>
-                          <?= __('vip_badge') ?>
-                        <?php else: ?>
-                          <?= __('standard_badge') ?>
-                        <?php endif; ?>
-                      </span>
-                      <form method="post" class="flex flex-col items-center gap-1 text-xs">
-                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
-                        <input type="hidden" name="toggle_vip" value="<?= $row['id'] ?>">
-                        <input type="hidden" name="vip_value" value="<?= $isVip ? 0 : 1 ?>">
-                        <button class="rounded border <?= $isVip ? 'border-gray-300 text-gray-600 hover:bg-gray-100' : 'border-amber-400 text-amber-600 hover:bg-amber-50' ?> px-3 py-1 font-medium transition" type="submit">
-                          <?= $isVip ? __('remove_vip_button') : __('make_vip_button') ?>
-                        </button>
-                      </form>
-                    </div>
-                  </td>
-                  <td class="px-2 sm:px-3 py-2 text-center flex flex-wrap gap-2 justify-center items-center">
-                    <form method="post" action="add_sessions.php" class="flex gap-1 items-center">
-                      <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
-                      <input type="hidden" name="uid" value="<?= $row['id'] ?>">
-                      <input type="number" name="add" value="1"
-                        class="w-14 rounded border border-mint px-2 py-1 text-sm focus:border-mint-dark focus:ring-mint" />
-                      <button class="rounded bg-mint/90 text-mint-text px-2 py-1 text-xs font-semibold shadow hover:bg-mint-dark hover:text-white transition" title="<?= __('add_sessions') ?> buổi">
-                        <?= __('add_sessions') ?>
-                      </button>
-                    </form>
-                    <form method="post" action="delete_user.php" onsubmit="return confirm('<?= __('confirm_delete_student') ?>');" style="display:inline-block">
-                      <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
-                      <input type="hidden" name="id" value="<?= $row['id'] ?>">
-                      <button class="rounded bg-red-100 text-red-700 px-3 py-1 text-xs font-semibold shadow hover:bg-red-400 hover:text-white transition" title="<?= __('delete') ?> học viên">
-                        <?= __('delete') ?>
-                      </button>
-                    </form>
-                    <a href="history.php?id=<?= $row['id'] ?>"
-                       class="rounded bg-blue-100 text-blue-700 px-3 py-1 text-xs font-semibold shadow hover:bg-blue-400 hover:text-white transition"
-                       title="<?= __('history') ?>">
-                      <?= __('history') ?>
-                    </a>
                   </td>
                 </tr>
               <?php endforeach; endif; ?>
@@ -168,3 +208,24 @@ if ($status === 'active' || $status === 'expired') {
     </div>
   </div>
 </section>
+
+<div class="admin-modal" id="admin-delete-modal" hidden aria-hidden="true">
+  <div class="admin-modal__backdrop" data-admin-modal-dismiss></div>
+  <div class="admin-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="admin-delete-modal-title">
+    <div class="admin-modal__header">
+      <h4 class="admin-modal__title" id="admin-delete-modal-title"><?= __('admin_delete_modal_title') ?></h4>
+    </div>
+    <div class="admin-modal__body">
+      <p class="admin-modal__message"><?= sprintf(__('admin_delete_modal_message'), '<span data-admin-modal-name></span>') ?></p>
+      <p class="admin-modal__error" data-admin-modal-error hidden><?= __('admin_delete_modal_error') ?></p>
+    </div>
+    <div class="admin-modal__footer">
+      <button type="button" class="admin-modal__button admin-modal__button--secondary" data-admin-modal-cancel>
+        <?= __('admin_delete_modal_cancel') ?>
+      </button>
+      <button type="button" class="admin-modal__button admin-modal__button--danger" data-admin-modal-confirm>
+        <?= __('admin_delete_modal_confirm') ?>
+      </button>
+    </div>
+  </div>
+</div>
