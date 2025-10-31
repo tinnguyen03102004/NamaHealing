@@ -17,14 +17,9 @@
         return;
       }
       var menu = container.__menuElement || container.querySelector('[data-admin-actions-menu]');
-      var menuRow = container.__menuRow;
       var toggle = container.querySelector('[data-admin-actions-toggle]');
       if (menu && !menu.hasAttribute('hidden')) {
         menu.setAttribute('hidden', '');
-      }
-      if (menuRow && !menuRow.hasAttribute('hidden')) {
-        menuRow.setAttribute('hidden', '');
-        menuRow.classList.remove('is-open');
       }
       container.classList.remove('is-open');
       openMenus.delete(container);
@@ -54,19 +49,7 @@
 
     actionContainers.forEach(function (container) {
       var toggle = container.querySelector('[data-admin-actions-toggle]');
-      var targetId = container.getAttribute('data-admin-actions-target');
-      var menuRow = null;
-      var menu = null;
-      if (targetId) {
-        menuRow = document.getElementById(targetId);
-        if (menuRow) {
-          menu = menuRow.querySelector('[data-admin-actions-menu]');
-        }
-      }
-      if (!menu) {
-        menu = container.querySelector('[data-admin-actions-menu]');
-      }
-      container.__menuRow = menuRow || null;
+      var menu = container.querySelector('[data-admin-actions-menu]');
       container.__menuElement = menu || null;
       if (!toggle || !menu) {
         return;
@@ -78,10 +61,6 @@
         closeAllMenus();
         if (isHidden) {
           menu.removeAttribute('hidden');
-          if (menuRow) {
-            menuRow.removeAttribute('hidden');
-            menuRow.classList.add('is-open');
-          }
           container.classList.add('is-open');
           toggle.setAttribute('aria-expanded', 'true');
           openMenus.add(container);
@@ -98,11 +77,7 @@
       var target = event.target;
       var shouldClose = true;
       openMenus.forEach(function (container) {
-        var menuRow = container.__menuRow;
         if (container.contains(target)) {
-          shouldClose = false;
-        }
-        if (menuRow && menuRow.contains(target)) {
           shouldClose = false;
         }
       });
