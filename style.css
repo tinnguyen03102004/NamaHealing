@@ -245,19 +245,31 @@ p, .text{ font-size:15px; line-height:1.6; color: var(--ink-soft); }
 }
 
 .admin-student-actions__menu {
-  position: absolute;
-  top: calc(100% + 0.65rem);
-  right: 0;
-  width: min(280px, 85vw);
+  position: relative;
+  width: 100%;
+  max-width: min(720px, 100%);
+  margin: 0;
   border-radius: 0.85rem;
   border: 1px solid rgba(148, 163, 184, 0.25);
   background: #ffffff;
-  box-shadow: 0 28px 60px -32px rgba(15, 52, 44, 0.55);
-  padding: 1rem;
+  box-shadow: 0 28px 60px -32px rgba(15, 52, 44, 0.35);
+  padding: 1.1rem;
   display: flex;
   flex-direction: column;
   gap: 1.1rem;
-  z-index: 40;
+  z-index: 5;
+}
+
+.admin-student-actions-row {
+  background: rgba(248, 253, 251, 0.9);
+}
+
+.admin-student-actions-row > td {
+  padding: 1.1rem 1.25rem 1.35rem;
+}
+
+.admin-student-actions-row.is-open > td {
+  border-top: 1px solid rgba(148, 163, 184, 0.2);
 }
 
 .admin-student-actions__group {
@@ -495,8 +507,7 @@ body.admin-modal-open {
 
 @media (max-width: 768px) {
   .admin-students-table-shell {
-    border: none;
-    box-shadow: none;
+    border-radius: 0.85rem;
   }
 
   .admin-students-table-scroll {
@@ -504,103 +515,16 @@ body.admin-modal-open {
   }
 
   .admin-students-table-wrapper {
-    padding: 1rem 0 1.5rem;
-    overflow: visible;
-  }
-
-  .admin-students-table {
-    min-width: 100%;
-  }
-
-  .admin-students-table thead {
-    display: none;
-  }
-
-  .admin-students-table tbody {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .admin-student-row {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-areas:
-      'name name'
-      'email email'
-      'phone phone'
-      'remaining remaining'
-      'first first'
-      'type type'
-      'actions actions';
-    gap: 0.75rem;
-    padding: 1rem 1.25rem;
-    border-radius: 1rem;
-    border: 1px solid rgba(148, 163, 184, 0.3);
-    background: #ffffff;
-    box-shadow: 0 22px 45px -30px rgba(15, 52, 44, 0.45);
-  }
-
-  .admin-student-cell {
-    border-bottom: none;
-    padding: 0 !important;
-  }
-
-  .admin-cell-label {
-    display: block;
-  }
-
-  .admin-student-cell-id {
-    display: none;
-  }
-
-  .admin-student-cell-name {
-    grid-area: name;
-  }
-
-  .admin-student-id-badge {
-    display: inline-flex;
-  }
-
-  .admin-student-cell-email {
-    grid-area: email;
-  }
-
-  .admin-student-cell-phone {
-    grid-area: phone;
-  }
-
-  .admin-student-cell-remaining {
-    grid-area: remaining;
-  }
-
-  .admin-student-cell-first {
-    grid-area: first;
-  }
-
-  .admin-student-cell-type {
-    grid-area: type;
-  }
-
-  .admin-student-cell-actions {
-    grid-area: actions;
-  }
-
-  .admin-student-actions {
-    justify-content: stretch;
-  }
-
-  .admin-student-actions__toggle {
-    width: 100%;
-    justify-content: center;
+    padding: 1rem 0.75rem 1.5rem;
   }
 
   .admin-student-actions__menu {
-    position: static;
-    width: 100%;
-    border: 1px solid rgba(148, 163, 184, 0.35);
-    box-shadow: none;
-    margin-top: 0.75rem;
+    max-width: min(640px, 100%);
+  }
+
+  .admin-student-actions-row > td {
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 }
 
