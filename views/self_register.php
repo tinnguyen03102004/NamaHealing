@@ -10,15 +10,20 @@
       <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
       <div>
         <label class="block mb-1"><?= __('name_label') ?></label>
-        <input type="text" name="full_name" required class="w-full px-4 py-2 border rounded-lg" />
+        <input type="text" name="full_name" required class="w-full px-4 py-2 border rounded-lg" value="<?= htmlspecialchars($fullName ?? '') ?>" />
       </div>
       <div>
         <label class="block mb-1"><?= __('email_label') ?></label>
-        <input type="email" name="email" required class="w-full px-4 py-2 border rounded-lg" />
+        <input type="email" name="email" required class="w-full px-4 py-2 border rounded-lg" value="<?= htmlspecialchars($email ?? '') ?>" />
       </div>
       <div>
         <label class="block mb-1"><?= __('phone_label') ?></label>
-        <input type="text" name="phone" required class="w-full px-4 py-2 border rounded-lg" />
+        <input type="text" name="phone" required class="w-full px-4 py-2 border rounded-lg" value="<?= htmlspecialchars($phoneInput ?? '') ?>" />
+      </div>
+      <div>
+        <label class="block mb-1"><?= __('referral_phone_label') ?> <span class="text-xs text-gray-500"><?= __('referral_phone_optional') ?></span></label>
+        <input type="text" name="referral_phone" class="w-full px-4 py-2 border rounded-lg" placeholder="<?= __('referral_phone_placeholder') ?>" value="<?= htmlspecialchars($referralInput ?? '') ?>" />
+        <p class="text-xs text-gray-500 mt-1"><?= __('referral_phone_help') ?></p>
       </div>
       <button class="w-full bg-[#9dcfc3] text-[#285F57] font-semibold py-2 rounded-lg">Đăng ký</button>
     </form>

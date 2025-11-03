@@ -1,5 +1,10 @@
 <?php
+use NamaHealing\Models\ReferralModel;
+use NamaHealing\Models\UserModel;
+
 require 'config.php';
+require_once __DIR__ . '/helpers/Schema.php';
+ensure_referrals_table($db);
 // Chỉ admin mới được cộng buổi
 if (!isset($_SESSION['uid']) || $_SESSION['role'] !== 'admin') {
     header('Location: index.php');
@@ -12,9 +17,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $add = intval($_POST['add'] ?? 0);
 
     if ($uid > 0 && $add != 0) {
-        // Cập nhật số buổi (có thể âm để trừ)
-        $stmt = $db->prepare("UPDATE users SET remaining = remaining + ? WHERE id = ?");
-        $stmt->execute([$add, $uid]);
+        $userModel = new UserModel($db);
+        $referralModel = new ReferralModel($db);
+
+        try {
+            $db->beginTransaction();
+            // Cập nhật số buổi (có thể âm để trừ)
+            $stmt = $db->prepare("UPDATE users SET remaining = remaining + ? WHERE id = ?");
+            $stmt->execute([$add, $uid]);
+
+            if ($add > 0) {
+                $referralModel->awardBonusForTopUp($userModel, $uid);
+            }
+
+            $db->commit();
+        } catch (Throwable $e) {
+            if ($db->inTransaction()) {
+                $db->rollBack();
+            }
+            throw $e;
+        }
     }
 }
 
