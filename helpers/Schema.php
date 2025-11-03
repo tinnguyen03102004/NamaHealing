@@ -75,3 +75,30 @@ if (!function_exists('ensure_zoom_links_audience')) {
         }
     }
 }
+
+if (!function_exists('ensure_referrals_table')) {
+    function ensure_referrals_table(PDO $db): void {
+        try {
+            $db->query('SELECT 1 FROM referrals LIMIT 1');
+            return;
+        } catch (PDOException $e) {
+            $sql = <<<'SQL'
+CREATE TABLE IF NOT EXISTS referrals (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    referrer_id INT NOT NULL,
+    referred_id INT NOT NULL,
+    status ENUM('pending','awarded') NOT NULL DEFAULT 'pending',
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    awarded_at TIMESTAMP NULL DEFAULT NULL,
+    UNIQUE KEY uniq_referred (referred_id),
+    KEY idx_referrer (referrer_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+SQL;
+            try {
+                $db->exec($sql);
+            } catch (PDOException $ignored) {
+                // Table creation might fail if permissions are restricted.
+            }
+        }
+    }
+}

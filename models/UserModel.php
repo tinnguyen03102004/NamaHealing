@@ -27,6 +27,13 @@ class UserModel {
         return $u ?: null;
     }
 
+    public function findById(int $id): ?array {
+        $stmt = $this->pdo->prepare("SELECT * FROM users WHERE id = :id LIMIT 1");
+        $stmt->execute([':id' => $id]);
+        $u = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $u ?: null;
+    }
+
     /**
      * Find a user by either email or phone number.
      *
