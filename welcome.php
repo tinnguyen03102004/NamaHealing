@@ -16,7 +16,7 @@ include 'header.php';
     <div class="space-y-3 text-center">
       <h1 class="text-2xl font-semibold text-[#285F57]">Chào mừng bạn đến với lớp thiền NamaHealing</h1>
       <p class="text-base text-gray-700 leading-relaxed">
-        Chào mừng bạn đến với lớp thiền NamaHealing. Vui lòng tiếp tục thanh toán theo hướng dẫn bên dưới để tham gia lớp học.
+        Vui lòng tiếp tục thanh toán theo hướng dẫn bên dưới để tham gia lớp học.
       </p>
     </div>
     <div class="pt-2 text-center">
