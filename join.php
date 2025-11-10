@@ -58,14 +58,12 @@ try {
 $isFirstTimer = ($attendanceCount === 0 && !$firstSessionCompleted);
 $nowTs = time();
 if ($session === 'morning') {
-    $blockStart = strtotime('today 05:58');
-    $blockEnd = strtotime('today 06:55');
+    $sessionStart = strtotime('today 06:00');
 } else {
-    $blockStart = strtotime('today 20:43');
-    $blockEnd = strtotime('today 21:40');
+    $sessionStart = strtotime('today 20:45');
 }
 
-if ($isFirstTimer && $nowTs >= $blockStart && $nowTs <= $blockEnd) {
+if ($isFirstTimer && $nowTs < $sessionStart) {
     $langAttr = htmlspecialchars($_SESSION['lang'] ?? 'vi', ENT_QUOTES, 'UTF-8');
     $title = $session === 'morning' ? __('join_morning') : __('join_evening');
     $safeTitle = htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
