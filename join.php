@@ -62,8 +62,9 @@ if ($session === 'morning') {
 } else {
     $sessionStart = strtotime('today 20:45');
 }
+$sessionEnd = $sessionStart + 55 * 60;
 
-if ($isFirstTimer && $nowTs < $sessionStart) {
+if ($isFirstTimer && $nowTs >= $sessionStart && $nowTs <= $sessionEnd) {
     $langAttr = htmlspecialchars($_SESSION['lang'] ?? 'vi', ENT_QUOTES, 'UTF-8');
     $title = $session === 'morning' ? __('join_morning') : __('join_evening');
     $safeTitle = htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
