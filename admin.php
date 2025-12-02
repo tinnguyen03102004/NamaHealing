@@ -190,17 +190,39 @@ $db->exec("CREATE TABLE IF NOT EXISTS session_cancellations (
 $cancelMsg = null;
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_session'])) {
     csrf_check($_POST['csrf_token'] ?? null);
-    $date = $_POST['cancel_date'] ?? '';
-    $sess = $_POST['cancel_session_type'] ?? 'morning';
+    $rawDateInput = $_POST['cancel_dates'] ?? ($_POST['cancel_date'] ?? '');
+    $rawSessions = $_POST['cancel_session_types'] ?? ($_POST['cancel_session_type'] ?? 'morning');
     $action = $_POST['cancel_action'] ?? 'add';
-    if ($date) {
+    $dates = array_values(array_filter(array_map('trim', preg_split('/[\n,]+/', str_replace("\r", "\n", (string)$rawDateInput)))));
+    $sessions = is_array($rawSessions) ? $rawSessions : [$rawSessions];
+    $sessions = array_values(array_filter(array_map(static function ($value) {
+        return in_array($value, ['morning', 'evening'], true) ? $value : null;
+    }, $sessions)));
+
+    if (empty($sessions)) {
+        $sessions = ['morning'];
+    }
+
+    $dates = array_values(array_filter($dates, static function ($date) {
+        return preg_match('/^\d{4}-\d{2}-\d{2}$/', $date);
+    }));
+
+    if (!empty($dates)) {
         if ($action === 'add') {
             $stmt = $db->prepare("INSERT IGNORE INTO session_cancellations(date, session) VALUES (?, ?)");
-            $stmt->execute([$date, $sess]);
+            foreach ($dates as $date) {
+                foreach ($sessions as $sess) {
+                    $stmt->execute([$date, $sess]);
+                }
+            }
             $cancelMsg = __('cancel_added');
         } else {
             $stmt = $db->prepare("DELETE FROM session_cancellations WHERE date=? AND session=?");
-            $stmt->execute([$date, $sess]);
+            foreach ($dates as $date) {
+                foreach ($sessions as $sess) {
+                    $stmt->execute([$date, $sess]);
+                }
+            }
             $cancelMsg = __('cancel_removed');
         }
     }
