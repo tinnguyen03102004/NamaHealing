@@ -41,14 +41,26 @@ $sectionKey = htmlspecialchars($tabId ?? 'zoom', ENT_QUOTES, 'UTF-8');
       <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
       <input type="hidden" name="cancel_session" value="1">
       <label class="admin-panel-form__label"><?= __('cancel_session_title') ?></label>
-      <div class="flex flex-col sm:flex-row gap-2 items-center">
-        <input type="date" name="cancel_date" class="rounded border border-mint px-2 py-1 focus:border-mint-dark focus:ring-mint" required>
-        <select name="cancel_session_type" class="rounded border border-mint px-2 py-1 focus:border-mint-dark focus:ring-mint">
-          <option value="morning"><?= __('morning') ?></option>
-          <option value="evening"><?= __('evening') ?></option>
-        </select>
-        <button name="cancel_action" value="add" class="rounded-lg bg-mint text-mint-text font-semibold px-4 py-2 text-sm shadow hover:bg-mint-dark hover:text-white transition"><?= __('cancel_add_button') ?></button>
-        <button name="cancel_action" value="remove" class="rounded-lg border border-mint text-mint-text font-medium px-4 py-2 text-sm hover:bg-mint hover:text-white transition"><?= __('cancel_delete_button') ?></button>
+      <div class="grid gap-3">
+        <div class="grid gap-2">
+          <p class="text-sm text-gray-600 leading-relaxed"><?= __('cancel_dates_hint') ?></p>
+          <textarea name="cancel_dates" rows="3" class="rounded border border-mint px-3 py-2 focus:border-mint-dark focus:ring-mint" placeholder="<?= __('cancel_dates_placeholder') ?>"></textarea>
+        </div>
+        <div class="flex flex-wrap items-center gap-4">
+          <p class="font-medium text-sm text-gray-700 whitespace-nowrap"><?= __('cancel_session_types_label') ?></p>
+          <label class="inline-flex items-center gap-2 text-sm text-gray-700">
+            <input type="checkbox" name="cancel_session_types[]" value="morning" class="rounded border-gray-300 text-mint focus:ring-mint">
+            <span><?= __('cancel_list_session_label_morning') ?></span>
+          </label>
+          <label class="inline-flex items-center gap-2 text-sm text-gray-700">
+            <input type="checkbox" name="cancel_session_types[]" value="evening" class="rounded border-gray-300 text-mint focus:ring-mint">
+            <span><?= __('cancel_list_session_label_evening') ?></span>
+          </label>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-2 items-center">
+          <button name="cancel_action" value="add" class="w-full sm:w-auto rounded-lg bg-mint text-mint-text font-semibold px-4 py-2 text-sm shadow hover:bg-mint-dark hover:text-white transition"><?= __('cancel_add_button') ?></button>
+          <button name="cancel_action" value="remove" class="w-full sm:w-auto rounded-lg border border-mint text-mint-text font-medium px-4 py-2 text-sm hover:bg-mint hover:text-white transition"><?= __('cancel_delete_button') ?></button>
+        </div>
       </div>
     </form>
 
