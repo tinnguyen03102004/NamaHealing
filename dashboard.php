@@ -35,8 +35,8 @@ unset($_SESSION['materials_error']);
 
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 $nowTs = time();
-$morningBlockWindow = $nowTs >= strtotime('today 05:55') && $nowTs <= strtotime('today 06:55');
-$eveningBlockWindow = $nowTs >= strtotime('today 20:40') && $nowTs <= strtotime('today 21:40');
+$morningBlockWindow = $nowTs >= strtotime('today 06:00') && $nowTs <= strtotime('today 06:55');
+$eveningBlockWindow = $nowTs >= strtotime('today 20:45') && $nowTs <= strtotime('today 21:40');
 $firstTimerMorningBlock = $attendanceCount === 0 && !$firstSessionCompleted && $morningBlockWindow;
 $firstTimerEveningBlock = $attendanceCount === 0 && !$firstSessionCompleted && $eveningBlockWindow;
 
